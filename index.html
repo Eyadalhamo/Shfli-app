@@ -554,8 +554,7 @@ function startDraw() {
       resetBtn.disabled = false;  
       showRandomNamesBlock(); // عرض القائمة الكاملة مرة أخرى بعد انتهاء السحب  
         
-      // ملاحظة مهمة: تم حذف أي رسالة إرشادية تُعرض أسفل النتيجة هنا،  
-      // أي أنه لن يظهر نص "متبقٍ X فائز..." ولا "تم الانتهاء..." كما طُلِب.  
+      // ملاحظة مهمة: تم حذف أي رسالة إرشادية تُعرض أسفل النتيجة هنا  
     }  
   }, intervalTime);  
 }  
@@ -570,7 +569,7 @@ window.onload = function() {
 <script>
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', function () {
-      // هنا فقط عدلنا اسم الملف
+      // هنا التعديل الوحيد: اسم الملف
       navigator.serviceWorker.register('service-worker.js');
     });
   }
