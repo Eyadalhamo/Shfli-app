@@ -2,7 +2,6 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <!-- سطر مهم للموبايل والكمبيوتر -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>سحب شفلي</title>
 
@@ -133,6 +132,10 @@
     font-size: 20px;
     color: #34ff7f;
     font-weight: 600;
+    /* ارتفاع ثابت عشان ما ترج الشاشة */
+    min-height: 32px;
+    display: flex;
+    align-items: center;
   }
 
   .card-footer {
@@ -220,6 +223,19 @@ let generatedNames = [];
 let savedWinners = []; // هنا نحفظ الفائزين الخمسة
 let drawIndex = 0;     // أي فائز نحن فيه الآن
 
+// دالة لعرض مجموعة عشوائية من الأسماء في الصندوق العلوي
+function showRandomNamesBlock() {
+  const textarea = document.getElementById("names");
+  const linesPerView = 40; // عدد الأسماء الظاهرة مرة واحدة
+  const out = [];
+
+  for (let i = 0; i < linesPerView; i++) {
+    const name = generatedNames[Math.floor(Math.random() * generatedNames.length)];
+    out.push(name);
+  }
+  textarea.value = out.join("\n");
+}
+
 // ====== توليد الأسماء (10,000 اسم، 2000 أجنبي + 1000 بإيموجيات في النص) ======
 function generateNames() {
   generatedNames = [];
@@ -275,8 +291,8 @@ function generateNames() {
     added++;
   }
 
-  // عرض الأسماء
-  document.getElementById("names").value = generatedNames.join("\n");
+  // أول عرض للأسماء
+  showRandomNamesBlock();
 }
 
 // إخفاء أسماء الفائزين (٥ خانات)
@@ -335,9 +351,13 @@ function startDraw() {
 
   const winnerName = savedWinners[drawIndex];
   const result = document.getElementById("result");
-  const intervalTime = 40;       // سرعة التقليب
+  const intervalTime = 40;       // سرعة التقليب للفائز
   const totalDuration = 10000;   // 10 ثوانٍ تقريباً
   const startTime = Date.now();
+
+  // تحديث الأسماء العلوية كل فترة أبطأ
+  let lastNamesUpdate = 0;
+  const namesUpdateInterval = 300; // كل 0.3 ثانية تقريبًا
 
   result.textContent = "جاري السحب...";
   result.style.color = "#eee";
@@ -345,10 +365,19 @@ function startDraw() {
   const currentDrawNumber = drawIndex + 1; // الفائز رقم كذا
 
   const interval = setInterval(() => {
+    const now = Date.now();
+    const elapsed = now - startTime;
+
+    // تقليب اسم الفائز بسرعة
     const randomName = generatedNames[Math.floor(Math.random() * generatedNames.length)];
     result.textContent = randomName;
 
-    const elapsed = Date.now() - startTime;
+    // تحديث الأسماء العلوية أبطأ
+    if (now - lastNamesUpdate >= namesUpdateInterval) {
+      showRandomNamesBlock();
+      lastNamesUpdate = now;
+    }
+
     if (elapsed >= totalDuration) {
       clearInterval(interval);
       result.style.color = "#34ff7f";
