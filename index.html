@@ -1,440 +1,367 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>السحب على جائزة تطبيق شَفلي</title>
-
-  <!-- خط عربي/إنجليزي لطيف -->
-  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet" />
+  <meta charset="UTF-8">
+  <!-- سطر مهم للموبايل والكمبيوتر -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>سحب شفلي</title>
 
   <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+  :root {
+    --primary: #4f46e5;
+    --bg: #0f172a;
+    --text: #f9fafb;
+  }
 
-    body {
-      font-family: "Tajawal", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: radial-gradient(circle at top, #1f3b70 0%, #050b1f 60%, #050814 100%);
-      color: #fff;
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 16px;
-    }
+  body {
+    margin: 0;
+    background: radial-gradient(circle at top, #1d4ed8 0, #020617 55%, #000);
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+                "Roboto", "Helvetica Neue", Arial, sans-serif;
+    color: var(--text);
+  }
 
-    .app-wrapper {
-      width: 100%;
-      max-width: 900px;          /* هون حجم الكرت، على الموبايل بياخد كل العرض */
-    }
+  .app {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+  }
 
-    .card {
-      background: rgba(7, 15, 40, 0.96);
-      border-radius: 18px;
-      padding: 16px;
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
-      border: 1px solid rgba(255, 255, 255, 0.06);
-    }
+  .card {
+    width: 100%;
+    max-width: 550px;
+    background: #0b1e3b;
+    border-radius: 22px;
+    border: 1px solid #345;
+    box-shadow: 0 15px 35px #0008;
+    overflow: hidden;
+  }
 
-    /* الهيدر */
-    .card-header {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 14px;
-    }
+  .card-header {
+    padding: 15px;
+    background: #133b63bb;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
 
-    .logo-circle {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      background: #fff;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      overflow: hidden;
-      flex-shrink: 0;
-    }
+  /* الدائرة + الصورة */
+  .logo-circle {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-image: url('https://i.postimg.cc/3JcgH4nG/20250531-135725-FF5FD6EA-7CFD-497A-8DAC-AB0A6C0BE816.png');
+    background-size: cover;
+    background-position: center;
+    border: 2px solid #ffffff77;
+    background-color: white;
+  }
 
-    .logo-circle img {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-    }
+  .card-header h1 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 600;
+  }
 
-    .title-box {
-      flex: 1;
-      background: linear-gradient(135deg, #12335e, #06213f);
-      border-radius: 999px;
-      padding: 8px 14px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
+  .card-body {
+    padding: 20px;
+  }
 
-    .title-emoji {
-      font-size: 18px;
-    }
+  textarea, input {
+    width: 100%;
+    background: #0a1024;
+    border-radius: 12px;
+    border: 1px solid #334;
+    color: white;
+    padding: 12px;
+    resize: none;
+    margin-bottom: 12px;
+    font-size: 15px;
+  }
 
-    .title-text {
-      font-size: 13px;
-      font-weight: 600;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
+  textarea {
+    height: 220px;
+  }
 
-    /* المحتوى */
-    .content {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
+  .btn {
+    padding: 14px 20px;
+    border-radius: 40px;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    transition: 0.25s;
+  }
 
-    .columns {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
+  .primary {
+    background: linear-gradient(135deg, #4b6fff, #5a8bff);
+    color: white;
+    width: 48%;
+  }
 
-    .left-col,
-    .right-col {
-      background: rgba(9, 18, 55, 0.95);
-      border-radius: 14px;
-      padding: 10px;
-      border: 1px solid rgba(255, 255, 255, 0.03);
-    }
+  .ghost {
+    background: #122b47;
+    color: #fff;
+    width: 48%;
+  }
 
-    .section-title {
-      font-size: 13px;
-      font-weight: 600;
-      margin-bottom: 6px;
-    }
+  .tiny {
+    background: transparent;
+    color: #ffb36b;
+    border: 1px solid #ffb36b;
+    width: 120px;
+    flex-shrink: 0;
+  }
 
-    .names-list {
-      list-style: none;
-      max-height: 200px;
-      overflow-y: auto;
-      font-size: 12px;
-      line-height: 1.6;
-    }
+  .actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
+  }
 
-    .names-list li {
-      padding: 2px 0;
-    }
+  #result-wrapper {
+    background: #061830;
+    border: 1px solid #133a66;
+    padding: 15px;
+    border-radius: 16px;
+    margin-top: 15px;
+  }
 
-    .names-list li span {
-      opacity: 0.8;
-    }
+  #result {
+    margin-top: 10px;
+    font-size: 20px;
+    color: #34ff7f;
+    font-weight: 600;
+  }
 
-    /* مربع النتيجة */
-    .result-box {
-      background: #020514;
-      border-radius: 10px;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      height: 180px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 16px;
-      color: #f0c75e;
-      text-align: center;
-      padding: 8px;
-      margin-bottom: 10px;
-    }
-
-    /* الأزرار وأسفل الصفحة */
-    .buttons-row {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    button,
-    .btn {
-      border: none;
-      border-radius: 999px;
-      padding: 10px 14px;
-      font-size: 14px;
-      font-weight: 600;
-      cursor: pointer;
-      text-align: center;
-      width: 100%;
-    }
-
-    .btn-primary {
-      background: linear-gradient(135deg, #1fa2ff, #12d8fa, #1fa2ff);
-      color: #021220;
-    }
-
-    .btn-secondary {
-      background: rgba(9, 26, 60, 0.95);
-      color: #fff;
-    }
-
-    .btn-small {
-      font-size: 12px;
-      padding: 7px 10px;
-    }
-
-    .buttons-bottom {
-      display: grid;
-      grid-template-columns: 1.5fr 1fr;
-      gap: 8px;
-      margin-top: 6px;
-    }
-
-    .search-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 8px;
-      margin-top: 8px;
-    }
-
-    input[type="text"],
-    textarea {
-      width: 100%;
-      border-radius: 999px;
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      background: rgba(3, 10, 30, 0.95);
-      color: #fff;
-      padding: 8px 12px;
-      font-family: inherit;
-      font-size: 12px;
-    }
-
-    textarea {
-      border-radius: 12px;
-      resize: vertical;
-      min-height: 70px;
-    }
-
-    .footer-text {
-      text-align: center;
-      font-size: 11px;
-      opacity: 0.7;
-      margin-top: 6px;
-    }
-
-    /* شاشات أكبر من 768px (تابلت / كمبيوتر) */
-    @media (min-width: 768px) {
-      .card {
-        padding: 18px 20px;
-      }
-
-      .title-text {
-        font-size: 15px;
-      }
-
-      .columns {
-        flex-direction: row;
-      }
-
-      .left-col,
-      .right-col {
-        flex: 1;
-      }
-
-      .result-box {
-        height: 220px;
-        font-size: 20px;
-      }
-
-      button,
-      .btn {
-        font-size: 14px;
-      }
-    }
+  .card-footer {
+    padding: 10px;
+    color: transparent;
+  }
   </style>
 </head>
+
 <body>
-  <div class="app-wrapper">
-    <div class="card">
-      <!-- الهيدر -->
-      <div class="card-header">
-        <div class="logo-circle">
-          <!-- لو عندك لوجو حقيقي حط رابط الصورة تحت بدل هذا النص -->
-          <span>شفلي</span>
-        </div>
-        <div class="title-box">
-          <span class="title-emoji">🎁</span>
-          <span class="title-text">السحب على الجائزة المقدّمة من تطبيق شَفلي</span>
-        </div>
-      </div>
+<div class="app">
+  <div class="card">
 
-      <!-- المحتوى -->
-      <div class="content">
-        <div class="columns">
-          <!-- العمود اليمين: كل أسماء المشاركين -->
-          <div class="right-col">
-            <div class="section-title">👥 كل أسماء المشتركين:</div>
-            <ul class="names-list">
-              <li>🧡 <span>عمر الخطيب</span></li>
-              <li>🧡 <span>نور محمد</span></li>
-              <li>🧡 <span>سامي المحمد</span></li>
-              <li>🧡 <span>رامي الصالح</span></li>
-              <li>🧡 <span>رؤوان القيسي</span></li>
-              <li>🧡 <span>محمد البريوي</span></li>
-              <li>🧡 <span>محمد الشامي</span></li>
-              <li>🧡 <span>فادي الحر</span></li>
-              <li>🧡 <span>خالد الجلال</span></li>
-              <li>🧡 <span>سعيد العابد</span></li>
-              <li>🧡 <span>حمزة الخطيب</span></li>
-              <!-- زيد أسماء قد ما بدك بنفس الشكل -->
-            </ul>
-          </div>
-
-          <!-- العمود اليسار: نتيجة السحب وإدارة الأسماء -->
-          <div class="left-col">
-            <div class="result-box" id="resultBox">
-              لم يتم السحب بعد
-            </div>
-
-            <div class="buttons-row">
-              <button class="btn btn-primary" onclick="startDraw()">ابدأ السحب (جائزتين)</button>
-
-              <button class="btn btn-secondary btn-small" onclick="resetNames()">
-                الرجوع لأعلى الأسماء
-              </button>
-            </div>
-
-            <div class="search-row">
-              <input
-                type="text"
-                id="excludeName"
-                placeholder="اكتب اسم لإزالته من السحب"
-              />
-              <input
-                type="text"
-                id="searchName"
-                placeholder="اكتب اسم للبحث عنه في القائمة"
-              />
-            </div>
-
-            <div class="buttons-bottom">
-              <button class="btn btn-secondary btn-small" onclick="excludeName()">
-                إخفاء الاسم
-              </button>
-              <button class="btn btn-primary btn-small" onclick="searchNameInList()">
-                بحث
-              </button>
-            </div>
-
-            <div style="margin-top: 8px;">
-              <textarea
-                id="namesInput"
-                placeholder="تقدر تلصق هنا قائمة أسماء كاملة (اسم في كل سطر) بدل القائمة الجاهزة على اليمين إن حابب."
-              ></textarea>
-            </div>
-          </div>
-        </div>
-
-        <div class="footer-text">
-          – هذه النسخة للتجربة والسحب المباشر من تطبيق شَفلي –
-        </div>
-      </div>
+    <div class="card-header">
+      <div class="logo-circle"></div>
+      <h1>الجائزة المقدّمة من تطبيق شفلي 🎉</h1>
     </div>
+
+    <div class="card-body">
+
+      <label>كل أسماء المشتركين:</label>
+      <textarea id="names" readonly></textarea>
+
+      <!-- خانات الفائزين الخمسة -->
+      <div id="winnerRow" style="display:flex; gap:10px; align-items:flex-start; margin-top:10px;">
+        <div style="flex:1; display:flex; flex-direction:column; gap:8px;">
+          <input class="winner-input" type="text" placeholder="اسم الفائز 1">
+          <input class="winner-input" type="text" placeholder="اسم الفائز 2">
+          <input class="winner-input" type="text" placeholder="اسم الفائز 3">
+          <input class="winner-input" type="text" placeholder="اسم الفائز 4">
+          <input class="winner-input" type="text" placeholder="اسم الفائز 5">
+        </div>
+        <button class="btn tiny" onclick="hideNames()">إخفاء الأسماء</button>
+      </div>
+
+      <div class="actions">
+        <button class="btn primary" onclick="startDraw()">ابدأ السحب</button>
+        <button class="btn ghost" onclick="resetWinners()">بحث</button>
+      </div>
+
+      <div id="result-wrapper">
+        <div>النتيجة:</div>
+        <div id="result">لم يبدأ السحب بعد.</div>
+      </div>
+
+    </div>
+
+    <div class="card-footer"></div>
+
   </div>
+</div>
 
-  <script>
-    // نحضّر الأسماء من القائمة الجانبية
-    function getNamesFromList() {
-      const textareaValue = document.getElementById("namesInput").value.trim();
+<script>
+// ====== بيانات الأسماء ======
+// عربية
+const arabicFirstNames = [
+  "أحمد","محمد","خالد","سامي","رامي","فارس","مالك","زين","مروان","قصي",
+  "ياسين","جواد","نور","براء","عمر","كريم","فادي","محمود","سيف","حسين"
+];
 
-      if (textareaValue) {
-        // لو المستخدم كتب أسماء في الصندوق، نستخدمها
-        return textareaValue
-          .split("\n")
-          .map((n) => n.trim())
-          .filter((n) => n);
-      } else {
-        // غير هيك نقرأ الأسماء من قائمة اليمين
-        const items = document.querySelectorAll(".names-list li span");
-        return Array.from(items).map((el) => el.textContent.trim());
-      }
+const arabicLastNames = [
+  "الحموي","الرفاعي","الخطيب","المصري","العلي","السعدي","العباسي","النجار",
+  "المحمد","الشامي","الديري","الموصلي","البغدادي","السوري","العراقي",
+  "الصالح","العمر","القيسي","الزيدي","المنصور"
+];
+
+// أجنبية
+const foreignFirstNames = [
+  "Adam","John","Michael","David","Chris","James","Robert","Daniel","Alex","Mark",
+  "Sara","Emily","Laura","Sophia","Olivia","Emma","Liam","Noah","Ava","Mia"
+];
+
+const foreignLastNames = [
+  "Smith","Johnson","Williams","Brown","Jones","Garcia","Miller","Davis","Wilson","Taylor",
+  "Anderson","Thomas","Jackson","White","Harris","Martin","Thompson","Moore","Clark","Lewis"
+];
+
+// إيموجيات مشهورة
+const emojis = [
+  "👍","❤️","😂","🤣","😍","🥰","😘","😊","😁","🔥",
+  "✨","🎉","🎁","⭐","😎","👌","🤩","🥳","💖","💥"
+];
+
+let generatedNames = [];
+let savedWinners = []; // هنا نحفظ الفائزين الخمسة
+let drawIndex = 0;     // أي فائز نحن فيه الآن
+
+// ====== توليد الأسماء (10,000 اسم، 2000 أجنبي + 1000 بإيموجيات في النص) ======
+function generateNames() {
+  generatedNames = [];
+  const total = 10000;
+  const foreignTarget = 2000;  // عدد الأسماء الأجنبية
+
+  // أولاً: 2000 اسم أجنبي
+  for (let i = 0; i < foreignTarget; i++) {
+    const f = foreignFirstNames[Math.floor(Math.random() * foreignFirstNames.length)];
+    const l = foreignLastNames[Math.floor(Math.random() * foreignLastNames.length)];
+    generatedNames.push(f + " " + l);
+  }
+
+  // ثانياً: باقي الأسماء عربية (8000)
+  for (let i = foreignTarget; i < total; i++) {
+    const f = arabicFirstNames[Math.floor(Math.random() * arabicFirstNames.length)];
+    const l = arabicLastNames[Math.floor(Math.random() * arabicLastNames.length)];
+    generatedNames.push(f + " " + l);
+  }
+
+  // خلط الأسماء
+  for (let i = generatedNames.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [generatedNames[i], generatedNames[j]] = [generatedNames[j], generatedNames[i]];
+  }
+
+  // إضافة إيموجيات لــ 1000 اسم عشوائي (في النص بين الاسم والكنية)
+  const emojiCount = 1000;
+  const used = new Set();
+  let added = 0;
+
+  while (added < emojiCount) {
+    const idx = Math.floor(Math.random() * generatedNames.length);
+    if (used.has(idx)) continue;
+    used.add(idx);
+
+    // عدد الإيموجيات من 1 إلى 3
+    const count = 1 + Math.floor(Math.random() * 3);
+    let emojiSeq = "";
+    for (let k = 0; k < count; k++) {
+      emojiSeq += emojis[Math.floor(Math.random() * emojis.length)];
     }
 
-    function startDraw() {
-      let names = getNamesFromList();
-      if (names.length === 0) {
-        alert("ما في أسماء للسحب 😅");
-        return;
-      }
-
-      // لو عدد الأسماء أقل من 2، منسحب اسم واحد فقط
-      const winnersCount = names.length >= 2 ? 2 : 1;
-
-      // نخلط الأسماء بطريقة بسيطة
-      names = names.sort(() => Math.random() - 0.5);
-
-      const winners = names.slice(0, winnersCount);
-      const resultBox = document.getElementById("resultBox");
-
-      if (winnersCount === 1) {
-        resultBox.textContent = `الفائز هو: ${winners[0]} 🎉`;
-      } else {
-        resultBox.textContent = `الفائزين هما:\n${winners[0]} 🎉\n${winners[1]} 🎉`;
-      }
+    const parts = generatedNames[idx].split(" ");
+    if (parts.length >= 2) {
+      const first = parts[0];
+      const rest  = parts.slice(1).join(" ");
+      generatedNames[idx] = `${first} ${emojiSeq} ${rest}`;
+    } else {
+      generatedNames[idx] = `${generatedNames[idx]} ${emojiSeq}`;
     }
 
-    function excludeName() {
-      const nameToExclude = document.getElementById("excludeName").value.trim();
-      if (!nameToExclude) return;
+    added++;
+  }
 
-      const items = document.querySelectorAll(".names-list li span");
-      items.forEach((span) => {
-        if (span.textContent.trim() === nameToExclude) {
-          span.parentElement.style.opacity = "0.3";
-        }
-      });
+  // عرض الأسماء
+  document.getElementById("names").value = generatedNames.join("\n");
+}
 
-      document.getElementById("excludeName").value = "";
+// إخفاء أسماء الفائزين (٥ خانات)
+function hideNames() {
+  const inputs = document.querySelectorAll(".winner-input");
+  const temp = [];
+
+  inputs.forEach(inp => {
+    const v = inp.value.trim();
+    if (v) temp.push(v);
+    inp.value = "";
+  });
+
+  if (temp.length === 0) {
+    alert("⚠️ الرجاء كتابة اسم واحد على الأقل قبل إخفاء الأسماء");
+    return;
+  }
+
+  savedWinners = temp;   // حفظ الأسماء
+  drawIndex = 0;         // نبدأ من الفائز الأول
+  document.getElementById("winnerRow").style.display = "none";
+  document.getElementById("result").textContent = "لم يبدأ السحب بعد.";
+}
+
+// زر بحث لإعادة إدخال أسماء جديدة
+function resetWinners() {
+  savedWinners = [];
+  drawIndex = 0;
+  document.getElementById("winnerRow").style.display = "flex";
+  document.getElementById("result").textContent = "لم يبدأ السحب بعد.";
+
+  const inputs = document.querySelectorAll(".winner-input");
+  inputs.forEach(inp => inp.value = "");
+}
+
+// صوت عربي
+function speak(text) {
+  const msg = new SpeechSynthesisUtterance(text);
+  msg.lang = "ar-SA";
+  msg.rate = 1;
+  speechSynthesis.cancel();
+  speechSynthesis.speak(msg);
+}
+
+// بدء السحب — سريع + حوالي 10 ثوانٍ لكل فائز
+function startDraw() {
+  if (savedWinners.length === 0) {
+    alert("⚠️ اكتب أسماء الفائزين ثم اضغط إخفاء الأسماء");
+    return;
+  }
+
+  if (drawIndex >= savedWinners.length) {
+    alert("✅ تم استخدام كل الأسماء الرابحة.");
+    return;
+  }
+
+  const winnerName = savedWinners[drawIndex];
+  const result = document.getElementById("result");
+  const intervalTime = 40;       // سرعة التقليب
+  const totalDuration = 10000;   // 10 ثوانٍ تقريباً
+  const startTime = Date.now();
+
+  result.textContent = "جاري السحب...";
+  result.style.color = "#eee";
+
+  const currentDrawNumber = drawIndex + 1; // الفائز رقم كذا
+
+  const interval = setInterval(() => {
+    const randomName = generatedNames[Math.floor(Math.random() * generatedNames.length)];
+    result.textContent = randomName;
+
+    const elapsed = Date.now() - startTime;
+    if (elapsed >= totalDuration) {
+      clearInterval(interval);
+      result.style.color = "#34ff7f";
+      result.textContent = `🏆 الفائز رقم ${currentDrawNumber}: ${winnerName} 🎉 مبروك!`;
+      speak(`مبروك للفائز ${winnerName}`);
+      drawIndex++; // ننتقل للفائز التالي
     }
+  }, intervalTime);
+}
 
-    function searchNameInList() {
-      const searchValue = document.getElementById("searchName").value.trim();
-      if (!searchValue) return;
+// تشغيل أولي
+generateNames();
+</script>
 
-      const listContainer = document.querySelector(".names-list");
-      const items = document.querySelectorAll(".names-list li span");
-
-      let foundEl = null;
-      items.forEach((span) => {
-        if (span.textContent.trim() === searchValue) {
-          foundEl = span;
-        }
-      });
-
-      if (foundEl) {
-        foundEl.style.color = "#ffd166";
-        foundEl.style.fontWeight = "700";
-        listContainer.scrollTo({
-          top: foundEl.offsetTop - 40,
-          behavior: "smooth",
-        });
-      } else {
-        alert("الاسم غير موجود في القائمة 👀");
-      }
-
-      document.getElementById("searchName").value = "";
-    }
-
-    function resetNames() {
-      const items = document.querySelectorAll(".names-list li span");
-      items.forEach((span) => {
-        span.parentElement.style.opacity = "1";
-        span.style.color = "";
-        span.style.fontWeight = "";
-      });
-
-      const listContainer = document.querySelector(".names-list");
-      listContainer.scrollTo({ top: 0, behavior: "smooth" });
-
-      document.getElementById("resultBox").textContent = "لم يتم السحب بعد";
-    }
-  </script>
 </body>
 </html>
