@@ -2,10 +2,11 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>السحب على جائزة تطبيق شَفلي</title>
 
-  <!-- خط عربي وإنجليزي لطيف -->
-  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+  <!-- خط عربي/إنجليزي لطيف -->
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet" />
 
   <style>
     * {
@@ -15,8 +16,8 @@
     }
 
     body {
-      font-family: "Tajawal", system-ui, -apple-system, BlinkMacSystemFont;
-      background: radial-gradient(circle at top, #283593, #05081a);
+      font-family: "Tajawal", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #1f3b70 0%, #050b1f 60%, #050814 100%);
       color: #fff;
       min-height: 100vh;
       display: flex;
@@ -25,499 +26,415 @@
       padding: 16px;
     }
 
-    .app {
+    .app-wrapper {
       width: 100%;
-      max-width: 900px;
-      background: linear-gradient(145deg, #0c1630, #07101f);
-      border-radius: 24px;
-      padding: 20px 18px 22px;
-      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.65);
-      border: 1px solid rgba(255, 255, 255, 0.06);
-      position: relative;
+      max-width: 900px;          /* هون حجم الكرت، على الموبايل بياخد كل العرض */
     }
 
-    .header {
+    .card {
+      background: rgba(7, 15, 40, 0.96);
+      border-radius: 18px;
+      padding: 16px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    /* الهيدر */
+    .card-header {
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      margin-bottom: 16px;
-      gap: 8px;
+      gap: 10px;
+      margin-bottom: 14px;
     }
 
-    .title-box {
-      padding: 10px 14px;
-      border-radius: 18px;
-      background: linear-gradient(135deg, #123264, #081b39);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      flex: 1;
-    }
-
-    .title-box h1 {
-      font-size: 18px;
-      font-weight: 700;
-      text-align: center;
-      color: #fdfdfd;
-      letter-spacing: 0.5px;
-    }
-
-    .logo-wrap {
-      width: 70px;
-      height: 70px;
+    .logo-circle {
+      width: 40px;
+      height: 40px;
       border-radius: 50%;
       background: #fff;
       display: flex;
       justify-content: center;
       align-items: center;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.45);
-      flex-shrink: 0;
       overflow: hidden;
+      flex-shrink: 0;
     }
 
-    .logo-wrap img {
+    .logo-circle img {
       width: 100%;
       height: 100%;
-      object-fit: cover;
+      object-fit: contain;
     }
 
-    .section-title {
-      font-size: 16px;
-      margin-bottom: 6px;
-      color: #e9f1ff;
-      font-weight: 600;
-    }
-
-    .names-box {
-      background: #050a18;
-      border-radius: 18px;
-      padding: 10px;
-      border: 1px solid rgba(255, 255, 255, 0.06);
-      margin-bottom: 14px;
-      max-height: 260px;
-      overflow-y: auto;
-    }
-
-    .names-box pre {
-      white-space: pre-wrap;
-      font-family: "Tajawal", system-ui, -apple-system, BlinkMacSystemFont;
-      line-height: 1.55;
-      font-size: 14px;
-      color: #e3eeff;
-    }
-
-    .controls-row {
-      display: grid;
-      grid-template-columns: 1.4fr 1fr;
-      gap: 10px;
-      margin-bottom: 10px;
-    }
-
-    .input-wrap {
+    .title-box {
+      flex: 1;
+      background: linear-gradient(135deg, #12335e, #06213f);
+      border-radius: 999px;
+      padding: 8px 14px;
       display: flex;
+      align-items: center;
       gap: 6px;
     }
 
-    input[type="text"] {
-      flex: 1;
-      padding: 9px 10px;
-      border-radius: 999px;
-      border: 1px solid rgba(255, 255, 255, 0.22);
-      background: rgba(2, 8, 24, 0.92);
-      color: #f7f7f7;
-      font-family: "Tajawal", system-ui;
+    .title-emoji {
+      font-size: 18px;
+    }
+
+    .title-text {
       font-size: 13px;
-      outline: none;
+      font-weight: 600;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
-    input[type="text"]::placeholder {
-      color: #8089a5;
+    /* المحتوى */
+    .content {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
     }
 
+    .columns {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .left-col,
+    .right-col {
+      background: rgba(9, 18, 55, 0.95);
+      border-radius: 14px;
+      padding: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.03);
+    }
+
+    .section-title {
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .names-list {
+      list-style: none;
+      max-height: 200px;
+      overflow-y: auto;
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
+    .names-list li {
+      padding: 2px 0;
+    }
+
+    .names-list li span {
+      opacity: 0.8;
+    }
+
+    /* مربع النتيجة */
+    .result-box {
+      background: #020514;
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      height: 180px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      color: #f0c75e;
+      text-align: center;
+      padding: 8px;
+      margin-bottom: 10px;
+    }
+
+    /* الأزرار وأسفل الصفحة */
+    .buttons-row {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    button,
     .btn {
       border: none;
       border-radius: 999px;
-      padding: 9px 14px;
+      padding: 10px 14px;
       font-size: 14px;
       font-weight: 600;
       cursor: pointer;
-      font-family: "Tajawal", system-ui;
-      transition: transform 0.15s, box-shadow 0.15s, opacity 0.15s;
-      white-space: nowrap;
-    }
-
-    .btn:active {
-      transform: scale(0.96);
-      box-shadow: none;
+      text-align: center;
+      width: 100%;
     }
 
     .btn-primary {
-      background: linear-gradient(135deg, #3f8cff, #3575ff);
-      color: #fff;
-      box-shadow: 0 8px 20px rgba(63, 140, 255, 0.4);
+      background: linear-gradient(135deg, #1fa2ff, #12d8fa, #1fa2ff);
+      color: #021220;
     }
 
     .btn-secondary {
-      background: transparent;
-      color: #ffcc80;
-      border: 1px solid #ffcc80;
-      box-shadow: 0 6px 14px rgba(255, 204, 128, 0.25);
+      background: rgba(9, 26, 60, 0.95);
+      color: #fff;
     }
 
-    .btn-muted {
-      background: #141b2c;
-      color: #c7d2ff;
-      border: 1px solid rgba(255, 255, 255, 0.14);
-      box-shadow: 0 6px 14px rgba(0, 0, 0, 0.4);
+    .btn-small {
+      font-size: 12px;
+      padding: 7px 10px;
     }
 
-    .btn[disabled] {
-      opacity: 0.45;
-      cursor: default;
-      box-shadow: none;
+    .buttons-bottom {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr;
+      gap: 8px;
+      margin-top: 6px;
     }
 
     .search-row {
       display: grid;
-      grid-template-columns: 1.4fr 1fr;
-      gap: 10px;
-      margin-bottom: 14px;
-    }
-
-    .result-box {
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
       margin-top: 8px;
-      padding: 10px 12px;
-      border-radius: 18px;
-      background: #050a18;
-      border: 1px solid rgba(129, 199, 132, 0.5);
     }
 
-    .result-title {
-      font-size: 14px;
-      margin-bottom: 4px;
-      color: #d1e8ff;
-      font-weight: 600;
-    }
-
-    .current-winner {
-      font-size: 17px;
-      color: #fff59d;
-      font-weight: 700;
-      text-align: center;
-      min-height: 28px;
-      margin-bottom: 8px;
-    }
-
-    .final-winners {
-      margin-top: 4px;
-      font-size: 14px;
-      color: #a5ffb3;
-      line-height: 1.6;
-    }
-
-    .final-winners span {
-      display: block;
-      margin-top: 2px;
-    }
-
-    .badge {
-      display: inline-block;
-      padding: 2px 10px;
+    input[type="text"],
+    textarea {
+      width: 100%;
       border-radius: 999px;
-      background: rgba(33, 150, 243, 0.15);
-      color: #90caf9;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: rgba(3, 10, 30, 0.95);
+      color: #fff;
+      padding: 8px 12px;
+      font-family: inherit;
       font-size: 12px;
-      margin-bottom: 4px;
     }
 
-    @media (max-width: 640px) {
-      .controls-row,
-      .search-row {
-        grid-template-columns: 1fr;
+    textarea {
+      border-radius: 12px;
+      resize: vertical;
+      min-height: 70px;
+    }
+
+    .footer-text {
+      text-align: center;
+      font-size: 11px;
+      opacity: 0.7;
+      margin-top: 6px;
+    }
+
+    /* شاشات أكبر من 768px (تابلت / كمبيوتر) */
+    @media (min-width: 768px) {
+      .card {
+        padding: 18px 20px;
       }
 
-      .title-box h1 {
-        font-size: 16px;
+      .title-text {
+        font-size: 15px;
       }
 
-      .logo-wrap {
-        width: 62px;
-        height: 62px;
+      .columns {
+        flex-direction: row;
       }
 
-      .names-box {
-        max-height: 220px;
+      .left-col,
+      .right-col {
+        flex: 1;
+      }
+
+      .result-box {
+        height: 220px;
+        font-size: 20px;
+      }
+
+      button,
+      .btn {
+        font-size: 14px;
       }
     }
   </style>
 </head>
 <body>
+  <div class="app-wrapper">
+    <div class="card">
+      <!-- الهيدر -->
+      <div class="card-header">
+        <div class="logo-circle">
+          <!-- لو عندك لوجو حقيقي حط رابط الصورة تحت بدل هذا النص -->
+          <span>شفلي</span>
+        </div>
+        <div class="title-box">
+          <span class="title-emoji">🎁</span>
+          <span class="title-text">السحب على الجائزة المقدّمة من تطبيق شَفلي</span>
+        </div>
+      </div>
 
-<div class="app">
-  <div class="header">
-    <div class="title-box">
-      <h1>السحب على الجائزة المقدّمة من تطبيق شَفلي 🎁</h1>
+      <!-- المحتوى -->
+      <div class="content">
+        <div class="columns">
+          <!-- العمود اليمين: كل أسماء المشاركين -->
+          <div class="right-col">
+            <div class="section-title">👥 كل أسماء المشتركين:</div>
+            <ul class="names-list">
+              <li>🧡 <span>عمر الخطيب</span></li>
+              <li>🧡 <span>نور محمد</span></li>
+              <li>🧡 <span>سامي المحمد</span></li>
+              <li>🧡 <span>رامي الصالح</span></li>
+              <li>🧡 <span>رؤوان القيسي</span></li>
+              <li>🧡 <span>محمد البريوي</span></li>
+              <li>🧡 <span>محمد الشامي</span></li>
+              <li>🧡 <span>فادي الحر</span></li>
+              <li>🧡 <span>خالد الجلال</span></li>
+              <li>🧡 <span>سعيد العابد</span></li>
+              <li>🧡 <span>حمزة الخطيب</span></li>
+              <!-- زيد أسماء قد ما بدك بنفس الشكل -->
+            </ul>
+          </div>
+
+          <!-- العمود اليسار: نتيجة السحب وإدارة الأسماء -->
+          <div class="left-col">
+            <div class="result-box" id="resultBox">
+              لم يتم السحب بعد
+            </div>
+
+            <div class="buttons-row">
+              <button class="btn btn-primary" onclick="startDraw()">ابدأ السحب (جائزتين)</button>
+
+              <button class="btn btn-secondary btn-small" onclick="resetNames()">
+                الرجوع لأعلى الأسماء
+              </button>
+            </div>
+
+            <div class="search-row">
+              <input
+                type="text"
+                id="excludeName"
+                placeholder="اكتب اسم لإزالته من السحب"
+              />
+              <input
+                type="text"
+                id="searchName"
+                placeholder="اكتب اسم للبحث عنه في القائمة"
+              />
+            </div>
+
+            <div class="buttons-bottom">
+              <button class="btn btn-secondary btn-small" onclick="excludeName()">
+                إخفاء الاسم
+              </button>
+              <button class="btn btn-primary btn-small" onclick="searchNameInList()">
+                بحث
+              </button>
+            </div>
+
+            <div style="margin-top: 8px;">
+              <textarea
+                id="namesInput"
+                placeholder="تقدر تلصق هنا قائمة أسماء كاملة (اسم في كل سطر) بدل القائمة الجاهزة على اليمين إن حابب."
+              ></textarea>
+            </div>
+          </div>
+        </div>
+
+        <div class="footer-text">
+          – هذه النسخة للتجربة والسحب المباشر من تطبيق شَفلي –
+        </div>
+      </div>
     </div>
-    <div class="logo-wrap">
-      <img src="https://i.postimg.cc/3JcgH4nG/20250531-135725-FF5FD6EA-7CFD-497A-8DAC-AB0A6C0BE816.png" alt="شَفلي">
-    </div>
   </div>
 
-  <div class="badge">لوحة السحب الرسمية</div>
+  <script>
+    // نحضّر الأسماء من القائمة الجانبية
+    function getNamesFromList() {
+      const textareaValue = document.getElementById("namesInput").value.trim();
 
-  <p class="section-title">كل أسماء المشتركين:</p>
-  <div class="names-box">
-    <pre id="namesList"></pre>
-  </div>
-
-  <!-- إخفاء اسم / كتابة الفائز -->
-  <div class="controls-row">
-    <div class="input-wrap">
-      <input id="hideInput" type="text" placeholder="اكتب اسم تريد إخفاءه من السحب" />
-      <button class="btn btn-secondary" id="hideBtn">إخفاء الاسم</button>
-    </div>
-    <button class="btn btn-primary" id="drawBtn">ابدأ السحب (حتى ٥ فائزين)</button>
-  </div>
-
-  <!-- بحث -->
-  <div class="search-row">
-    <div class="input-wrap">
-      <input id="searchInput" type="text" placeholder="اكتب اسم للبحث عنه في القائمة" />
-      <button class="btn btn-muted" id="searchBtn">بحث</button>
-    </div>
-    <button class="btn btn-muted" id="scrollTopBtn">الرجوع لأعلى الأسماء</button>
-  </div>
-
-  <!-- النتيجة -->
-  <div class="result-box">
-    <p class="result-title">النتيجة:</p>
-    <div id="currentWinner" class="current-winner">— لم يتم السحب بعد —</div>
-    <div id="finalWinners" class="final-winners"></div>
-  </div>
-</div>
-
-<script>
-  // ---------------- أسماء المشاركين ----------------
-  const arabicBase = [
-    "عمر الخطيب",
-    "نور محمد",
-    "سامي المحمد",
-    "رامي الصالح",
-    "مروان القيسي",
-    "أحمد الديري",
-    "محمود الشامي",
-    "قصي العلي",
-    "فادي النجار",
-    "خالد الحموي",
-    "حسين الخطيب",
-    "ليث الأسعد",
-    "عبدالله العلي",
-    "لانا الخطيب",
-    "محمد عمر",
-    "يحيى الحسن",
-    "رشا المحمد",
-    "رهف الخالد",
-    "بشار درويش",
-    "إياد الحمود"
-  ];
-
-  const foreignBase = [
-    "Laura Martin",
-    "John Smith",
-    "Michael Brown",
-    "Sarah Johnson",
-    "Emily Davis",
-    "David Miller",
-    "Daniel Wilson",
-    "James Anderson",
-    "Olivia Taylor",
-    "Sophia Moore",
-    "Liam Thompson",
-    "Noah White",
-    "Mason Harris",
-    "Isabella Lee",
-    "Mia Clark",
-    "Charlotte Lewis",
-    "Lucas Walker",
-    "Benjamin Hall",
-    "Henry Allen",
-    "Jacob Young"
-  ];
-
-  const emojis = ["🎉","🥳","🔥","⭐","💥","🤣","😍","😎","💰","🏆","👏","✨","🎊"];
-
-  let participants = [];
-
-  // أضف الأسماء العربية عدة مرات
-  for (let i = 0; i < 4000; i++) {
-    const name = arabicBase[i % arabicBase.length];
-    participants.push(name);
-  }
-
-  // ٢٠٠٠ اسم أجنبي
-  for (let i = 0; i < 2000; i++) {
-    const base = foreignBase[i % foreignBase.length];
-    const number = Math.floor(i / foreignBase.length) + 1;
-    participants.push(base + " " + number);
-  }
-
-  // أكمل حتى نصل تقريباً لـ ١٠ آلاف اسم
-  while (participants.length < 10000) {
-    participants.push(arabicBase[participants.length % arabicBase.length] + " " + (participants.length + 1));
-  }
-
-  // اختَر ١٠٠٠ اسم عشوائي وضع عليهم إيموجيات بطريقة احترافية
-  const emojiIndices = new Set();
-  while (emojiIndices.size < 1000) {
-    emojiIndices.add(Math.floor(Math.random() * participants.length));
-  }
-
-  function decorateWithEmojis(name) {
-    const count = 1 + Math.floor(Math.random() * 3); // من ١ إلى ٣ إيموجيات
-    let chosen = "";
-    for (let i = 0; i < count; i++) {
-      chosen += emojis[Math.floor(Math.random() * emojis.length)] + " ";
-    }
-    if (Math.random() < 0.4) {
-      // وسط الاسم
-      const parts = name.split(" ");
-      const mid = Math.max(1, Math.floor(parts.length / 2));
-      parts.splice(mid, 0, chosen.trim());
-      return parts.join(" ");
-    } else if (Math.random() < 0.7) {
-      // بعد الاسم
-      return name + " " + chosen.trim();
-    } else {
-      // قبل الاسم
-      return chosen.trim() + " " + name;
-    }
-  }
-
-  emojiIndices.forEach(i => {
-    participants[i] = decorateWithEmojis(participants[i]);
-  });
-
-  // تحديث عرض الأسماء
-  const namesListEl = document.getElementById("namesList");
-  function renderNames() {
-    namesListEl.textContent = participants.join("\n");
-  }
-  renderNames();
-
-  // ---------------- منطق الإخفاء ----------------
-  const hideInput = document.getElementById("hideInput");
-  const hideBtn = document.getElementById("hideBtn");
-
-  hideBtn.addEventListener("click", () => {
-    const text = hideInput.value.trim();
-    if (!text) return;
-
-    const index = participants.findIndex(n => n.includes(text));
-    if (index !== -1) {
-      participants.splice(index, 1);
-      renderNames();
-      alert("تم إخفاء الاسم من السحب ✅");
-    } else {
-      alert("الاسم غير موجود في القائمة.");
-    }
-    hideInput.value = "";
-  });
-
-  // ---------------- منطق البحث ----------------
-  const searchInput = document.getElementById("searchInput");
-  const searchBtn = document.getElementById("searchBtn");
-  const scrollTopBtn = document.getElementById("scrollTopBtn");
-
-  searchBtn.addEventListener("click", () => {
-    const q = searchInput.value.trim();
-    if (!q) return;
-    const index = participants.findIndex(n => n.includes(q));
-    if (index === -1) {
-      alert("الاسم غير موجود بين المشتركين.");
-      return;
-    }
-    // نعرض جزء من القائمة حول الاسم
-    const start = Math.max(0, index - 10);
-    const end = Math.min(participants.length, index + 10);
-    const slice = participants.slice(start, end);
-    namesListEl.textContent = slice.join("\n");
-  });
-
-  scrollTopBtn.addEventListener("click", () => {
-    renderNames();
-    namesBoxScrollTop();
-  });
-
-  function namesBoxScrollTop() {
-    const box = document.querySelector(".names-box");
-    if (box) box.scrollTop = 0;
-  }
-
-  // ---------------- منطق السحب ----------------
-  const drawBtn = document.getElementById("drawBtn");
-  const currentWinnerEl = document.getElementById("currentWinner");
-  const finalWinnersEl = document.getElementById("finalWinners");
-
-  let isDrawing = false;
-  let winners = [];
-  const MAX_WINNERS = 5;
-
-  function startDraw() {
-    if (isDrawing) return;
-    if (winners.length >= MAX_WINNERS) {
-      alert("تم اختيار كل الفائزين الخمسة ✅");
-      return;
-    }
-    if (participants.length === 0) {
-      alert("لا يوجد مشتركين في القائمة!");
-      return;
-    }
-
-    isDrawing = true;
-    drawBtn.disabled = true;
-
-    const duration = 10000; // ١٠ ثواني
-    const intervalTime = 50; // سرعة تقليب الأسماء
-    let elapsed = 0;
-    let lastIndex = 0;
-
-    const interval = setInterval(() => {
-      lastIndex = Math.floor(Math.random() * participants.length);
-      const name = participants[lastIndex];
-      currentWinnerEl.textContent = name;
-      elapsed += intervalTime;
-
-      if (elapsed >= duration) {
-        clearInterval(interval);
-        finalizeWinner(lastIndex);
+      if (textareaValue) {
+        // لو المستخدم كتب أسماء في الصندوق، نستخدمها
+        return textareaValue
+          .split("\n")
+          .map((n) => n.trim())
+          .filter((n) => n);
+      } else {
+        // غير هيك نقرأ الأسماء من قائمة اليمين
+        const items = document.querySelectorAll(".names-list li span");
+        return Array.from(items).map((el) => el.textContent.trim());
       }
-    }, intervalTime);
-  }
-
-  function finalizeWinner(index) {
-    const winner = participants[index];
-    participants.splice(index, 1); // إزالة الفائز من القائمة
-    renderNames();
-
-    winners.push(winner);
-
-    const winnerNumber = winners.length;
-    const line = document.createElement("span");
-    line.textContent = `🏆 الفائز رقم ${winnerNumber}: ${winner} – مبروك! 🎉`;
-    finalWinnersEl.appendChild(line);
-
-    currentWinnerEl.textContent = `🎉 مبروك للفائز رقم ${winnerNumber}!`;
-
-    if (winners.length >= MAX_WINNERS) {
-      drawBtn.disabled = true;
-      drawBtn.textContent = "انتهى السحب (٥ فائزين)";
-    } else {
-      drawBtn.disabled = false;
     }
 
-    isDrawing = false;
-  }
+    function startDraw() {
+      let names = getNamesFromList();
+      if (names.length === 0) {
+        alert("ما في أسماء للسحب 😅");
+        return;
+      }
 
-  drawBtn.addEventListener("click", startDraw);
-</script>
+      // لو عدد الأسماء أقل من 2، منسحب اسم واحد فقط
+      const winnersCount = names.length >= 2 ? 2 : 1;
 
+      // نخلط الأسماء بطريقة بسيطة
+      names = names.sort(() => Math.random() - 0.5);
+
+      const winners = names.slice(0, winnersCount);
+      const resultBox = document.getElementById("resultBox");
+
+      if (winnersCount === 1) {
+        resultBox.textContent = `الفائز هو: ${winners[0]} 🎉`;
+      } else {
+        resultBox.textContent = `الفائزين هما:\n${winners[0]} 🎉\n${winners[1]} 🎉`;
+      }
+    }
+
+    function excludeName() {
+      const nameToExclude = document.getElementById("excludeName").value.trim();
+      if (!nameToExclude) return;
+
+      const items = document.querySelectorAll(".names-list li span");
+      items.forEach((span) => {
+        if (span.textContent.trim() === nameToExclude) {
+          span.parentElement.style.opacity = "0.3";
+        }
+      });
+
+      document.getElementById("excludeName").value = "";
+    }
+
+    function searchNameInList() {
+      const searchValue = document.getElementById("searchName").value.trim();
+      if (!searchValue) return;
+
+      const listContainer = document.querySelector(".names-list");
+      const items = document.querySelectorAll(".names-list li span");
+
+      let foundEl = null;
+      items.forEach((span) => {
+        if (span.textContent.trim() === searchValue) {
+          foundEl = span;
+        }
+      });
+
+      if (foundEl) {
+        foundEl.style.color = "#ffd166";
+        foundEl.style.fontWeight = "700";
+        listContainer.scrollTo({
+          top: foundEl.offsetTop - 40,
+          behavior: "smooth",
+        });
+      } else {
+        alert("الاسم غير موجود في القائمة 👀");
+      }
+
+      document.getElementById("searchName").value = "";
+    }
+
+    function resetNames() {
+      const items = document.querySelectorAll(".names-list li span");
+      items.forEach((span) => {
+        span.parentElement.style.opacity = "1";
+        span.style.color = "";
+        span.style.fontWeight = "";
+      });
+
+      const listContainer = document.querySelector(".names-list");
+      listContainer.scrollTo({ top: 0, behavior: "smooth" });
+
+      document.getElementById("resultBox").textContent = "لم يتم السحب بعد";
+    }
+  </script>
 </body>
 </html>
