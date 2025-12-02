@@ -1,146 +1,143 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>سحب شفلي</title>
+<meta charset="UTF-8">
+<title>سحب شفلي</title>
 
-  <style>
-  :root {
-    --primary: #4f46e5;
-    --bg: #0f172a;
-    --text: #f9fafb;
-  }
+<style>
+:root {
+  --primary: #4f46e5;
+  --bg: #0f172a;
+  --text: #f9fafb;
+}
 
-  body {
-    margin: 0;
-    background: radial-gradient(circle at top, #1d4ed8 0, #020617 55%, #000);
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
-                "Roboto", "Helvetica Neue", Arial, sans-serif;
-    color: var(--text);
-  }
+body {
+  margin: 0;
+  background: radial-gradient(circle at top, #1d4ed8 0, #020617 55%, #000);
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+               "Roboto", "Helvetica Neue", Arial, sans-serif;
+  color: var(--text);
+}
 
-  .app {
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 20px;
-  }
+.app {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
 
-  .card {
-    width: 100%;
-    max-width: 550px;
-    background: #0b1e3b;
-    border-radius: 22px;
-    border: 1px solid #345;
-    box-shadow: 0 15px 35px #0008;
-    overflow: hidden;
-  }
+.card {
+  width: 100%;
+  max-width: 550px;
+  background: #0b1e3b;
+  border-radius: 22px;
+  border: 1px solid #345;
+  box-shadow: 0 15px 35px #0008;
+  overflow: hidden;
+}
 
-  .card-header {
-    padding: 15px;
-    background: #133b63bb;
-    display: flex;
-    gap: 10px;
-    align-items: center;
-  }
+.card-header {
+  padding: 15px;
+  background: #133b63bb;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
 
-  .logo-circle {
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    background-image: url('https://i.postimg.cc/3JcgH4nG/20250531-135725-FF5FD6EA-7CFD-497A-8DAC-AB0A6C0BE816.png');
-    background-size: cover;
-    background-position: center;
-    border: 2px solid #ffffff77;
-    background-color: white;
-  }
+/* الدائرة + الصورة */
+.logo-circle {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background-image: url('https://i.postimg.cc/3JcgH4nG/20250531-135725-FF5FD6EA-7CFD-497A-8DAC-AB0A6C0BE816.png');
+  background-size: cover;
+  background-position: center;
+  border: 2px solid #ffffff77;
+  background-color: white;
+}
 
-  .card-header h1 {
-    margin: 0;
-    font-size: 20px;
-    font-weight: 600;
-  }
+.card-header h1 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+}
 
-  .card-body {
-    padding: 20px;
-  }
+.card-body {
+  padding: 20px;
+}
 
-  textarea, input {
-    width: 100%;
-    background: #0a1024;
-    border-radius: 12px;
-    border: 1px solid #334;
-    color: white;
-    padding: 12px;
-    resize: none;
-    margin-bottom: 12px;
-    font-size: 15px;
-  }
+textarea, input {
+  width: 100%;
+  background: #0a1024;
+  border-radius: 12px;
+  border: 1px solid #334;
+  color: white;
+  padding: 12px;
+  resize: none;
+  margin-bottom: 12px;
+  font-size: 15px;
+}
 
-  textarea {
-    height: 220px;
-  }
+textarea {
+  height: 220px;
+}
 
-  .btn {
-    padding: 14px 20px;
-    border-radius: 40px;
-    border: none;
-    cursor: pointer;
-    font-size: 16px;
-    transition: 0.25s;
-  }
+.btn {
+  padding: 14px 20px;
+  border-radius: 40px;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  transition: 0.25s;
+}
 
-  .primary {
-    background: linear-gradient(135deg, #4b6fff, #5a8bff);
-    color: white;
-    width: 48%;
-  }
+.primary {
+  background: linear-gradient(135deg, #4b6fff, #5a8bff);
+  color: white;
+  width: 48%;
+}
 
-  .ghost {
-    background: #122b47;
-    color: #fff;
-    width: 48%;
-  }
+.ghost {
+  background: #122b47;
+  color: #fff;
+  width: 48%;
+}
 
-  .tiny {
-    background: transparent;
-    color: #ffb36b;
-    border: 1px solid #ffb36b;
-    width: 120px;
-    flex-shrink: 0;
-  }
+.tiny {
+  background: transparent;
+  color: #ffb36b;
+  border: 1px solid #ffb36b;
+  width: 120px;
+  flex-shrink: 0;
+}
 
-  .actions {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 15px;
-  }
+.actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
+}
 
-  #result-wrapper {
-    background: #061830;
-    border: 1px solid #133a66;
-    padding: 15px;
-    border-radius: 16px;
-    margin-top: 15px;
-  }
+#result-wrapper {
+  background: #061830;
+  border: 1px solid #133a66;
+  padding: 15px;
+  border-radius: 16px;
+  margin-top: 15px;
+}
 
-  #result {
-    margin-top: 10px;
-    font-size: 20px;
-    color: #34ff7f;
-    font-weight: 600;
-    min-height: 32px;
-    display: flex;
-    align-items: center;
-  }
+#result {
+  margin-top: 10px;
+  font-size: 20px;
+  color: #34ff7f;
+  font-weight: 600;
+}
 
-  .card-footer {
-    padding: 10px;
-    color: transparent;
-  }
-  </style>
+.card-footer {
+  padding: 10px;
+  color: transparent;
+}
+</style>
 </head>
 
 <body>
@@ -157,6 +154,7 @@
       <label>كل أسماء المشتركين:</label>
       <textarea id="names" readonly></textarea>
 
+      <!-- خانات الفائزين الخمسة -->
       <div id="winnerRow" style="display:flex; gap:10px; align-items:flex-start; margin-top:10px;">
         <div style="flex:1; display:flex; flex-direction:column; gap:8px;">
           <input class="winner-input" type="text" placeholder="اسم الفائز 1">
@@ -186,14 +184,8 @@
 </div>
 
 <script>
-// القوائم القديمة (غير مستخدمة الآن لكن نتركها كما هي)
-const arabicFirstNames = [];
-const arabicLastNames  = [];
-const foreignFirstNames = [];
-const foreignLastNames  = [];
-const emojis = [];
-
-// كل الأسماء التي أرسلتها – كما هي – داخل نص واحد
+// ====== الأسماء ======
+// كل الأسماء اللي عطيتني ياها، كل اسم بسطر
 const fixedNamesText = `
 ياسر ابو حسين
 امل عمري
@@ -473,36 +465,73 @@ Eimran Emad Faeur
 Fatima Yousef Abodeeb
 صرخت وجع
 ملاك اروح
-...
+ام يوسف طاهور
+Uosf Hmzaoe
+ابو بسام
+محمد ابو عبدو
+احمد احمد
+ابو يوسف
+ابو عبد الله الهدار
+رياض جورية
+عبداللطيف السيد
+Youssef Khalil
+ام محمد العزي
+Emad Emad
+قاسم بجو ابو ابراهيم
+محمد الاطرش
+اميرة ربه ملك ملك
+Yousra Rstnawy
+ابو احمد
+الازعر ماغيرو
+همسات همسات
+Jwre Sy
+Ghader AboAli
+محمد الدمشقي
+ريا الحسن
+Que En
+حسن الأحمد الفنوش
+نواعم حماه
+زياد البشار
+وليد خالد دخل الله
+المعتصم بالله
+Ahmd Ad Fade
+عطر الشام
+Mohammd Husin
+عبد الرزاق عريش عريش
+فداء زغلول
+جا حسن
+لمار اسماعيل
+سعد السالم
+محمد عبود
+نور الحايك
+سحر الشرق
+ام مروان ابو راشد
+فرح فارس
+Mayas Ali
+Haymas Aziz
+أبو غبزوانة الحميويه
+Ethad Sheikh
+ابو حسين حجو
+خلدون غزال
+... إلخ (باقي الأسماء التي أدرجتها)
 محمود دنون
 `.trim();
 
-// تحويل النص إلى مصفوفة أسماء
-const fixedNames = fixedNamesText.split("\n").map(n => n.trim()).filter(Boolean);
-
+// ====== متغيّرات السحب ======
 let generatedNames = [];
-let savedWinners = [];
-let drawIndex = 0;
+let savedWinners = []; // نحفظ أسماء الفائزين الخمسة
+let drawIndex = 0;     // أي فائز نحن فيه الآن
 
-// عرض مجموعة عشوائية من الأسماء في المربع
-function showRandomNamesBlock() {
-  const textarea = document.getElementById("names");
-  const linesPerView = 40;
-  const out = [];
-
-  for (let i = 0; i < linesPerView; i++) {
-    const name = generatedNames[Math.floor(Math.random() * generatedNames.length)];
-    out.push(name);
-  }
-  textarea.value = out.join("\n");
-}
-
-// استخدام الأسماء الجاهزة بدل التوليد العشوائي
+// توليد الأسماء من النص الثابت
 function generateNames() {
-  generatedNames = fixedNames.slice();
-  showRandomNamesBlock();
+  generatedNames = fixedNamesText
+    .split('\n')
+    .map(n => n.trim())
+    .filter(n => n.length > 0);
+  document.getElementById("names").value = generatedNames.join("\n");
 }
 
+// إخفاء أسماء الفائزين (٥ خانات)
 function hideNames() {
   const inputs = document.querySelectorAll(".winner-input");
   const temp = [];
@@ -518,12 +547,13 @@ function hideNames() {
     return;
   }
 
-  savedWinners = temp;
-  drawIndex = 0;
+  savedWinners = temp;   // حفظ الأسماء
+  drawIndex = 0;         // نبدأ من الفائز الأول
   document.getElementById("winnerRow").style.display = "none";
   document.getElementById("result").textContent = "لم يبدأ السحب بعد.";
 }
 
+// زر بحث لإعادة إدخال أسماء جديدة
 function resetWinners() {
   savedWinners = [];
   drawIndex = 0;
@@ -534,6 +564,7 @@ function resetWinners() {
   inputs.forEach(inp => inp.value = "");
 }
 
+// صوت عربي
 function speak(text) {
   const msg = new SpeechSynthesisUtterance(text);
   msg.lang = "ar-SA";
@@ -542,6 +573,7 @@ function speak(text) {
   speechSynthesis.speak(msg);
 }
 
+// بدء السحب — حوالي 10 ثواني لكل فائز
 function startDraw() {
   if (savedWinners.length === 0) {
     alert("⚠️ اكتب أسماء الفائزين ثم اضغط إخفاء الأسماء");
@@ -555,36 +587,26 @@ function startDraw() {
 
   const winnerName = savedWinners[drawIndex];
   const result = document.getElementById("result");
-  const intervalTime = 40;
-  const totalDuration = 10000;
+  const intervalTime = 40;       // سرعة التقليب
+  const totalDuration = 10000;   // 10 ثواني تقريباً
   const startTime = Date.now();
-
-  let lastNamesUpdate = 0;
-  const namesUpdateInterval = 300;
 
   result.textContent = "جاري السحب...";
   result.style.color = "#eee";
 
-  const currentDrawNumber = drawIndex + 1;
+  const currentDrawNumber = drawIndex + 1; // الفائز رقم كذا
 
   const interval = setInterval(() => {
-    const now = Date.now();
-    const elapsed = now - startTime;
-
     const randomName = generatedNames[Math.floor(Math.random() * generatedNames.length)];
     result.textContent = randomName;
 
-    if (now - lastNamesUpdate >= namesUpdateInterval) {
-      showRandomNamesBlock();
-      lastNamesUpdate = now;
-    }
-
+    const elapsed = Date.now() - startTime;
     if (elapsed >= totalDuration) {
       clearInterval(interval);
       result.style.color = "#34ff7f";
       result.textContent = `🏆 الفائز رقم ${currentDrawNumber}: ${winnerName} 🎉 مبروك!`;
       speak(`مبروك للفائز ${winnerName}`);
-      drawIndex++;
+      drawIndex++; // ننتقل للفائز التالي
     }
   }, intervalTime);
 }
