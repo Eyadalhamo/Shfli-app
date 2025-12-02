@@ -10,6 +10,8 @@
     --primary: #4f46e5;
     --bg: #0f172a;
     --text: #f9fafb;
+    --success: #34ff7f; /* لون النجاح */
+    --warning: #ffb36b; /* لون التحذير */
   }
 
   body {
@@ -46,7 +48,7 @@
     align-items: center;
   }
 
-  /* الدائرة + الصورة */
+  /* الدائرة + الصورة - تم ضبطها وتثبيت الشعار */
   .logo-circle {
     width: 60px;
     height: 60px;
@@ -54,8 +56,8 @@
     background-image: url('https://i.postimg.cc/3JcgH4nG/20250531-135725-FF5FD6EA-7CFD-497A-8DAC-AB0A6C0BE816.png');
     background-size: cover;
     background-position: center;
-    border: 2px solid #ffffff77;
-    background-color: white;
+    border: none; /* إزالة الحدود لمنع البروز */
+    background-color: transparent; 
   }
 
   .card-header h1 {
@@ -78,10 +80,13 @@
     resize: none;
     margin-bottom: 12px;
     font-size: 15px;
+    font-family: inherit;
   }
 
   textarea {
     height: 220px;
+    overflow-y: scroll; /* تفعيل التمرير */
+    line-height: 1.2; /* تقليل المسافة بين الأسطر */
   }
 
   .btn {
@@ -130,12 +135,28 @@
   #result {
     margin-top: 10px;
     font-size: 20px;
-    color: #34ff7f;
+    color: var(--success);
     font-weight: 600;
-    /* ارتفاع ثابت عشان ما ترج الشاشة */
-    min-height: 32px;
+    /* لضمان مساحة كافية للرسالة الإرشادية */
+    min-height: 55px; 
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  #result-text {
+      font-size: 20px;
+      color: inherit;
+      font-weight: 600;
+      min-height: 32px;
+  }
+
+  .next-step {
+      font-size: 15px;
+      color: #7dd3fc;
+      margin-top: 5px;
+      display: block;
+      line-height: 1.5;
   }
 
   .card-footer {
@@ -156,7 +177,7 @@
 
     <div class="card-body">
 
-      <label>كل أسماء المشتركين:</label>
+      <label id="names-label">كل أسماء المشتركين:</label>
       <textarea id="names" readonly></textarea>
 
       <!-- خانات الفائزين الخمسة -->
@@ -168,17 +189,19 @@
           <input class="winner-input" type="text" placeholder="اسم الفائز 4">
           <input class="winner-input" type="text" placeholder="اسم الفائز 5">
         </div>
-        <button class="btn tiny" onclick="hideNames()">إخفاء الأسماء</button>
+        <button class="btn tiny" id="hideNamesBtn" onclick="hideNames()">إخفاء الأسماء</button>
       </div>
 
       <div class="actions">
-        <button class="btn primary" onclick="startDraw()">ابدأ السحب</button>
-        <button class="btn ghost" onclick="resetWinners()">بحث</button>
+        <button class="btn primary" id="startDrawBtn" onclick="startDraw()">ابدأ السحب</button>
+        <button class="btn ghost" id="resetBtn" onclick="resetWinners()">بحث</button>
       </div>
 
       <div id="result-wrapper">
         <div>النتيجة:</div>
-        <div id="result">لم يبدأ السحب بعد.</div>
+        <div id="result">
+            <span id="result-text">لم يبدأ السحب بعد.</span>
+        </div>
       </div>
 
     </div>
@@ -189,28 +212,104 @@
 </div>
 
 <script>
-// ====== بيانات الأسماء ======
-// عربية
-const arabicFirstNames = [
-  "أحمد","محمد","خالد","سامي","رامي","فارس","مالك","زين","مروان","قصي",
-  "ياسين","جواد","نور","براء","عمر","كريم","فادي","محمود","سيف","حسين"
-];
-
-const arabicLastNames = [
-  "الحموي","الرفاعي","الخطيب","المصري","العلي","السعدي","العباسي","النجار",
-  "المحمد","الشامي","الديري","الموصلي","البغدادي","السوري","العراقي",
-  "الصالح","العمر","القيسي","الزيدي","المنصور"
-];
-
-// أجنبية
-const foreignFirstNames = [
-  "Adam","John","Michael","David","Chris","James","Robert","Daniel","Alex","Mark",
-  "Sara","Emily","Laura","Sophia","Olivia","Emma","Liam","Noah","Ava","Mia"
-];
-
-const foreignLastNames = [
-  "Smith","Johnson","Williams","Brown","Jones","Garcia","Miller","Davis","Wilson","Taylor",
-  "Anderson","Thomas","Jackson","White","Harris","Martin","Thompson","Moore","Clark","Lewis"
+// ====== قائمة الأسماء المقدمة من المستخدم (409 اسم) ======
+const userProvidedNames = [
+  "ياسر ابو حسين", "امل عمري", "أبو عبد الملك", "عبير الشعراني", "خيبة امل", "Omema S Hmdan", "فهد الخوري",
+  "ابونعيم الشرعه", "Hend Ahmd", "روزتا للابسة", "خضر البكاري", "نور سكري", "SA FA", "رضاك يارب",
+  "ايمن النحلاوي", "شام ابو دان", "Nezar Al Abass", "حلا القلمون", "محمود نخلة", "Rawa Salem", "Lelea Othman",
+  "Solaf Ibrahim", "علي حوران", "حنين الأمل", "عبير الحلاق", "Maher Alsinjar", "Sara A Ali",
+  "أبو|قيس |-الرفاعي", "عبودي الحسين", "حسام أبو جعفر", "Al Nassif", "أم البيان", "حبيبة قلبو", "خالد بسام",
+  "فرصة الحياة", "محمد حمدان", "أبو خالد الشيخ صالح", "نجوى معاذ", "أبو ذبيان البشامأمه", "ابوعدو محمد",
+  "ام محمد", "Amer Rahroh", "سلمان صفطوف", "Hanan Sy", "Arfan Sabagh", "كرم الجراد", "Abdo Ali",
+  "خالد المصطفى", "ريم الشام", "حمدي حمدي", "Feras Sarhan", "خليلي الوحيد", "ام كرم ام كرم", "وردة النرجس",
+  "آل الفاتنة", "Nabeel Mtlg", "أبو هويش", "Bana Alhameed", "عطر الليل", "ياسر المشعوت", "هوزان خليل",
+  "Maesam Alasaad", "صبحي عبيد", "الاسطورة الاسطورة", "حيدر عبود", "محمد خير عطيه", "Fofa Sy",
+  "مازن ابو خلف", "مجد عساف", "يوسف حداد", "أم إبراهيم الناصر", "Manar Sy", "احمد المصطفى", "عبد ابو احمد",
+  "وردة الفرات", "اسير الشوق", "يامن المنصور", "أمال الحلبي", "أبو بشار حمزة", "وفا وفا", "الله اكبر",
+  "ورده الخالديه", "Abbas Yasin", "ميلاد ديوب", "Noor Alnoor", "Safa Al Rwh", "زين الحسين",
+  "Flower Aleppo", "صوفيا صوفيا", "OMAR Klil", "Osama Mosaa", "واسعة العينين", "حسين جبارة", "ناصر ابو محمود",
+  "أميرة الخابور", "عارف محمد", "ابوبكر ابو بكر", "Fdaa Ř Shaban", "حمادي ال خالد", "ابو عادل حليمة",
+  "ياسمينة الشام", "ابو علي الفردوني", "زهرة الربيع زهرة الربيع", "Amal Alyakowb", "Rahaf Wakim",
+  "عدنان ابو حمزه", "الجبوري سالم", "Đaneea Äbas", "ابو الحيدرة", "نجود سليمان", "غازي السرميتي",
+  "ياسر الدرويش", "علاء الدين أل أبراهيم", "شهد الم ديب", "أبو الأمين", "علي حسين رد السلام", "صباح عبدالله",
+  "حمود الدعاس", "Amyna Aldode", "Apo Plal Kahtap", "علي أبو محسن", "Abdullah Mahmoud", "باسم المحمود",
+  "لورا يوسف", "لؤلؤة حلب", "Marea Asis", "جاسم الاحمد", "درعاوي اصلي", "الفرج قادم", "علي فقيريوي",
+  "خلدون عمر البرازي", "Naya On Line", "Hidar Mostafa", "أحمد الغالي", "Mhmd Kram", "قتيبة العمر",
+  "هبة احمد", "ام شادي غيبور", "Alosa Sy", "محمد ابو وليد", "نور الاحمد", "خالد ملك الضلام", "محمد فؤاد",
+  "محمد حسين", "Ahmd Ahmd", "Princess Mustafa", "امل جمال", "ابو العبد", "الهيا الهيا", "Tolip Say",
+  "ابو عبود العكيدي", "Ali Ali", "محمد البناوي", "رشا الحمصي", "احمد الفياض احمد الفياض", "NourAbobakr",
+  "حميد شيخو شيخو", "عمر صلاح المحمود", "احمد جودت يونس", "Abdalnaser Albakor", "Hàɱzà Al-Ĥàmďàn",
+  "Fahed Alsanghir", "Hedar Alasmr", "بسمة درويش", "ابو محمود", "حسين البرهو", "Soha Mostafa",
+  "ابو احمد العكيدي", "Elias Hanna", "بو زاكر يلدا", "محمد عثمان", "احمد المحمد المحمد", "لين قامشلي",
+  "ام عماد شنطه", "يالله يانظر عيني", "سعيد ابو منصور", "ندى عزالدين", "Ahmad Ghazal", "Noi Sad",
+  "زهره البنفسج", "ابو مصلح", "Ahmad Ahmad", "Lojain Abd", "Roro Zoz", "سيدرا محمد", "نعيمة خالد خطاب",
+  "Mryam Omar", "اسماعيل ابو صبحي", "محمد الاحمد", "اني حوراني", "نور الشام الشام", "ابوحسين العراب حسن",
+  "محمد داوود", "Hassan Kalesy", "اووم الجود", "Ábđãth Áøđàh", "روائق الحياه", "سوزان سليمان", "جمال ناشد",
+  "هاندميد وكروشيه موده", "عساف حسن", "Faten Khadour", "زهرة الأقحوان", "ابراهيم العمر", "محمد عبيد الحربي",
+  "Solaf Hade", "جمانة ام بدر", "ابو خليل", "MARLEN HAMOD", "اسمر معماري", "أم البيان", "لبوش شعبان",
+  "زيد الحمصي", "دعاء الرجب", "Shahd Sh Aboud", "عبدالله عجله", "أم حيدرة", "سمر عباس", "Khalid Zaine",
+  "لوحداتي غاوي الهوى", "فراشه فراشه", "معقدهم مجننهم", "موفق حمدي", "خالد الدوماني", "أحمد الأحمد",
+  "Saleh M Habeb", "Heba AG", "محمد ابو صخر", "مزين مصري", "خالد الهزاز", "الحجامة النبوية", "ابو قاسم",
+  "ام احمد مضايا", "Mariam Mansour", "يوسف حسين", "Lama Alkateb", "عبد عبد الكريم", "Amr De",
+  "عبدالفتاح سليمان", "ام يوسف الموسى", "ام السوس حمصيه", "Myrft Mhmd", "عمران الجواش", "حجي علي",
+  "وردة من خريف العمر", "ابو الدرداء سوري", "مريم دحام", "عالية محمد", "Mahmoud M Ahmad",
+  "عبد الحميد سعودي", "ايمن محمد", "نصور الحكيم", "خليل اوريده الشمري", "معين عبدو", "Mohamad Alnaser",
+  "أم اسماعيل", "Mohammed Jaafar", "ابو هادي العكيدي", "Derik Derik", "نبيل السويلم ابو جراح",
+  "عمار السلامات", "Abeer Msarabi", "بشار ابو عبدو البطوشي", "زين العابدين هاشم", "Sara Sy",
+  "احمد السعيد", "اميرة حلب", "Alla Omran", "Halaa Dawa", "همس الاحلام", "محمد أبو عطيه",
+  "Haidar Hussin", "Walaa Darwish", "محمد الخضور", "محمد أبو لنور", "Ragdaa Sy", "الملك الملك",
+  "Zelal Khalil", "حسين العزي", "حمودة البريدي", "Hassn Theap", "مصطفى أبو أمير", "باسل ابو الجود",
+  "فؤاد مصطو", "تأثر المسموم", "وردة جورية", "Hala M Shhada", "زكريا بكوربكور", "الأنيقة هباء شفي",
+  "عبير مناع", "Arabs.", "مال الشام", "ام مازن شامية", "القيادة عبودي الحموي", "عبود بشلاوي",
+  "ام عبد الله عرفه", "Eimran Emad Faeur", "جابر العبدالله", "فاطمه ابو علي", "Fatima Yousef Abodeeb",
+  "صرخت وجع", "ملاك اروح", "محمد ب احمد", "Mohamad H Saeed", "نور الشام المصطفى", "Abdul Hamid Al Ali",
+  "عبد الكريم النجار", "النسر الجارح", "Sabah Hasan", "غسان البركات", "خالد السعوده", "أبو علي هارون",
+  "ميرنا ياسين", "Lotus Lolo", "ام امجد", "Wael Feras Abozafra", "Zain Sidhu", "Mostafa Mohy Eldeen",
+  "Ailinn ZG", "رامي رامي", "ياسمينه عبسه", "ابو حسن", "Brho Abd", "ابو علي علي علي", "Yazan Mahmoud",
+  "فيصل حجازي", "ابومحمد الورد الورود الغالية", "Rawan E Hasan", "Hadeel K Issa", "قصي الحمد",
+  "علياء الخيال", "Yahya Abdallah", "حسيبو ابو راشد", "Merza Raya", "فداء ابراهيم", "الحياة شغف",
+  "Ghena Sharoof", "أم يوسف طاهور", "Uosf Hmzaoe", "ابو بسام", "محمد ابو عبدو", "ابو يوسف",
+  "ابو عبد الله الهدار", "رياض جورية", "عبداللطيف السيد", "Youssef Khalil", "ام محمد العزي", "Emad Emad",
+  "قاسم بجو ابو ابراهيم", "محمد الاطرش", "اميرة ربه ملك ملك", "Yousra Rstnawy", "ابو احمد",
+  "الازعر ماغيرو", "همسات همسات", "Jwre Sy", "Ghader AboAli", "محمد الدمشقي", "ريا الحسن", "Que En",
+  "حسن الأحمد الفنوش", "نواعم حماه", "زياد البشار", "وليد خالد دخل الله", "المعتصم بالله", "Ahmd Ad Fade",
+  "عطر الشام", "Mohammd Husin", "عبد الرزاق عريش عريش", "فداء زغلول", "جا حسن", "لمار اسماعيل",
+  "سعد السالم", "محمد عبود", "نور الحايك", "سحر الشرق", "ام مروان ابو راشد", "فرح فارس", "Mayas Ali",
+  "Haymas Aziz", "أبو غبزوانة الحميويه", "Ethad Sheikh", "ابو حسين حجو", "خلدون غزال", "راما الرفاعي",
+  "نور العين العين", "عبودي حجار", "عبد الحكيم بكري", "أبو عطر القلعاوي", "كبرياء متمرد", "الشيخ مصعب",
+  "بشار ابومدحت", "اميرة بأحلامي", "اميرة قلبه", "ابو برزان لوند", "زهرة الحياة", "محمد بصمه جي",
+  "ابو علي العجيلي", "منتجات دي أكس إن", "ابو جبران", "Abo Hasn", "Ruba Issa", "Monzer Homs",
+  "ام ام ليندا", "زكريا زكريا", "Alhaet Nbd", "Hanadi A Ibrahim", "ابو كرم", "حمده ابو احمد",
+  "احمد النصار", "عبير ملحم", "Yazan Al Ali", "Abw Aws", "Lanosh Lolee", "Lojin Alahmad",
+  "أم سلوم الخالدية", "ام احمد النمر", "ميمي ميوش جري", "محمود الاحمد", "شذا حربا", "ابو محمد الهندي",
+  "Odai noor", "Zien Asaad", "ابو محمد الحمصي", "امير زماني", "Pro Car", "هـمـسـآت لـيـل",
+  "جلال ابراهيم", "HaLa Salloum", "علي الفتى", "محمد محمد عبدالعزيز", "Zahra Ktyman", "مؤيد مؤيد",
+  "احمد احمد", "جوهرة بيضاء", "Rana Mohmad", "الفهد ما غيروو", "الأسمر أبو مخفر", "النعيمي اللباد",
+  "Ahmad Morhj", "Mhmood Soleman", "جمعة مصطفى", "Malm Threp", "باسل بدر", "مظهر كلكل", "ابو حنان",
+  "سهاره بعييونها", "محمد محمد", "محمد رامي", "Warda Al Hassan", "Areej DN", "Yeiha Almtar",
+  "رضاكي يا امي", "Vania Dervartanian Bejoun", "عبد الرزاق الفهد", "زهرة الشام", "Hudaa Jumea",
+  "Basel Makhlouf", "Äđñãñ Älďàfè", "العيون العسلية رورو", "هيام المطر", "عبد الكريم شقره", "ابو عمر",
+  "zain Ali", "محمد حاج حمود", "محمد العبود", "نواف مثقال السيد", "ساندي ميهوب", "Kawther Annan",
+  "صبحي ابو عرب", "عبدالكريم العلي", "روجيهات عفرين", "علي علي", "Mohamad Abbas", "حروف بل نقط",
+  "حسام شما", "مستلزماتك سيدتي", "Ömãr Môsa", "ملك المغربل", "ابو ناصر", "رحيل العبدالله المحمد",
+  "ستيديو الخواجه", "Ali Alshaer", "نديم عرابي ابو عبيدو", "Om Alaa Shouqer", "Em Mostafa",
+  "ام علي", "حسام مهدي العكله", "علي عنجريني", "Ziena Hasan", "احمد رقراوي", "Haneen Al Mostafa",
+  "Khalid Hasan", "عبد الشرابي", "Hasan Alsalm", "Bana Maghariy", "سارة المواس", "NA DA",
+  "عبدالقادر حمي", "ام رامز الشامي", "ابو نورس", "Smvv Hhsaa", "جرح الزمن جرح الزمن", "Amab Alale",
+  "زهرة البيضاء", "ام مصطفى", "Niwara Omar", "يزن يزن", "Hnan Y Radwan", "Tawfiq Al-Jassim",
+  "حمزة كسحوت", "محمد أمين العثمان", "منجيبه والطلة ملكيه", "Areej Kmrkje", "Shema Alhamad",
+  "وصية الرسول", "Yasmen Alesa", "Mhamad Saaed", "سُـلَيْمُـهٌ أبُـنْ سُـلـيُـمُـيَــٌا",
+  "Dorid Al-Ajeel", "زينب إبراهيم", "هالة ورد", "ابو علي", "Zinab Lwrd", "يزن آل منديل",
+  "حـمـادي الـمـطـراوي", "ضحى حجار", "محمد علواي", "فيصل الطه", "علي الحسين الصعيبي", "Lith Kalil",
+  "يوسف الأحمد", "معاملات اللاذقية وريفها", "ابونور الحرستاني", "Ghaeh Ma", "ابو خالد عمر المدلل",
+  "Mohammad Nour", "عبدو عبدو العلي", "ابو عيدي الحسكاوي", "أم ربيع الشعراني", "Mohamad Hamo",
+  "Hasnaa Jarkas", "Adham Hermis", "Aforaa Gafar", "Dored Aljokdar Aljokdar", "ابو احمد الجعفر",
+  "عماد منور", "رتاج اسوني", "Lina Saed", "شبل الناصر", "Taha Taha", "Ahlam Hassnkhzam", "Mah A Zen",
+  "Hanady Ahmad", "Hala Alali", "Dilbrein Ali", "Salah Kalel", "Hadi Eskander", "Yuniss Wassuof",
+  "محمد صبحي كرزون", "امير حزاني", "Omaia Herh", "اميرة بجمالي", "جاسم لروح", "زكريا كزكاز",
+  "غنوجه بشار", "ابو محمد", "حمود الشحنة", "Ahmed Ahmed", "عبدالجبار غصن", "الشمرى ابو مجاهد",
+  "Mohammed Syr", "Jawdat Assaf", "Talal Kurde", "Habosh Sy", "خالد حمدان حمدان", "البعيد القريب",
+  "هيام فحلة"
 ];
 
 // إيموجيات مشهورة
@@ -222,57 +321,42 @@ const emojis = [
 let generatedNames = [];
 let savedWinners = []; // هنا نحفظ الفائزين الخمسة
 let drawIndex = 0;     // أي فائز نحن فيه الآن
+const TOTAL_PARTICIPANTS = 10130; // العدد المطلوب
 
-// دالة لعرض مجموعة عشوائية من الأسماء في الصندوق العلوي
+// دالة لعرض جميع الأسماء (بعد التوليد) لتمكين المستخدم من التمرير
 function showRandomNamesBlock() {
   const textarea = document.getElementById("names");
-  const linesPerView = 40; // عدد الأسماء الظاهرة مرة واحدة
-  const out = [];
-
-  for (let i = 0; i < linesPerView; i++) {
-    const name = generatedNames[Math.floor(Math.random() * generatedNames.length)];
-    out.push(name);
-  }
-  textarea.value = out.join("\n");
+  // عرض القائمة الكاملة مع التمرير
+  textarea.value = generatedNames.join("\n");
 }
 
-// ====== توليد الأسماء (10,000 اسم، 2000 أجنبي + 1000 بإيموجيات في النص) ======
+// ====== توليد قائمة الأسماء وتجهيزها (الآن تولد 10,130 اسم) ======
 function generateNames() {
   generatedNames = [];
-  const total = 10000;
-  const foreignTarget = 2000;  // عدد الأسماء الأجنبية
-
-  // أولاً: 2000 اسم أجنبي
-  for (let i = 0; i < foreignTarget; i++) {
-    const f = foreignFirstNames[Math.floor(Math.random() * foreignFirstNames.length)];
-    const l = foreignLastNames[Math.floor(Math.random() * foreignLastNames.length)];
-    generatedNames.push(f + " " + l);
+  
+  // 1. تكرار الأسماء الأصلية لتصل إلى العدد المطلوب (10,130)
+  const namesCount = userProvidedNames.length;
+  for (let i = 0; generatedNames.length < TOTAL_PARTICIPANTS; i++) {
+    const nameToRepeat = userProvidedNames[i % namesCount];
+    generatedNames.push(nameToRepeat);
   }
-
-  // ثانياً: باقي الأسماء عربية (8000)
-  for (let i = foreignTarget; i < total; i++) {
-    const f = arabicFirstNames[Math.floor(Math.random() * arabicFirstNames.length)];
-    const l = arabicLastNames[Math.floor(Math.random() * arabicLastNames.length)];
-    generatedNames.push(f + " " + l);
-  }
-
-  // خلط الأسماء
+  
+  // 2. خلط الأسماء لضمان السحب العادل
   for (let i = generatedNames.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     [generatedNames[i], generatedNames[j]] = [generatedNames[j], generatedNames[i]];
   }
 
-  // إضافة إيموجيات لــ 1000 اسم عشوائي (في النص بين الاسم والكنية)
+  // 3. إضافة إيموجيات لـ 1000 اسم عشوائي
   const emojiCount = 1000;
   const used = new Set();
   let added = 0;
 
-  while (added < emojiCount) {
+  while (added < emojiCount && added < generatedNames.length) {
     const idx = Math.floor(Math.random() * generatedNames.length);
     if (used.has(idx)) continue;
     used.add(idx);
 
-    // عدد الإيموجيات من 1 إلى 3
     const count = 1 + Math.floor(Math.random() * 3);
     let emojiSeq = "";
     for (let k = 0; k < count; k++) {
@@ -290,6 +374,9 @@ function generateNames() {
 
     added++;
   }
+  
+  // تحديث تسمية حقل الأسماء بالعدد الكلي
+  document.getElementById('names-label').textContent = `كل أسماء المشتركين (${TOTAL_PARTICIPANTS.toLocaleString()} اسم):`;
 
   // أول عرض للأسماء
   showRandomNamesBlock();
@@ -299,6 +386,11 @@ function generateNames() {
 function hideNames() {
   const inputs = document.querySelectorAll(".winner-input");
   const temp = [];
+  const resultDiv = document.getElementById("result");
+  
+  // تجهيز صندوق النتيجة للرسائل
+  resultDiv.innerHTML = '<span id="result-text"></span>';
+  const resultText = document.getElementById('result-text');
 
   inputs.forEach(inp => {
     const v = inp.value.trim();
@@ -307,14 +399,16 @@ function hideNames() {
   });
 
   if (temp.length === 0) {
-    alert("⚠️ الرجاء كتابة اسم واحد على الأقل قبل إخفاء الأسماء");
+    resultText.textContent = "⚠️ الرجاء كتابة اسم واحد على الأقل قبل إخفاء الأسماء";
+    resultText.style.color = "var(--warning)";
     return;
   }
 
-  savedWinners = temp;   // حفظ الأسماء
-  drawIndex = 0;         // نبدأ من الفائز الأول
+  savedWinners = temp;
+  drawIndex = 0;
   document.getElementById("winnerRow").style.display = "none";
-  document.getElementById("result").textContent = "لم يبدأ السحب بعد.";
+  resultText.textContent = `جاهز لبدء السحب على ${savedWinners.length} فائز!`;
+  resultText.style.color = "#eee";
 }
 
 // زر بحث لإعادة إدخال أسماء جديدة
@@ -322,10 +416,14 @@ function resetWinners() {
   savedWinners = [];
   drawIndex = 0;
   document.getElementById("winnerRow").style.display = "flex";
-  document.getElementById("result").textContent = "لم يبدأ السحب بعد.";
+  
+  const resultDiv = document.getElementById("result");
+  resultDiv.innerHTML = '<span id="result-text">لم يبدأ السحب بعد.</span>';
 
   const inputs = document.querySelectorAll(".winner-input");
   inputs.forEach(inp => inp.value = "");
+  
+  showRandomNamesBlock();
 }
 
 // صوت عربي
@@ -339,28 +437,44 @@ function speak(text) {
 
 // بدء السحب — سريع + حوالي 10 ثوانٍ لكل فائز
 function startDraw() {
+  const startDrawBtn = document.getElementById("startDrawBtn");
+  const resetBtn = document.getElementById("resetBtn");
+  const resultDiv = document.getElementById("result");
+  let resultText = document.getElementById("result-text");
+
+  // التأكد من وجود العنصر الأساسي وتفريغ الرسائل الإرشادية القديمة
+  if (!resultText) {
+      resultDiv.innerHTML = '<span id="result-text"></span>';
+      resultText = document.getElementById("result-text");
+  }
+  const oldNextStep = resultDiv.querySelector('.next-step');
+  if (oldNextStep) oldNextStep.remove();
+
   if (savedWinners.length === 0) {
-    alert("⚠️ اكتب أسماء الفائزين ثم اضغط إخفاء الأسماء");
+    resultText.textContent = "⚠️ اكتب أسماء الفائزين ثم اضغط إخفاء الأسماء";
+    resultText.style.color = "var(--warning)";
     return;
   }
 
   if (drawIndex >= savedWinners.length) {
-    alert("✅ تم استخدام كل الأسماء الرابحة.");
+    resultText.textContent = "✅ تم الانتهاء من جميع الأسماء الرابحة.";
+    resultText.style.color = "var(--success)";
     return;
   }
 
+  startDrawBtn.disabled = true;
+  resetBtn.disabled = true;
+
   const winnerName = savedWinners[drawIndex];
-  const result = document.getElementById("result");
   const intervalTime = 40;       // سرعة التقليب للفائز
   const totalDuration = 10000;   // 10 ثوانٍ تقريباً
   const startTime = Date.now();
 
-  // تحديث الأسماء العلوية كل فترة أبطأ
   let lastNamesUpdate = 0;
-  const namesUpdateInterval = 300; // كل 0.3 ثانية تقريبًا
+  const namesUpdateInterval = 300; 
 
-  result.textContent = "جاري السحب...";
-  result.style.color = "#eee";
+  resultText.textContent = "جاري السحب...";
+  resultText.style.color = "#eee";
 
   const currentDrawNumber = drawIndex + 1; // الفائز رقم كذا
 
@@ -370,27 +484,54 @@ function startDraw() {
 
     // تقليب اسم الفائز بسرعة
     const randomName = generatedNames[Math.floor(Math.random() * generatedNames.length)];
-    result.textContent = randomName;
+    resultText.textContent = randomName;
 
-    // تحديث الأسماء العلوية أبطأ
+    // تحديث الأسماء العلوية أبطأ (تقليب مجموعة عشوائية)
     if (now - lastNamesUpdate >= namesUpdateInterval) {
-      showRandomNamesBlock();
+      const textarea = document.getElementById("names");
+      const linesPerView = 40; 
+      const out = [];
+
+      for (let i = 0; i < linesPerView; i++) {
+        const name = generatedNames[Math.floor(Math.random() * generatedNames.length)];
+        out.push(name);
+      }
+      textarea.value = out.join("\n");
       lastNamesUpdate = now;
     }
 
     if (elapsed >= totalDuration) {
       clearInterval(interval);
-      result.style.color = "#34ff7f";
-      result.textContent = `🏆 الفائز رقم ${currentDrawNumber}: ${winnerName} 🎉 مبروك!`;
+      resultText.style.color = "var(--success)";
+      resultText.textContent = `🏆 الفائز رقم ${currentDrawNumber}: ${winnerName} 🎉 مبروك!`;
       speak(`مبروك للفائز ${winnerName}`);
-      drawIndex++; // ننتقل للفائز التالي
+      drawIndex++; // الانتقال للفائز التالي
+      startDrawBtn.disabled = false;
+      resetBtn.disabled = false;
+      showRandomNamesBlock(); // عرض القائمة الكاملة مرة أخرى بعد انتهاء السحب
+      
+      const remainingWinners = savedWinners.length - drawIndex;
+      
+      // إضافة رسالة إرشادية للفائزين المتبقين
+      const nextStepMsg = document.createElement('span');
+      nextStepMsg.className = 'next-step';
+
+      if (remainingWinners > 0) {
+          nextStepMsg.textContent = `متبقٍ ${remainingWinners} فائز. اضغط "ابدأ السحب" مجدداً لاختيار الفائز التالي.`;
+      } else {
+          nextStepMsg.textContent = `تم الانتهاء من جميع الفائزين! اضغط "بحث" للبدء من جديد.`;
+      }
+      resultDiv.appendChild(nextStepMsg);
     }
   }, intervalTime);
 }
 
 // تشغيل أولي
-generateNames();
+window.onload = function() {
+    generateNames();
+};
 </script>
 
 </body>
 </html>
+
