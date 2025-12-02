@@ -4,7 +4,12 @@
   <meta charset="UTF-8">  
   <meta name="viewport" content="width=device-width, initial-scale=1.0">  
   <title>سحب شفلي</title>  
-  
+
+  <!-- أسطر مضافة لجعل الموقع PWA -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#020617">
+  <!-- نهاية الأسطر المضافة -->
+
   <style>  
   :root {  
     --primary: #4f46e5;  
@@ -560,6 +565,16 @@ window.onload = function() {
     generateNames();  
 };  
 </script>  
+
+<!-- سكربت تسجيل Service Worker للمظهر كتطبيق -->
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function () {
+      navigator.serviceWorker.register('sw.js');
+    });
+  }
+</script>
+<!-- نهاية سكربت تسجيل Service Worker -->
   
 </body>  
 </html>
