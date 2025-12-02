@@ -570,7 +570,8 @@ window.onload = function() {
 <script>
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', function () {
-      navigator.serviceWorker.register('sw.js');
+      // هنا فقط عدلنا اسم الملف
+      navigator.serviceWorker.register('service-worker.js');
     });
   }
 </script>
