@@ -15,8 +15,8 @@
     --primary: #4f46e5;  
     --bg: #0f172a;  
     --text: #f9fafb;  
-    --success: #34ff7f; /* لون النجاح */  
-    --warning: #ffb36b; /* لون التحذير */  
+    --success: #34ff7f;  
+    --warning: #ffb36b;  
   }  
   
   body {  
@@ -46,14 +46,13 @@
   }  
   
   .card-header {  
-    padding: 15px;  
+    padding: 15px 18px;  
     background: #133b63bb;  
     display: flex;  
     gap: 10px;  
     align-items: center;  
   }  
   
-  /* الدائرة + الصورة - تم ضبطها وتثبيت الشعار */  
   .logo-circle {  
     width: 60px;  
     height: 60px;  
@@ -61,8 +60,9 @@
     background-image: url('https://i.postimg.cc/3JcgH4nG/20250531-135725-FF5FD6EA-7CFD-497A-8DAC-AB0A6C0BE816.png');  
     background-size: cover;  
     background-position: center;  
-    border: none; /* إزالة الحدود لمنع البروز */  
+    border: none;  
     background-color: transparent;   
+    flex-shrink: 0;
   }  
   
   .card-header h1 {  
@@ -70,10 +70,42 @@
     font-size: 20px;  
     font-weight: 600;  
   }  
+
+  .lang-toggle {
+    margin-right: auto;
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    font-size: 12px;
+  }
+
+  .lang-btn {
+    background: #0a1024;
+    border: 1px solid #334;
+    border-radius: 999px;
+    padding: 4px 10px;
+    color: #f9fafb;
+    cursor: pointer;
+    opacity: 0.7;
+    font-family: inherit;
+  }
+
+  .lang-btn.active {
+    background: #f9fafb;
+    color: #0a1024;
+    opacity: 1;
+  }
   
   .card-body {  
-    padding: 20px;  
+    padding: 18px 20px 20px;  
   }  
+
+  #names-label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 15px;
+    opacity: .9;
+  }
   
   textarea, input {  
     width: 100%;  
@@ -82,16 +114,18 @@
     border: 1px solid #334;  
     color: white;  
     padding: 12px;  
-    resize: none;  
     margin-bottom: 12px;  
     font-size: 15px;  
     font-family: inherit;  
+    box-sizing: border-box;
+    direction: rtl;
+    text-align: right;
   }  
   
   textarea {  
     height: 220px;  
-    overflow-y: scroll; /* تفعيل التمرير */  
-    line-height: 1.2; /* تقليل المسافة بين الأسطر */  
+    overflow-y: scroll;  
+    line-height: 1.2;  
   }  
   
   .btn {  
@@ -122,6 +156,10 @@
     width: 120px;  
     flex-shrink: 0;  
   }  
+
+  .tiny.secondary {
+    margin-top: 8px;
+  }
   
   .actions {  
     display: flex;  
@@ -142,7 +180,6 @@
     font-size: 20px;  
     color: var(--success);  
     font-weight: 600;  
-    /* لضمان مساحة كافية للرسالة الإرشادية */  
     min-height: 55px;   
     display: flex;  
     flex-direction: column;  
@@ -165,36 +202,26 @@
   
 <body>  
 
-<!-- ========== شاشة كلمة السر ========== -->
-<div id="login" style="min-height:100vh;display:flex;align-items:center;justify-content:center;background:#020617;">
-  <div style="background:#0b1e3b;padding:20px;border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,0.6);max-width:320px;width:100%;text-align:center;">
-    <h2 style="margin-bottom:10px;">دخول الموقع</h2>
-    <p style="font-size:14px;opacity:.85;">أدخل كلمة السر للمتابعة</p>
-    <input type="password" id="passwordInput" placeholder="كلمة السر"
-           style="width:100%;margin-top:10px;padding:10px;border-radius:8px;border:1px solid #334;background:#020617;color:#f9fafb;outline:none;">
-    <button onclick="checkPassword()"
-            style="margin-top:12px;width:100%;padding:10px;border:none;border-radius:999px;cursor:pointer;background:#4f46e5;color:white;font-weight:600;">
-      دخول
-    </button>
-    <p id="errorMsg" style="margin-top:8px;font-size:13px;color:#ffb36b;"></p>
-  </div>
-</div>
-<!-- ========== /شاشة كلمة السر ========== -->
+<!-- شِلنا شاشة كلمة السر نهائيًا، التطبيق يبدأ مباشرة -->
 
 <div class="app">  
   <div class="card">  
   
     <div class="card-header">  
       <div class="logo-circle"></div>  
-      <h1>الجائزة المقدّمة من تطبيق شفلي 🎉</h1>  
+      <h1 id="header-title">الجائزة المقدّمة من تطبيق شفلي 🎉</h1>  
+      <div class="lang-toggle">
+        <button type="button" class="lang-btn active" data-lang="ar">عربي</button>
+        <button type="button" class="lang-btn" data-lang="en">English</button>
+      </div>
     </div>  
   
     <div class="card-body">  
   
       <label id="names-label">كل أسماء المشتركين:</label>  
-      <textarea id="names" readonly></textarea>  
+      <!-- المربع فاضي، أنت تضيف/تلصق الأسماء -->
+      <textarea id="names"></textarea>  
   
-      <!-- خانات الفائزين الخمسة -->  
       <div id="winnerRow" style="display:flex; gap:10px; align-items:flex-start; margin-top:10px;">  
         <div style="flex:1; display:flex; flex-direction:column; gap:8px;">  
           <input class="winner-input" type="text" placeholder="اسم الفائز 1">  
@@ -203,7 +230,10 @@
           <input class="winner-input" type="text" placeholder="اسم الفائز 4">  
           <input class="winner-input" type="text" placeholder="اسم الفائز 5">  
         </div>  
-        <button class="btn tiny" id="hideNamesBtn" onclick="hideNames()">إخفاء الأسماء</button>  
+        <div style="display:flex; flex-direction:column; gap:8px;">
+          <button class="btn tiny" id="hideNamesBtn" onclick="hideNames()">إخفاء الأسماء</button>
+          <button class="btn tiny secondary" id="autoModeBtn" onclick="enableAutoMode()">اختيار تلقائي</button>
+        </div>
       </div>  
   
       <div class="actions">  
@@ -212,7 +242,7 @@
       </div>  
   
       <div id="result-wrapper">  
-        <div>النتيجة:</div>  
+        <div id="result-label">النتيجة:</div>  
         <div id="result">  
             <span id="result-text">لم يبدأ السحب بعد.</span>  
         </div>  
@@ -225,214 +255,154 @@
   </div>  
 </div>  
 
-<!-- سكربت كلمة السر (مضاف) -->
-<script>
-  const PASSWORD = "e11112222";
-
-  function hideAppInitially() {
-    const app = document.querySelector(".app");
-    if (app) {
-      app.style.display = "none";
-    }
-  }
-
-  function checkPassword() {
-    const input = document.getElementById("passwordInput");
-    const error = document.getElementById("errorMsg");
-    if (!input) return;
-
-    if (input.value === PASSWORD) {
-      const login = document.getElementById("login");
-      const app = document.querySelector(".app");
-      if (login) login.style.display = "none";
-      if (app) app.style.display = "flex";
-    } else {
-      error.textContent = "كلمة السر غير صحيحة";
-    }
-  }
-
-  document.addEventListener("DOMContentLoaded", hideAppInitially);
-</script>
-<!-- نهاية سكربت كلمة السر -->
-
 <script>  
-// ====== قائمة الأسماء المقدمة من المستخدم (409 اسم) ======  
-const userProvidedNames = [  
-  "ياسر ابو حسين", "امل عمري", "أبو عبد الملك", "عبير الشعراني", "خيبة امل", "Omema S Hmdan", "فهد الخوري",  
-  "ابونعيم الشرعه", "Hend Ahmd", "روزتا للابسة", "خضر البكاري", "نور سكري", "SA FA", "رضاك يارب",  
-  "ايمن النحلاوي", "شام ابو دان", "Nezar Al Abass", "حلا القلمون", "محمود نخلة", "Rawa Salem", "Lelea Othman",  
-  "Solaf Ibrahim", "علي حوران", "حنين الأمل", "عبير الحلاق", "Maher Alsinjar", "Sara A Ali",  
-  "أبو|قيس |-الرفاعي", "عبودي الحسين", "حسام أبو جعفر", "Al Nassif", "أم البيان", "حبيبة قلبو", "خالد بسام",  
-  "فرصة الحياة", "محمد حمدان", "أبو خالد الشيخ صالح", "نجوى معاذ", "أبو ذبيان البشامأمه", "ابوعدو محمد",  
-  "ام محمد", "Amer Rahroh", "سلمان صفطوف", "Hanan Sy", "Arfan Sabagh", "كرم الجراد", "Abdo Ali",  
-  "خالد المصطفى", "ريم الشام", "حمدي حمدي", "Feras Sarhan", "خليلي الوحيد", "ام كرم ام كرم", "وردة النرجس",  
-  "آل الفاتنة", "Nabeel Mtlg", "أبو هويش", "Bana Alhameed", "عطر الليل", "ياسر المشعوت", "هوزان خليل",  
-  "Maesam Alasaad", "صبحي عبيد", "الاسطورة الاسطورة", "حيدر عبود", "محمد خير عطيه", "Fofa Sy",  
-  "مازن ابو خلف", "مجد عساف", "يوسف حداد", "أم إبراهيم الناصر", "Manar Sy", "احمد المصطفى", "عبد ابو احمد",  
-  "وردة الفرات", "اسير الشوق", "يامن المنصور", "أمال الحلبي", "أبو بشار حمزة", "وفا وفا", "الله اكبر",  
-  "ورده الخالديه", "Abbas Yasin", "ميلاد ديوب", "Noor Alnoor", "Safa Al Rwh", "زين الحسين",  
-  "Flower Aleppo", "صوفيا صوفيا", "OMAR Klil", "Osama Mosaa", "واسعة العينين", "حسين جبارة", "ناصر ابو محمود",  
-  "أميرة الخابور", "عارف محمد", "ابوبكر ابو بكر", "Fdaa Ř Shaban", "حمادي ال خالد", "ابو عادل حليمة",  
-  "ياسمينة الشام", "ابو علي الفردوني", "زهرة الربيع زهرة الربيع", "Amal Alyakowb", "Rahaf Wakim",  
-  "عدنان ابو حمزه", "الجبوري سالم", "Đaneea Äbas", "ابو الحيدرة", "نجود سليمان", "غازي السرميتي",  
-  "ياسر الدرويش", "علاء الدين أل أبراهيم", "شهد الم ديب", "أبو الأمين", "علي حسين رد السلام", "صباح عبدالله",  
-  "حمود الدعاس", "Amyna Aldode", "Apo Plal Kahtap", "علي أبو محسن", "Abdullah Mahmoud", "باسم المحمود",  
-  "لورا يوسف", "لؤلؤة حلب", "Marea Asis", "جاسم الاحمد", "درعاوي اصلي", "الفرج قادم", "علي فقيريوي",  
-  "خلدون عمر البرازي", "Naya On Line", "Hidar Mostafa", "أحمد الغالي", "Mhmd Kram", "قتيبة العمر",  
-  "هبة احمد", "ام شادي غيبور", "Alosa Sy", "محمد ابو وليد", "نور الاحمد", "خالد ملك الضلام", "محمد فؤاد",  
-  "محمد حسين", "Ahmd Ahmd", "Princess Mustafa", "امل جمال", "ابو العبد", "الهيا الهيا", "Tolip Say",  
-  "ابو عبود العكيدي", "Ali Ali", "محمد البناوي", "رشا الحمصي", "احمد الفياض احمد الفياض", "NourAbobakr",  
-  "حميد شيخو شيخو", "عمر صلاح المحمود", "احمد جودت يونس", "Abdalnaser Albakor", "Hàɱzà Al-Ĥàmďàn",  
-  "Fahed Alsanghir", "Hedar Alasmr", "بسمة درويش", "ابو محمود", "حسين البرهو", "Soha Mostafa",  
-  "ابو احمد العكيدي", "Elias Hanna", "بو زاكر يلدا", "محمد عثمان", "احمد المحمد المحمد", "لين قامشلي",  
-  "ام عماد شنطه", "يالله يانظر عيني", "سعيد ابو منصور", "ندى عزالدين", "Ahmad Ghazal", "Noi Sad",  
-  "زهره البنفسج", "ابو مصلح", "Ahmad Ahmad", "Lojain Abd", "Roro Zoz", "سيدرا محمد", "نعيمة خالد خطاب",  
-  "Mryam Omar", "اسماعيل ابو صبحي", "محمد الاحمد", "اني حوراني", "نور الشام الشام", "ابوحسين العراب حسن",  
-  "محمد داوود", "Hassan Kalesy", "اووم الجود", "Ábđãth Áøđàh", "روائق الحياه", "سوزان سليمان", "جمال ناشد",  
-  "هاندميد وكروشيه موده", "عساف حسن", "Faten Khadour", "زهرة الأقحوان", "ابراهيم العمر", "محمد عبيد الحربي",  
-  "Solaf Hade", "جمانة ام بدر", "ابو خليل", "MARLEN HAMOD", "اسمر معماري", "أم البيان", "لبوش شعبان",  
-  "زيد الحمصي", "دعاء الرجب", "Shahd Sh Aboud", "عبدالله عجله", "أم حيدرة", "سمر عباس", "Khalid Zaine",  
-  "لوحداتي غاوي الهوى", "فراشه فراشه", "معقدهم مجننهم", "موفق حمدي", "خالد الدوماني", "أحمد الأحمد",  
-  "Saleh M Habeb", "Heba AG", "محمد ابو صخر", "مزين مصري", "خالد الهزاز", "الحجامة النبوية", "ابو قاسم",  
-  "ام احمد مضايا", "Mariam Mansour", "يوسف حسين", "Lama Alkateb", "عبد عبد الكريم", "Amr De",  
-  "عبدالفتاح سليمان", "ام يوسف الموسى", "ام السوس حمصيه", "Myrft Mhmd", "عمران الجواش", "حجي علي",  
-  "وردة من خريف العمر", "ابو الدرداءة سوري", "مريم دحام", "عالية محمد", "Mahmoud M Ahmad",  
-  "عبد الحميد سعودي", "ايمن محمد", "نصور الحكيم", "خليل اوريده الشمري", "معين عبدو", "Mohamad Alnaser",  
-  "أم اسماعيل", "Mohammed Jaafar", "ابو هادي العكيدي", "Derik Derik", "نبيل السويلم ابو جراح",  
-  "عمار السلامات", "Abeer Msarabi", "بشار ابو عبدو البطوشي", "زين العابدين هاشم", "Sara Sy",  
-  "احمد السعيد", "اميرة حلب", "Alla Omran", "Halaa Dawa", "همس الاحلام", "محمد أبو عطيه",  
-  "Haidar Hussin", "Walaa Darwish", "محمد الخضور", "محمد أبو لنور", "Ragdaa Sy", "الملك الملك",  
-  "Zelal Khalil", "حسين العزي", "حمودة البريدي", "Hassn Theap", "مصطفى أبو أمير", "باسل ابو الجود",  
-  "فؤاد مصطو", "تأثر المسموم", "وردة جورية", "Hala M Shhada", "زكريا بكوربكور", "الأنيقة هباء شفي",  
-  "عبير مناع", "Arabs.", "مال الشام", "ام مازن شامية", "القيادة عبودي الحموي", "عبود بشلاوي",  
-  "ام عبد الله عرفه", "Eimran Emad Faeur", "جابر العبدالله", "فاطمه ابو علي", "Fatima Yousef Abodeeb",  
-  "صرخت وجع", "ملاك اروح", "محمد ب احمد", "Mohamad H Saeed", "نور الشام المصطفى", "Abdul Hamid Al Ali",  
-  "عبد الكريم النجار", "النسر الجارح", "Sabah Hasan", "غسان البركات", "خالد السعوده", "أبو علي هارون",  
-  "ميرنا ياسين", "Lotus Lolo", "ام امجد", "Wael Feras Abozafra", "Zain Sidhu", "Mostafa Mohy Eldeen",  
-  "Ailinn ZG", "رامي رامي", "ياسمينه عبسه", "ابو حسن", "Brho Abd", "ابو علي علي علي", "Yazan Mahmoud",  
-  "فيصل حجازي", "ابومحمد الورد الورود الغالية", "Rawan E Hasan", "Hadeel K Issa", "قصي الحمد",  
-  "علياء الخيال", "Yahya Abdallah", "حسيبو ابو راشد", "Merza Raya", "فداء ابراهيم", "الحياة شغف",  
-  "Ghena Sharoof", "أم يوسف طاهور", "Uosf Hmzaoe", "ابو بسام", "محمد ابو عبدو", "ابو يوسف",  
-  "ابو عبد الله الهدار", "رياض جورية", "عبداللطيف السيد", "Youssef Khalil", "ام محمد العزي", "Emad Emad",  
-  "قاسم بجو ابو ابراهيم", "محمد الاطرش", "اميرة ربه ملك ملك", "Yousra Rstnawy", "ابو احمد",  
-  "الازعر ماغيرو", "همسات همسات", "Jwre Sy", "Ghader AboAli", "محمد الدمشقي", "ريا الحسن", "Que En",  
-  "حسن الأحمد الفنوش", "نواعم حماه", "زياد البشار", "وليد خالد دخل الله", "المعتصم بالله", "Ahmd Ad Fade",  
-  "عطر الشام", "Mohammd Husin", "عبد الرزاق عريش عريش", "فداء زغلول", "جا حسن", "لمار اسماعيل",  
-  "سعد السالم", "محمد عبود", "نور الحايك", "سحر الشرق", "ام مروان ابو راشد", "فرح فارس", "Mayas Ali",  
-  "Haymas Aziz", "أبو غبزوانة الحميويه", "Ethad Sheikh", "ابو حسين حجو", "خلدون غزال", "راما الرفاعي",  
-  "نور العين العين", "عبودي حجار", "عبد الحكيم بكري", "أبو عطر القلعاوي", "كبرياء متمرد", "الشيخ مصعب",  
-  "بشار ابومدحت", "اميرة بأحلامي", "اميرة قلبه", "ابو برزان لوند", "زهرة الحياة", "محمد بصمه جي",  
-  "ابو علي العجيلي", "منتجات دي أكس إن", "ابو جبران", "Abo Hasn", "Ruba Issa", "Monzer Homs",  
-  "ام ام ليندا", "زكريا زكريا", "Alhaet Nbd", "Hanadi A Ibrahim", "ابو كرم", "حمده ابو احمد",  
-  "احمد النصار", "عبير ملحم", "Yazan Al Ali", "Abw Aws", "Lanosh Lolee", "Lojin Alahmad",  
-  "أم سلوم الخالدية", "ام احمد النمر", "ميمي ميوش جري", "محمود الاحمد", "شذا حربا", "ابو محمد الهندي",  
-  "Odai noor", "Zien Asaad", "ابو محمد الحمصي", "امير زماني", "Pro Car", "هـمـسـآت لـيـل",  
-  "جلال ابراهيم", "HaLa Salloum", "علي الفتى", "محمد محمد عبدالعزيز", "Zahra Ktyman", "مؤيد مؤيد",  
-  "احمد احمد", "جوهرة بيضاء", "Rana Mohmad", "الفهد ما غيروو", "الأسمر أبو مخفر", "النعيمي اللباد",  
-  "Ahmad Morhj", "Mhmood Soleman", "جمعة مصطفى", "Malm Threp", "باسل بدر", "مظهر كلكل", "ابو حنان",  
-  "سهاره بعييونها", "محمد محمد", "محمد رامي", "Warda Al Hassan", "Areej DN", "Yeiha Almtar",  
-  "رضاكي يا امي", "Vania Dervartanian Bejoun", "عبد الرزاق الفهد", "زهرة الشام", "Hudaa Jumea",  
-  "Basel Makhlouf", "Äđñãñ Älďàfè", "العيون العسلية رورو", "هيام المطر", "عبد الكريم شقره", "ابو عمر",  
-  "zain Ali", "محمد حاج حمود", "محمد العبود", "نواف مثقال السيد", "ساندي ميهوب", "Kawther Annan",  
-  "صبحي ابو عرب", "عبدالكريم العلي", "روجيهات عفرين", "علي علي", "Mohamad Abbas", "حروف بل نقط",  
-  "حسام شما", "مستلزماتك سيدتي", "Ömãr Môsa", "ملك المغربل", "ابو ناصر", "رحيل العبدالله المحمد",  
-  "ستيديو الخواجه", "Ali Alshaer", "نديم عرابي ابو عبيدو", "Om Alaa Shouqer", "Em Mostafa",  
-  "ام علي", "حسام مهدي العكله", "علي عنجريني", "Ziena Hasan", "احمد رقراوي", "Haneen Al Mostafa",  
-  "Khalid Hasan", "عبد الشرابي", "Hasan Alsalm", "Bana Maghariy", "سارة المواس", "NA DA",  
-  "عبدالقادر حمي", "ام رامز الشامي", "ابو نورس", "Smvv Hhsaa", "جرح الزمن جرح الزمن", "Amab Alale",  
-  "زهرة البيضاء", "ام مصطفى", "Niwara Omar", "يزن يزن", "Hnan Y Radwan", "Tawfiq Al-Jassim",  
-  "حمزة كسحوت", "محمد أمين العثمان", "منجيبه والطلة ملكيه", "Areej Kmrkje", "Shema Alhamad",  
-  "وصية الرسول", "Yasmen Alesa", "Mhamad Saaed", "سُـلَيْمُـهٌ أبُـنْ سُـلـيُـمُـيَــٌا",  
-  "Dorid Al-Ajeel", "زينب إبراهيم", "هالة ورد", "ابو علي", "Zinab Lwrd", "يزن آل منديل",  
-  "حـمـادي الـمـطـراوي", "ضحى حجار", "محمد علواي", "فيصل الطه", "علي الحسين الصعيبي", "Lith Kalil",  
-  "يوسف الأحمد", "معاملات اللاذقية وريفها", "ابونور الحرستاني", "Ghaeh Ma", "ابو خالد عمر المدلل",  
-  "Mohammad Nour", "عبدو عبدو العلي", "ابو عيدي الحسكاوي", "أم ربيع الشعراني", "Mohamad Hamo",  
-  "Hasnaa Jarkas", "Adham Hermis", "Aforaa Gafar", "Dored Aljokdar Aljokdar", "ابو احمد الجعفر",  
-  "عماد منور", "رتاج اسوني", "Lina Saed", "شبل الناصر", "Taha Taha", "Ahlam Hassnkhzam", "Mah A Zen",  
-  "Hanady Ahmad", "Hala Alali", "Dilbrein Ali", "Salah Kalel", "Hadi Eskander", "Yuniss Wassuof",  
-  "محمد صبحي كرزون", "امير حزاني", "Omaia Herh", "اميرة بجمالي", "جاسم لروح", "زكريا كزكاز",  
-  "غنوجه بشار", "ابو محمد", "حمود الشحنة", "Ahmed Ahmed", "عبدالجبار غصن", "الشمرى ابو مجاهد",  
-  "Mohammed Syr", "Jawdat Assaf", "Talal Kurde", "Habosh Sy", "خالد حمدان حمدان", "البعيد القريب",  
-  "هيام فحلة"  
-];  
-  
-// إيموجيات مشهورة  
-const emojis = [  
-  "👍","❤️","😂","🤣","😍","🥰","😘","😊","😁","🔥",  
-  "✨","🎉","🎁","⭐","😎","👌","🤩","🥳","💖","💥"  
-];  
-  
+// الترجمات
+const translations = {
+  ar: {
+    pageTitle: "سحب شفلي",
+    headerTitle: "الجائزة المقدّمة من تطبيق شفلي 🎉",
+    loginTitle: "دخول الموقع",
+    loginSubtitle: "أدخل كلمة السر للمتابعة",
+    loginButton: "دخول",
+    passwordPlaceholder: "كلمة السر",
+    namesLabelBase: "كل أسماء المشتركين:",
+    hideNamesBtn: "إخفاء الأسماء",
+    autoModeBtn: "اختيار تلقائي",
+    startDrawBtn: "ابدأ السحب",
+    resetBtn: "بحث",
+    resultLabel: "النتيجة:",
+    defaultResult: "لم يبدأ السحب بعد.",
+    warnNoWinnerNames: "⚠️ الرجاء كتابة اسم واحد على الأقل قبل إخفاء الأسماء",
+    warnNoParticipants: "⚠️ الرجاء إدخال أسماء المشتركين في المربع العلوي قبل السحب",
+    warnNoSavedWinners: "⚠️ اكتب أسماء الفائزين ثم اضغط إخفاء الأسماء أو استخدم الاختيار التلقائي",
+    doneAllWinners: "✅ تم الوصول لنهاية قوائم الفائزين.",
+    doneAllWinnersAuto: "✅ تم اختيار كل الفائزين عشوائياً من قائمة المشتركين.",
+    searchWillStart: "سوف يبدا البحث على الفائز",
+    autoModeActivated: "سيتم اختيار الفائزين عشوائياً من قائمة المشتركين.",
+    drawingInProgress: "جاري السحب...",
+    passwordError: "كلمة السر غير صحيحة",
+    winnerPlaceholderPrefix: "اسم الفائز "
+  },
+  en: {
+    pageTitle: "Shfli Draw",
+    headerTitle: "Prize from Shfli App 🎉",
+    loginTitle: "Site Login",
+    loginSubtitle: "Enter the password to continue",
+    loginButton: "Login",
+    passwordPlaceholder: "Password",
+    namesLabelBase: "All participants:",
+    hideNamesBtn: "Hide winners",
+    autoModeBtn: "Auto pick",
+    startDrawBtn: "Start draw",
+    resetBtn: "Reset",
+    resultLabel: "Result:",
+    defaultResult: "Draw has not started yet.",
+    warnNoWinnerNames: "⚠️ Please type at least one winner name before hiding the fields",
+    warnNoParticipants: "⚠️ Please enter the participants' names in the box above before drawing",
+    warnNoSavedWinners: "⚠️ Type the winners' names then click Hide winners or use auto pick",
+    doneAllWinners: "✅ All configured winners have been drawn.",
+    doneAllWinnersAuto: "✅ All winners have been randomly selected from the participants list.",
+    searchWillStart: "Search for the winner will start",
+    autoModeActivated: "Winners will be randomly selected from the participants list.",
+    drawingInProgress: "Drawing...",
+    passwordError: "Incorrect password",
+    winnerPlaceholderPrefix: "Winner "
+  }
+};
+
+let currentLang = 'ar';
 let generatedNames = [];  
-let savedWinners = []; // هنا نحفظ الفائزين الخمسة  
-let drawIndex = 0;     // أي فائز نحن فيه الآن  
-const TOTAL_PARTICIPANTS = 10130; // العدد المطلوب  
-  
-// دالة لعرض جميع الأسماء (بعد التوليد) لتمكين المستخدم من التمرير  
+let savedWinners = [];  
+let drawIndex = 0;     
+
+let drawMode = 'manual'; // 'manual' أو 'auto'
+let autoWinners = [];
+const AUTO_WINNERS_COUNT = 5;
+
+function setLanguage(lang) {
+  currentLang = lang;
+  applyLanguage();
+}
+
+function applyLanguage() {
+  const t = translations[currentLang];
+
+  document.title = t.pageTitle;
+  document.documentElement.lang = currentLang === 'ar' ? 'ar' : 'en';
+
+  const headerTitle = document.getElementById('header-title');
+  if (headerTitle) headerTitle.textContent = t.headerTitle;
+
+  const hideBtn = document.getElementById('hideNamesBtn');
+  if (hideBtn) hideBtn.textContent = t.hideNamesBtn;
+
+  const autoBtn = document.getElementById('autoModeBtn');
+  if (autoBtn) autoBtn.textContent = t.autoModeBtn;
+
+  const startBtn = document.getElementById('startDrawBtn');
+  if (startBtn) startBtn.textContent = t.startDrawBtn;
+
+  const resetBtn = document.getElementById('resetBtn');
+  if (resetBtn) resetBtn.textContent = t.resetBtn;
+
+  const resultLabel = document.getElementById('result-label');
+  if (resultLabel) resultLabel.textContent = t.resultLabel;
+
+  const resultText = document.getElementById('result-text');
+  if (resultText) {
+    if (resultText.textContent.includes("لم يبدأ السحب بعد.") ||
+        resultText.textContent.includes("Draw has not started yet.")) {
+      resultText.textContent = t.defaultResult;
+    }
+  }
+
+  const winnerInputs = document.querySelectorAll('.winner-input');
+  winnerInputs.forEach((inp, idx) => {
+    if (currentLang === 'ar') {
+      inp.placeholder = `${t.winnerPlaceholderPrefix}${idx + 1}`;
+    } else {
+      inp.placeholder = `${t.winnerPlaceholderPrefix}${idx + 1} name`;
+    }
+  });
+
+  loadNamesFromTextarea();
+}
+
+function loadNamesFromTextarea() {  
+  const textarea = document.getElementById("names");  
+  if (!textarea) return;  
+
+  generatedNames = textarea.value
+    .split(/\r?\n/)
+    .map(n => n.trim())
+    .filter(n => n !== "");
+
+  const label = document.getElementById("names-label");
+  if (label) {
+    if (generatedNames.length > 0) {
+      if (currentLang === 'ar') {
+        label.textContent = `${translations.ar.namesLabelBase} (${generatedNames.length.toLocaleString()} اسم):`;
+      } else {
+        label.textContent = `${translations.en.namesLabelBase} (${generatedNames.length.toLocaleString()} names):`;
+      }
+    } else {
+      label.textContent = translations[currentLang].namesLabelBase;
+    }
+  }
+}  
+
 function showRandomNamesBlock() {  
   const textarea = document.getElementById("names");  
-  // عرض القائمة الكاملة مع التمرير  
+  if (!textarea) return;  
   textarea.value = generatedNames.join("\n");  
 }  
-  
-// ====== توليد قائمة الأسماء وتجهيزها (الآن تولد 10,130 اسم) ======  
-function generateNames() {  
-  generatedNames = [];  
-    
-  // 1. تكرار الأسماء الأصلية لتصل إلى العدد المطلوب (10,130)  
-  const namesCount = userProvidedNames.length;  
-  for (let i = 0; generatedNames.length < TOTAL_PARTICIPANTS; i++) {  
-    const nameToRepeat = userProvidedNames[i % namesCount];  
-    generatedNames.push(nameToRepeat);  
-  }  
-    
-  // 2. خلط الأسماء لضمان السحب العادل  
-  for (let i = generatedNames.length - 1; i > 0; i--) {  
-    const j = Math.floor(Math.random() * (i + 1));  
-    [generatedNames[i], generatedNames[j]] = [generatedNames[j], generatedNames[i]];  
-  }  
-  
-  // 3. إضافة إيموجيات لـ 1000 اسم عشوائي  
-  const emojiCount = 1000;  
-  const used = new Set();  
-  let added = 0;  
-  
-  while (added < emojiCount && added < generatedNames.length) {  
-    const idx = Math.floor(Math.random() * generatedNames.length);  
-    if (used.has(idx)) continue;  
-    used.add(idx);  
-  
-    const count = 1 + Math.floor(Math.random() * 3);  
-    let emojiSeq = "";  
-    for (let k = 0; k < count; k++) {  
-      emojiSeq += emojis[Math.floor(Math.random() * emojis.length)];  
-    }  
-  
-    const parts = generatedNames[idx].split(" ");  
-    if (parts.length >= 2) {  
-      const first = parts[0];  
-      const rest  = parts.slice(1).join(" ");  
-      generatedNames[idx] = `${first} ${emojiSeq} ${rest}`;  
-    } else {  
-      generatedNames[idx] = `${generatedNames[idx]} ${emojiSeq}`;  
-    }  
-  
-    added++;  
-  }  
-    
-  // تحديث تسمية حقل الأسماء بالعدد الكلي  
-  document.getElementById('names-label').textContent = `كل أسماء المشتركين (${TOTAL_PARTICIPANTS.toLocaleString()} اسم):`;  
-  
-  // أول عرض للأسماء  
-  showRandomNamesBlock();  
-}  
-  
-// إخفاء أسماء الفائزين (٥ خانات)  
+
+// وضع التحديد اليدوي: استخدام الأسماء المكتوبة في الخانات
 function hideNames() {  
   const inputs = document.querySelectorAll(".winner-input");  
   const temp = [];  
   const resultDiv = document.getElementById("result");  
     
-  // تجهيز صندوق النتيجة للرسائل  
   resultDiv.innerHTML = '<span id="result-text"></span>';  
   const resultText = document.getElementById('result-text');  
   
@@ -443,95 +413,153 @@ function hideNames() {
   });  
   
   if (temp.length === 0) {  
-    resultText.textContent = "⚠️ الرجاء كتابة اسم واحد على الأقل قبل إخفاء الأسماء";  
+    resultText.textContent = translations[currentLang].warnNoWinnerNames;  
     resultText.style.color = "var(--warning)";  
     return;  
   }  
+
+  loadNamesFromTextarea();
+  if (generatedNames.length === 0) {
+    resultText.textContent = translations[currentLang].warnNoParticipants;
+    resultText.style.color = "var(--warning)";
+    return;
+  }
   
+  drawMode = 'manual';
   savedWinners = temp;  
+  autoWinners = [];
   drawIndex = 0;  
   document.getElementById("winnerRow").style.display = "none";  
-  /* التعديل الوحيد هنا */  
-  resultText.textContent = "سوف يبدا البحث على الفائز";  
+  resultText.textContent = translations[currentLang].searchWillStart;  
   resultText.style.color = "#eee";  
 }  
+
+// وضع الاختيار التلقائي: سحب الفائزين من قائمة المشاركين
+function enableAutoMode() {
+  const resultDiv = document.getElementById("result");  
+  resultDiv.innerHTML = '<span id="result-text"></span>';  
+  const resultText = document.getElementById('result-text');
+
+  loadNamesFromTextarea();
+  if (generatedNames.length === 0) {
+    resultText.textContent = translations[currentLang].warnNoParticipants;
+    resultText.style.color = "var(--warning)";
+    return;
+  }
+
+  drawMode = 'auto';
+  savedWinners = [];
+  autoWinners = [];
+  drawIndex = 0;
+
+  document.getElementById("winnerRow").style.display = "none";
+  resultText.textContent = translations[currentLang].autoModeActivated;
+  resultText.style.color = "#eee";
+}
   
-// زر بحث لإعادة إدخال أسماء جديدة  
 function resetWinners() {  
   savedWinners = [];  
+  autoWinners = [];
+  drawMode = 'manual';
   drawIndex = 0;  
   document.getElementById("winnerRow").style.display = "flex";  
     
   const resultDiv = document.getElementById("result");  
-  resultDiv.innerHTML = '<span id="result-text">لم يبدأ السحب بعد.</span>';  
+  resultDiv.innerHTML = `<span id="result-text">${translations[currentLang].defaultResult}</span>`;  
   
   const inputs = document.querySelectorAll(".winner-input");  
   inputs.forEach(inp => inp.value = "");  
     
-  showRandomNamesBlock();  
+  loadNamesFromTextarea();  
 }  
+
+function getWinnerAnnouncement(num, name) {
+  if (currentLang === 'ar') {
+    return `🏆 الفائز رقم ${num}: ${name} 🎉 مبروك!`;
+  } else {
+    return `🏆 Winner #${num}: ${name} 🎉 Congratulations!`;
+  }
+}
+
+function getSpeakCongrats(name) {
+  if (currentLang === 'ar') {
+    return `مبروك للفائز ${name}`;
+  } else {
+    return `Congratulations to the winner ${name}`;
+  }
+}
   
-// صوت عربي  
 function speak(text) {  
   const msg = new SpeechSynthesisUtterance(text);  
-  msg.lang = "ar-SA";  
+  msg.lang = currentLang === 'ar' ? "ar-SA" : "en-US";  
   msg.rate = 1;  
   speechSynthesis.cancel();  
   speechSynthesis.speak(msg);  
 }  
   
-// بدء السحب — سريع + حوالي 10 ثوانٍ لكل فائز  
 function startDraw() {  
   const startDrawBtn = document.getElementById("startDrawBtn");  
   const resetBtn = document.getElementById("resetBtn");  
   const resultDiv = document.getElementById("result");  
   let resultText = document.getElementById("result-text");  
   
-  // التأكد من وجود العنصر الأساسي وتفريغ الرسائل الإرشادية القديمة  
   if (!resultText) {  
       resultDiv.innerHTML = '<span id="result-text"></span>';  
       resultText = document.getElementById("result-text");  
   }  
-  
-  if (savedWinners.length === 0) {  
-    resultText.textContent = "⚠️ اكتب أسماء الفائزين ثم اضغط إخفاء الأسماء";  
+
+  loadNamesFromTextarea();
+  if (generatedNames.length === 0) {
+    resultText.textContent = translations[currentLang].warnNoParticipants;
+    resultText.style.color = "var(--warning)";
+    return;
+  }
+
+  if (drawMode === 'manual' && savedWinners.length === 0) {  
+    resultText.textContent = translations[currentLang].warnNoSavedWinners;  
     resultText.style.color = "var(--warning)";  
     return;  
   }  
-  
-  if (drawIndex >= savedWinners.length) {  
-    // لا نعرض أي رسالة "انتهاء الفائزين" إضافية هنا (المطلوب: إلغاء الجملة)  
-    resultText.textContent = "✅ تم الوصول لنهاية قوائم الفائزين.";  
+
+  if (drawMode === 'manual' && drawIndex >= savedWinners.length) {  
+    resultText.textContent = translations[currentLang].doneAllWinners;  
     resultText.style.color = "var(--success)";  
     return;  
-  }  
+  }
+
+  if (drawMode === 'auto' && autoWinners.length >= AUTO_WINNERS_COUNT) {
+    resultText.textContent = translations[currentLang].doneAllWinnersAuto;  
+    resultText.style.color = "var(--success)";  
+    return;
+  }
   
   startDrawBtn.disabled = true;  
   resetBtn.disabled = true;  
   
-  const winnerName = savedWinners[drawIndex];  
-  const intervalTime = 40;       // سرعة التقليب للفائز  
-  const totalDuration = 10000;   // 10 ثوانٍ تقريباً  
+  const intervalTime = 40;       
+  const totalDuration = 10000;   
   const startTime = Date.now();  
   
   let lastNamesUpdate = 0;  
   const namesUpdateInterval = 300;   
   
-  resultText.textContent = "جاري السحب...";  
+  resultText.textContent = translations[currentLang].drawingInProgress;  
   resultText.style.color = "#eee";  
   
-  const currentDrawNumber = drawIndex + 1; // الفائز رقم كذا  
+  const currentDrawNumber = (drawMode === 'manual')
+    ? (drawIndex + 1)
+    : (autoWinners.length + 1);
   
   const interval = setInterval(() => {  
     const now = Date.now();  
     const elapsed = now - startTime;  
+
+    if (generatedNames.length > 0) {
+      const randomName = generatedNames[Math.floor(Math.random() * generatedNames.length)];  
+      resultText.textContent = randomName;  
+    }
   
-    // تقليب اسم الفائز بسرعة  
-    const randomName = generatedNames[Math.floor(Math.random() * generatedNames.length)];  
-    resultText.textContent = randomName;  
-  
-    // تحديث الأسماء العلوية أبطأ (تقليب مجموعة عشوائية)  
-    if (now - lastNamesUpdate >= namesUpdateInterval) {  
+    if (now - lastNamesUpdate >= namesUpdateInterval && generatedNames.length > 0) {  
       const textarea = document.getElementById("names");  
       const linesPerView = 40;   
       const out = [];  
@@ -546,35 +574,69 @@ function startDraw() {
   
     if (elapsed >= totalDuration) {  
       clearInterval(interval);  
-      resultText.style.color = "var(--success)";  
-      resultText.textContent = `🏆 الفائز رقم ${currentDrawNumber}: ${winnerName} 🎉 مبروك!`;  
-      speak(`مبروك للفائز ${winnerName}`);  
-      drawIndex++; // الانتقال للفائز التالي  
+
+      let winnerName;
+      if (drawMode === 'manual') {
+        winnerName = savedWinners[drawIndex];
+        drawIndex++;
+      } else {
+        // اختيار عشوائي من الأسماء مع استبعاد من ربح سابقاً
+        const available = generatedNames.filter(n => !autoWinners.includes(n));
+        if (available.length === 0) {
+          winnerName = null;
+        } else {
+          winnerName = available[Math.floor(Math.random() * available.length)];
+          autoWinners.push(winnerName);
+        }
+      }
+
+      if (winnerName) {
+        resultText.style.color = "var(--success)";  
+        resultText.textContent = getWinnerAnnouncement(currentDrawNumber, winnerName);  
+        speak(getSpeakCongrats(winnerName));  
+      } else {
+        resultText.style.color = "var(--warning)";
+        resultText.textContent = translations[currentLang].warnNoParticipants;
+      }
+
       startDrawBtn.disabled = false;  
       resetBtn.disabled = false;  
-      showRandomNamesBlock(); // عرض القائمة الكاملة مرة أخرى بعد انتهاء السحب  
-        
-      // ملاحظة مهمة: تم حذف أي رسالة إرشادية تُعرض أسفل النتيجة هنا  
+      showRandomNamesBlock();  
     }  
   }, intervalTime);  
 }  
-  
-// تشغيل أولي  
-window.onload = function() {  
-    generateNames();  
-};  
+
+function initApp() {
+  // المربع يبقى فاضي، وإنت تضيف الأسماء
+  loadNamesFromTextarea();
+
+  // إعداد أزرار اللغة
+  const langButtons = document.querySelectorAll(".lang-btn");
+  langButtons.forEach(btn => {
+    btn.addEventListener("click", () => {
+      const lang = btn.getAttribute("data-lang");
+      langButtons.forEach(b => b.classList.toggle("active", b === btn));
+      setLanguage(lang);
+    });
+  });
+
+  // تعيين اللغة الافتراضية
+  setLanguage('ar');
+}
+
+// الآن مجرد ما الصفحة تجهز، نستدعي initApp مباشرة بدون كلمة سر
+document.addEventListener("DOMContentLoaded", function () {
+  initApp();
+});
 </script>  
 
-<!-- سكربت تسجيل Service Worker للمظهر كتطبيق -->
 <script>
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', function () {
-      // هنا التعديل الوحيد: اسم الملف
       navigator.serviceWorker.register('service-worker.js');
     });
   }
 </script>
-<!-- نهاية سكربت تسجيل Service Worker -->
   
 </body>  
 </html>
