@@ -376,6 +376,12 @@ const AUTO_WINNERS_COUNT = 5;
 // حالة زر التعديل/الحفظ
 let isEditMode = false;
 
+// مفاتيح التخزين المحلي للأسماء والعدد
+const STORAGE_KEYS = {
+  names: 'shfli_names_list',
+  count: 'shfli_names_count'
+};
+
 // ========= أصوات النطق (تحضير صوت شاب) =========
 let allVoices = [];
 let maleArabicVoice = null;
@@ -728,6 +734,14 @@ function toggleEditMode() {
 
     editToggleBtn.textContent = translations[currentLang].editButton;
 
+    // حفظ الأسماء والعدد في التخزين المحلي
+    try {
+      if (typeof localStorage !== 'undefined') {
+        localStorage.setItem(STORAGE_KEYS.names, namesTextarea.value);
+        localStorage.setItem(STORAGE_KEYS.count, val);
+      }
+    } catch(e) {}
+
     if (clearBtn) clearBtn.style.display = "none";
   } else {
     // فتح التعديل + إظهار زر مسح بجانب حفظ
@@ -759,6 +773,14 @@ function clearNames() {
   savedWinners = [];
   autoWinners = [];
   drawIndex = 0;
+
+  // تحديث التخزين المحلي بعد المسح
+  try {
+    if (typeof localStorage !== 'undefined') {
+      localStorage.setItem(STORAGE_KEYS.names, "");
+      localStorage.setItem(STORAGE_KEYS.count, "0");
+    }
+  } catch(e) {}
 }
 
 function initApp() {
@@ -766,6 +788,22 @@ function initApp() {
   if (namesTextarea) {
     namesTextarea.readOnly = true;
   }
+
+  // تحميل البيانات المحفوظة من التخزين المحلي عند فتح الصفحة
+  try {
+    if (typeof localStorage !== 'undefined') {
+      const savedNames = localStorage.getItem(STORAGE_KEYS.names);
+      const savedCount = localStorage.getItem(STORAGE_KEYS.count);
+      const countValue = document.getElementById("participants-count-value");
+
+      if (savedNames && namesTextarea) {
+        namesTextarea.value = savedNames;
+      }
+      if (savedCount !== null && savedCount !== "" && countValue) {
+        countValue.textContent = savedCount;
+      }
+    }
+  } catch(e) {}
 
   const langButtons = document.querySelectorAll(".lang-btn");
   langButtons.forEach(btn => {
