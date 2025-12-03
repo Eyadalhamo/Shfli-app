@@ -100,11 +100,45 @@
     padding: 18px 20px 20px;  
   }  
 
+  /* أخفينا الليبل القديم عشان ما تتكرر الجملة */
   #names-label {
-    display: block;
+    display: none;
+  }
+
+  .participants-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     margin-bottom: 6px;
-    font-size: 15px;
-    opacity: .9;
+    font-size: 14px;
+  }
+
+  .participants-left span {
+    margin-left: 4px;
+  }
+
+  .edit-count-input {
+    width: 80px;
+    padding: 6px 8px;
+    font-size: 13px;
+    background: #0a1024;
+    border-radius: 8px;
+    border: 1px solid #334;
+    color: white;
+    direction: ltr;
+    text-align: left;
+    box-sizing: border-box;
+  }
+
+  .edit-toggle-btn {
+    background: transparent;
+    color: #ffb36b;
+    border: 1px solid #ffb36b;
+    padding: 6px 12px;
+    border-radius: 999px;
+    cursor: pointer;
+    font-size: 13px;
+    flex-shrink: 0;
   }
   
   textarea, input {  
@@ -126,6 +160,7 @@
     height: 220px;  
     overflow-y: scroll;  
     line-height: 1.2;  
+    resize: none;  /* لمنع ظهور النقطة/المقبض في الزاوية */
   }  
   
   .btn {  
@@ -202,8 +237,6 @@
   
 <body>  
 
-<!-- شِلنا شاشة كلمة السر نهائيًا، التطبيق يبدأ مباشرة -->
-
 <div class="app">  
   <div class="card">  
   
@@ -217,9 +250,22 @@
     </div>  
   
     <div class="card-body">  
-  
+
+      <!-- الليبل القديم مخفي -->
       <label id="names-label">كل أسماء المشتركين:</label>  
-      <!-- المربع فاضي، أنت تضيف/تلصق الأسماء -->
+
+      <!-- سطر عدد الأسماء + زر التعديل/الحفظ -->
+      <div class="participants-row">
+        <div class="participants-left">
+          <span id="participants-count-label">عدد أسماء</span>
+          <span id="participants-count-value">0</span>
+          <span id="participants-count-after">المشتركين:</span>
+          <input id="participants-count-input" class="edit-count-input" type="number" min="0" style="display:none;">
+        </div>
+        <button type="button" class="edit-toggle-btn" id="editToggleBtn" onclick="toggleEditMode()">تعديل</button>
+      </div>
+
+      <!-- المربع: الأسماء -->
       <textarea id="names"></textarea>  
   
       <div id="winnerRow" style="display:flex; gap:10px; align-items:flex-start; margin-top:10px;">  
@@ -261,10 +307,6 @@ const translations = {
   ar: {
     pageTitle: "سحب شفلي",
     headerTitle: "الجائزة المقدّمة من تطبيق شفلي 🎉",
-    loginTitle: "دخول الموقع",
-    loginSubtitle: "أدخل كلمة السر للمتابعة",
-    loginButton: "دخول",
-    passwordPlaceholder: "كلمة السر",
     namesLabelBase: "كل أسماء المشتركين:",
     hideNamesBtn: "إخفاء الأسماء",
     autoModeBtn: "اختيار تلقائي",
@@ -280,16 +322,15 @@ const translations = {
     searchWillStart: "سوف يبدا البحث على الفائز",
     autoModeActivated: "سيتم اختيار الفائزين عشوائياً من قائمة المشتركين.",
     drawingInProgress: "جاري السحب...",
-    passwordError: "كلمة السر غير صحيحة",
-    winnerPlaceholderPrefix: "اسم الفائز "
+    winnerPlaceholderPrefix: "اسم الفائز ",
+    participantsCountLabel: "عدد أسماء",
+    participantsCountAfter: "المشتركين:",
+    editButton: "تعديل",
+    saveButton: "حفظ"
   },
   en: {
     pageTitle: "Shfli Draw",
     headerTitle: "Prize from Shfli App 🎉",
-    loginTitle: "Site Login",
-    loginSubtitle: "Enter the password to continue",
-    loginButton: "Login",
-    passwordPlaceholder: "Password",
     namesLabelBase: "All participants:",
     hideNamesBtn: "Hide winners",
     autoModeBtn: "Auto pick",
@@ -305,8 +346,11 @@ const translations = {
     searchWillStart: "Search for the winner will start",
     autoModeActivated: "Winners will be randomly selected from the participants list.",
     drawingInProgress: "Drawing...",
-    passwordError: "Incorrect password",
-    winnerPlaceholderPrefix: "Winner "
+    winnerPlaceholderPrefix: "Winner ",
+    participantsCountLabel: "Number of names",
+    participantsCountAfter: "participants:",
+    editButton: "Edit",
+    saveButton: "Save"
   }
 };
 
@@ -318,6 +362,31 @@ let drawIndex = 0;
 let drawMode = 'manual'; // 'manual' أو 'auto'
 let autoWinners = [];
 const AUTO_WINNERS_COUNT = 5;
+
+// حالة زر التعديل/الحفظ
+let isEditMode = false;
+
+// ========= أصوات النطق (تحضير صوت شاب) =========
+let allVoices = [];
+let maleArabicVoice = null;
+let maleEnglishVoice = null;
+
+function loadVoices() {
+  allVoices = window.speechSynthesis.getVoices() || [];
+  if (!allVoices.length) return;
+
+  const maleNamePattern = /male|man|boy|ahmed|ahmad|hamad|hammad|hazem|fadi|hassan|hassan|mohammad|mohamed|omar|khaled|saud|salim|majed|abdullah|yousef|yusuf|ali|faisal/i;
+
+  const arVoices = allVoices.filter(v => v.lang && v.lang.toLowerCase().startsWith('ar'));
+  const enVoices = allVoices.filter(v => v.lang && v.lang.toLowerCase().startsWith('en'));
+
+  maleArabicVoice = arVoices.find(v => maleNamePattern.test(v.name)) || arVoices[0] || null;
+  maleEnglishVoice = enVoices.find(v => maleNamePattern.test(v.name)) || enVoices[0] || null;
+}
+
+window.speechSynthesis.onvoiceschanged = loadVoices;
+loadVoices();
+// =========================================
 
 function setLanguage(lang) {
   currentLang = lang;
@@ -365,7 +434,16 @@ function applyLanguage() {
     }
   });
 
-  loadNamesFromTextarea();
+  const countLabel = document.getElementById("participants-count-label");
+  if (countLabel) countLabel.textContent = t.participantsCountLabel;
+
+  const countAfter = document.getElementById("participants-count-after");
+  if (countAfter) countAfter.textContent = t.participantsCountAfter;
+
+  const editToggleBtn = document.getElementById("editToggleBtn");
+  if (editToggleBtn) {
+    editToggleBtn.textContent = isEditMode ? t.saveButton : t.editButton;
+  }
 }
 
 function loadNamesFromTextarea() {  
@@ -377,16 +455,14 @@ function loadNamesFromTextarea() {
     .map(n => n.trim())
     .filter(n => n !== "");
 
-  const label = document.getElementById("names-label");
-  if (label) {
-    if (generatedNames.length > 0) {
-      if (currentLang === 'ar') {
-        label.textContent = `${translations.ar.namesLabelBase} (${generatedNames.length.toLocaleString()} اسم):`;
-      } else {
-        label.textContent = `${translations.en.namesLabelBase} (${generatedNames.length.toLocaleString()} names):`;
+  const countInput = document.getElementById("participants-count-input");
+  const countValueSpan = document.getElementById("participants-count-value");
+  if (countInput && isEditMode) {
+    if (!countInput.value && generatedNames.length > 0) {
+      countInput.value = generatedNames.length;
+      if (countValueSpan && countValueSpan.textContent === "0") {
+        countValueSpan.textContent = generatedNames.length;
       }
-    } else {
-      label.textContent = translations[currentLang].namesLabelBase;
     }
   }
 }  
@@ -397,7 +473,6 @@ function showRandomNamesBlock() {
   textarea.value = generatedNames.join("\n");  
 }  
 
-// وضع التحديد اليدوي: استخدام الأسماء المكتوبة في الخانات
 function hideNames() {  
   const inputs = document.querySelectorAll(".winner-input");  
   const temp = [];  
@@ -434,7 +509,6 @@ function hideNames() {
   resultText.style.color = "#eee";  
 }  
 
-// وضع الاختيار التلقائي: سحب الفائزين من قائمة المشاركين
 function enableAutoMode() {
   const resultDiv = document.getElementById("result");  
   resultDiv.innerHTML = '<span id="result-text"></span>';  
@@ -492,6 +566,22 @@ function getSpeakCongrats(name) {
 function speak(text) {  
   const msg = new SpeechSynthesisUtterance(text);  
   msg.lang = currentLang === 'ar' ? "ar-SA" : "en-US";  
+
+  if (!allVoices || !allVoices.length) {
+    loadVoices();
+  }
+
+  let chosenVoice = null;
+  if (currentLang === 'ar') {
+    chosenVoice = maleArabicVoice || maleEnglishVoice || (allVoices[0] || null);
+  } else {
+    chosenVoice = maleEnglishVoice || maleArabicVoice || (allVoices[0] || null);
+  }
+
+  if (chosenVoice) {
+    msg.voice = chosenVoice;
+  }
+
   msg.rate = 1;  
   speechSynthesis.cancel();  
   speechSynthesis.speak(msg);  
@@ -580,7 +670,6 @@ function startDraw() {
         winnerName = savedWinners[drawIndex];
         drawIndex++;
       } else {
-        // اختيار عشوائي من الأسماء مع استبعاد من ربح سابقاً
         const available = generatedNames.filter(n => !autoWinners.includes(n));
         if (available.length === 0) {
           winnerName = null;
@@ -606,11 +695,44 @@ function startDraw() {
   }, intervalTime);  
 }  
 
-function initApp() {
-  // المربع يبقى فاضي، وإنت تضيف الأسماء
-  loadNamesFromTextarea();
+function toggleEditMode() {
+  const namesTextarea = document.getElementById("names");
+  const countInput = document.getElementById("participants-count-input");
+  const countValue = document.getElementById("participants-count-value");
+  const editToggleBtn = document.getElementById("editToggleBtn");
 
-  // إعداد أزرار اللغة
+  if (!namesTextarea || !countInput || !countValue || !editToggleBtn) return;
+
+  if (isEditMode) {
+    namesTextarea.readOnly = true;
+    isEditMode = false;
+
+    let val = countInput.value.trim();
+    if (val === "") val = "0";
+    countValue.textContent = val;
+    countInput.style.display = "none";
+    countValue.style.display = "inline";
+
+    editToggleBtn.textContent = translations[currentLang].editButton;
+  } else {
+    namesTextarea.readOnly = false;
+    isEditMode = true;
+
+    const currentText = countValue.textContent.replace(/[^\d]/g, "");
+    countInput.value = currentText || "";
+    countInput.style.display = "inline-block";
+    countValue.style.display = "none";
+
+    editToggleBtn.textContent = translations[currentLang].saveButton;
+  }
+}
+
+function initApp() {
+  const namesTextarea = document.getElementById("names");
+  if (namesTextarea) {
+    namesTextarea.readOnly = true;
+  }
+
   const langButtons = document.querySelectorAll(".lang-btn");
   langButtons.forEach(btn => {
     btn.addEventListener("click", () => {
@@ -620,11 +742,10 @@ function initApp() {
     });
   });
 
-  // تعيين اللغة الافتراضية
+  loadNamesFromTextarea();
   setLanguage('ar');
 }
 
-// الآن مجرد ما الصفحة تجهز، نستدعي initApp مباشرة بدون كلمة سر
 document.addEventListener("DOMContentLoaded", function () {
   initApp();
 });
