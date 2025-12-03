@@ -140,6 +140,12 @@
     font-size: 13px;
     flex-shrink: 0;
   }
+
+  /* أزرار تعديل + مسح جنب بعض */
+  .participants-actions {
+    display: flex;
+    gap: 8px;
+  }
   
   textarea, input {  
     width: 100%;  
@@ -160,7 +166,7 @@
     height: 220px;  
     overflow-y: scroll;  
     line-height: 1.2;  
-    resize: none;  /* لمنع ظهور النقطة/المقبض في الزاوية */
+    resize: none;
   }  
   
   .btn {  
@@ -254,7 +260,7 @@
       <!-- الليبل القديم مخفي -->
       <label id="names-label">كل أسماء المشتركين:</label>  
 
-      <!-- سطر عدد الأسماء + زر التعديل/الحفظ -->
+      <!-- سطر عدد الأسماء + أزرار التعديل/المسح -->
       <div class="participants-row">
         <div class="participants-left">
           <span id="participants-count-label">عدد أسماء</span>
@@ -262,7 +268,11 @@
           <span id="participants-count-after">المشتركين:</span>
           <input id="participants-count-input" class="edit-count-input" type="number" min="0" style="display:none;">
         </div>
-        <button type="button" class="edit-toggle-btn" id="editToggleBtn" onclick="toggleEditMode()">تعديل</button>
+        <div class="participants-actions">
+          <button type="button" class="edit-toggle-btn" id="editToggleBtn" onclick="toggleEditMode()">تعديل</button>
+          <!-- زر مسح يظهر فقط في وضع التعديل (حفظ) -->
+          <button type="button" class="edit-toggle-btn" id="clearNamesBtn" onclick="clearNames()" style="display:none;">مسح</button>
+        </div>
       </div>
 
       <!-- المربع: الأسماء -->
@@ -695,15 +705,18 @@ function startDraw() {
   }, intervalTime);  
 }  
 
+// زر تعديل/حفظ + إظهار/إخفاء زر مسح
 function toggleEditMode() {
   const namesTextarea = document.getElementById("names");
   const countInput = document.getElementById("participants-count-input");
   const countValue = document.getElementById("participants-count-value");
   const editToggleBtn = document.getElementById("editToggleBtn");
+  const clearBtn = document.getElementById("clearNamesBtn");
 
   if (!namesTextarea || !countInput || !countValue || !editToggleBtn) return;
 
   if (isEditMode) {
+    // حفظ + قفل + إخفاء زر مسح
     namesTextarea.readOnly = true;
     isEditMode = false;
 
@@ -714,7 +727,10 @@ function toggleEditMode() {
     countValue.style.display = "inline";
 
     editToggleBtn.textContent = translations[currentLang].editButton;
+
+    if (clearBtn) clearBtn.style.display = "none";
   } else {
+    // فتح التعديل + إظهار زر مسح بجانب حفظ
     namesTextarea.readOnly = false;
     isEditMode = true;
 
@@ -724,7 +740,25 @@ function toggleEditMode() {
     countValue.style.display = "none";
 
     editToggleBtn.textContent = translations[currentLang].saveButton;
+
+    if (clearBtn) clearBtn.style.display = "inline-block";
   }
+}
+
+// زر مسح الأسماء
+function clearNames() {
+  const namesTextarea = document.getElementById("names");
+  const countInput = document.getElementById("participants-count-input");
+  const countValue = document.getElementById("participants-count-value");
+
+  if (namesTextarea) namesTextarea.value = "";
+  if (countInput) countInput.value = "";
+  if (countValue) countValue.textContent = "0";
+
+  generatedNames = [];
+  savedWinners = [];
+  autoWinners = [];
+  drawIndex = 0;
 }
 
 function initApp() {
