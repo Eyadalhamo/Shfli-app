@@ -336,7 +336,8 @@ const translations = {
     participantsCountLabel: "عدد أسماء",
     participantsCountAfter: "المشتركين:",
     editButton: "تعديل",
-    saveButton: "حفظ"
+    saveButton: "حفظ",
+    warnNeedSave: "⚠️ بعد تعديل الأسماء اضغط زر حفظ قبل البدء بالسحب أو الإخفاء."
   },
   en: {
     pageTitle: "Shfli Draw",
@@ -360,7 +361,8 @@ const translations = {
     participantsCountLabel: "Number of names",
     participantsCountAfter: "participants:",
     editButton: "Edit",
-    saveButton: "Save"
+    saveButton: "Save",
+    warnNeedSave: "⚠️ After editing names, please click Save before drawing or hiding."
   }
 };
 
@@ -375,12 +377,6 @@ const AUTO_WINNERS_COUNT = 5;
 
 // حالة زر التعديل/الحفظ
 let isEditMode = false;
-
-// مفاتيح التخزين المحلي للأسماء والعدد
-const STORAGE_KEYS = {
-  names: 'shfli_names_list',
-  count: 'shfli_names_count'
-};
 
 // ========= أصوات النطق (تحضير صوت شاب) =========
 let allVoices = [];
@@ -496,6 +492,13 @@ function hideNames() {
     
   resultDiv.innerHTML = '<span id="result-text"></span>';  
   const resultText = document.getElementById('result-text');  
+
+  // منع الاستخدام قبل الحفظ
+  if (isEditMode) {
+    resultText.textContent = translations[currentLang].warnNeedSave;
+    resultText.style.color = "var(--warning)";
+    return;
+  }
   
   inputs.forEach(inp => {  
     const v = inp.value.trim();  
@@ -530,6 +533,13 @@ function enableAutoMode() {
   resultDiv.innerHTML = '<span id="result-text"></span>';  
   const resultText = document.getElementById('result-text');
 
+  // منع الاستخدام قبل الحفظ
+  if (isEditMode) {
+    resultText.textContent = translations[currentLang].warnNeedSave;
+    resultText.style.color = "var(--warning)";
+    return;
+  }
+
   loadNamesFromTextarea();
   if (generatedNames.length === 0) {
     resultText.textContent = translations[currentLang].warnNoParticipants;
@@ -560,7 +570,10 @@ function resetWinners() {
   const inputs = document.querySelectorAll(".winner-input");  
   inputs.forEach(inp => inp.value = "");  
     
-  loadNamesFromTextarea();  
+  // فقط إذا لم نكن في وضع التعديل
+  if (!isEditMode) {
+    loadNamesFromTextarea();  
+  }
 }  
 
 function getWinnerAnnouncement(num, name) {
@@ -613,6 +626,13 @@ function startDraw() {
       resultDiv.innerHTML = '<span id="result-text"></span>';  
       resultText = document.getElementById("result-text");  
   }  
+
+  // منع السحب قبل حفظ الأسماء
+  if (isEditMode) {
+    resultText.textContent = translations[currentLang].warnNeedSave;
+    resultText.style.color = "var(--warning)";
+    return;
+  }
 
   loadNamesFromTextarea();
   if (generatedNames.length === 0) {
@@ -726,6 +746,9 @@ function toggleEditMode() {
     namesTextarea.readOnly = true;
     isEditMode = false;
 
+    // هنا فقط بعد الحفظ يتم تحميل الأسماء لاستخدامها في السحب
+    loadNamesFromTextarea();
+
     let val = countInput.value.trim();
     if (val === "") val = "0";
     countValue.textContent = val;
@@ -733,14 +756,6 @@ function toggleEditMode() {
     countValue.style.display = "inline";
 
     editToggleBtn.textContent = translations[currentLang].editButton;
-
-    // حفظ الأسماء والعدد في التخزين المحلي
-    try {
-      if (typeof localStorage !== 'undefined') {
-        localStorage.setItem(STORAGE_KEYS.names, namesTextarea.value);
-        localStorage.setItem(STORAGE_KEYS.count, val);
-      }
-    } catch(e) {}
 
     if (clearBtn) clearBtn.style.display = "none";
   } else {
@@ -773,14 +788,6 @@ function clearNames() {
   savedWinners = [];
   autoWinners = [];
   drawIndex = 0;
-
-  // تحديث التخزين المحلي بعد المسح
-  try {
-    if (typeof localStorage !== 'undefined') {
-      localStorage.setItem(STORAGE_KEYS.names, "");
-      localStorage.setItem(STORAGE_KEYS.count, "0");
-    }
-  } catch(e) {}
 }
 
 function initApp() {
@@ -788,22 +795,6 @@ function initApp() {
   if (namesTextarea) {
     namesTextarea.readOnly = true;
   }
-
-  // تحميل البيانات المحفوظة من التخزين المحلي عند فتح الصفحة
-  try {
-    if (typeof localStorage !== 'undefined') {
-      const savedNames = localStorage.getItem(STORAGE_KEYS.names);
-      const savedCount = localStorage.getItem(STORAGE_KEYS.count);
-      const countValue = document.getElementById("participants-count-value");
-
-      if (savedNames && namesTextarea) {
-        namesTextarea.value = savedNames;
-      }
-      if (savedCount !== null && savedCount !== "" && countValue) {
-        countValue.textContent = savedCount;
-      }
-    }
-  } catch(e) {}
 
   const langButtons = document.querySelectorAll(".lang-btn");
   langButtons.forEach(btn => {
