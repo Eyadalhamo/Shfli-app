@@ -1,106 +1,205 @@
-<!DOCTYPE html>  
-<html lang="ar" dir="rtl">  
-<head>  
-  <meta charset="UTF-8">  
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">  
-  <title>سحب شفلي</title>  
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>سحب شفلي</title>
 
-  <!-- أسطر مضافة لجعل الموقع PWA -->
+  <!-- PWA -->
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#020617">
-  <!-- نهاية الأسطر المضافة -->
 
-  <style>  
-  :root {  
-    --primary: #4f46e5;  
-    --bg: #0f172a;  
-    --text: #f9fafb;  
-    --success: #34ff7f;  
-    --warning: #ffb36b;  
-  }  
-  
-  body {  
-    margin: 0;  
-    background: radial-gradient(circle at top, #1d4ed8 0, #020617 55%, #000);  
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",  
-                "Roboto", "Helvetica Neue", Arial, sans-serif;  
-    color: var(--text);  
-  }  
-  
-  .app {  
-    min-height: 100vh;  
-    display: flex;  
-    justify-content: center;  
-    align-items: center;  
-    padding: 20px;  
-  }  
-  
-  .card {  
-    width: 100%;  
-    max-width: 550px;  
-    background: #0b1e3b;  
-    border-radius: 22px;  
-    border: 1px solid #345;  
-    box-shadow: 0 15px 35px #0008;  
-    overflow: hidden;  
-  }  
-  
-  .card-header {  
-    padding: 15px 18px;  
-    background: #133b63bb;  
-    display: flex;  
-    gap: 10px;  
-    align-items: center;  
-  }  
-  
-  .logo-circle {  
-    width: 60px;  
-    height: 60px;  
-    border-radius: 50%;  
-    background-image: url('https://i.postimg.cc/3JcgH4nG/20250531-135725-FF5FD6EA-7CFD-497A-8DAC-AB0A6C0BE816.png');  
-    background-size: cover;  
-    background-position: center;  
-    border: none;  
-    background-color: transparent;   
-    flex-shrink: 0;
-  }  
-  
-  .card-header h1 {  
-    margin: 0;  
-    font-size: 20px;  
-    font-weight: 600;  
-  }  
+  <style>
+  :root {
+    --primary: #4f46e5;
+    --bg: #0f172a;
+    --text: #f9fafb;
+    --success: #34ff7f;
+    --warning: #ffb36b;
+  }
 
-  .lang-toggle {
-    margin-right: auto;
+  body {
+    margin: 0;
+    background: radial-gradient(circle at top, #1d4ed8 0, #020617 55%, #000);
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+                "Roboto", "Helvetica Neue", Arial, sans-serif;
+    color: var(--text);
+  }
+
+  .app {
+    min-height: 100vh;
     display: flex;
-    gap: 6px;
+    justify-content: center;
     align-items: center;
-    font-size: 12px;
+    padding: 20px;
   }
 
-  .lang-btn {
-    background: #0a1024;
-    border: 1px solid #334;
-    border-radius: 999px;
-    padding: 4px 10px;
+  .card {
+    width: 100%;
+    max-width: 550px;
+    background: #0b1e3b;
+    border-radius: 22px;
+    border: 1px solid #345;
+    box-shadow: 0 15px 35px #0008;
+    overflow: hidden;
+  }
+
+  .card-header {
+    padding: 15px 18px;
+    background: #133b63bb;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+
+  .logo-circle {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-image: url('https://i.postimg.cc/3JcgH4nG/20250531-135725-FF5FD6EA-7CFD-497A-8DAC-AB0A6C0BE816.png');
+    background-size: cover;
+    background-position: center;
+    border: none;
+    background-color: transparent;
+    flex-shrink: 0;
+  }
+
+  .card-header h1 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 600;
+  }
+
+  .card-body {
+    padding: 18px 20px 20px;
+  }
+
+  /* شاشة الدخول – هيدر نصي بدل الصورة */
+  .auth-hero {
+    width: 100%;
+    height: 120px;
+    border-radius: 18px;
+    margin-bottom: 16px;
+    background: linear-gradient(135deg, #1d4ed8, #4f46e5);
+    box-shadow: 0 8px 20px #0007;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 0 12px;
+    box-sizing: border-box;
+  }
+
+  .auth-hero-text {
+    font-size: 18px;
+    font-weight: 600;
     color: #f9fafb;
-    cursor: pointer;
-    opacity: 0.7;
+    line-height: 1.5;
+  }
+
+  .auth-form-group {
+    margin-bottom: 12px;
+  }
+
+  .auth-form-group label {
+    font-size: 13px;
+    display: block;
+    margin-bottom: 4px;
+    opacity: 0.9;
+  }
+
+  textarea, input {
+    width: 100%;
+    background: #0a1024;
+    border-radius: 12px;
+    border: 1px solid #334;
+    color: white;
+    padding: 12px;
+    margin-bottom: 12px;
+    font-size: 15px;
     font-family: inherit;
+    box-sizing: border-box;
+    direction: rtl;
+    text-align: right;
   }
 
-  .lang-btn.active {
-    background: #f9fafb;
-    color: #0a1024;
-    opacity: 1;
+  textarea {
+    height: 220px;
+    overflow-y: scroll;
+    line-height: 1.2;
+    resize: none;
   }
-  
-  .card-body {  
-    padding: 18px 20px 20px;  
-  }  
 
-  /* أخفينا الليبل القديم عشان ما تتكرر الجملة */
+  .btn {
+    padding: 14px 20px;
+    border-radius: 40px;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    transition: 0.25s;
+  }
+
+  .primary {
+    background: linear-gradient(135deg, #4b6fff, #5a8bff);
+    color: white;
+    width: 48%;
+  }
+
+  .ghost {
+    background: #122b47;
+    color: #fff;
+    width: 48%;
+  }
+
+  .tiny {
+    background: transparent;
+    color: #ffb36b;
+    border: 1px solid #ffb36b;
+    width: 120px;
+    flex-shrink: 0;
+  }
+
+  .tiny.secondary {
+    margin-top: 8px;
+  }
+
+  .actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
+  }
+
+  #result-wrapper {
+    background: #061830;
+    border: 1px solid #133a66;
+    padding: 15px;
+    border-radius: 16px;
+    margin-top: 15px;
+  }
+
+  #result {
+    margin-top: 10px;
+    font-size: 20px;
+    color: var(--success);
+    font-weight: 600;
+    min-height: 55px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  #result-text {
+    font-size: 20px;
+    color: inherit;
+    font-weight: 600;
+  }
+
+  .card-footer {
+    padding: 10px;
+    color: transparent;
+  }
+
+  /* صف عدد الأسماء */
   #names-label {
     display: none;
   }
@@ -141,126 +240,289 @@
     flex-shrink: 0;
   }
 
-  /* أزرار تعديل + مسح جنب بعض */
   .participants-actions {
     display: flex;
     gap: 8px;
   }
-  
-  textarea, input {  
-    width: 100%;  
-    background: #0a1024;  
-    border-radius: 12px;  
-    border: 1px solid #334;  
-    color: white;  
-    padding: 12px;  
-    margin-bottom: 12px;  
-    font-size: 15px;  
-    font-family: inherit;  
-    box-sizing: border-box;
-    direction: rtl;
-    text-align: right;
-  }  
-  
-  textarea {  
-    height: 220px;  
-    overflow-y: scroll;  
-    line-height: 1.2;  
-    resize: none;
-  }  
-  
-  .btn {  
-    padding: 14px 20px;  
-    border-radius: 40px;  
-    border: none;  
-    cursor: pointer;  
-    font-size: 16px;  
-    transition: 0.25s;  
-  }  
-  
-  .primary {  
-    background: linear-gradient(135deg, #4b6fff, #5a8bff);  
-    color: white;  
-    width: 48%;  
-  }  
-  
-  .ghost {  
-    background: #122b47;  
-    color: #fff;  
-    width: 48%;  
-  }  
-  
-  .tiny {  
-    background: transparent;  
-    color: #ffb36b;  
-    border: 1px solid #ffb36b;  
-    width: 120px;  
-    flex-shrink: 0;  
-  }  
 
-  .tiny.secondary {
+  .remember-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    margin-bottom: 8px;
+    cursor: pointer;
+  }
+
+  .remember-row input[type="checkbox"] {
+    width: auto;
+    margin: 0;
+  }
+
+  #auth-message {
+    font-size: 13px;
+    margin-top: 6px;
+    min-height: 18px;
+  }
+
+  #auth-message.error {
+    color: var(--warning);
+  }
+
+  #auth-message.success {
+    color: var(--success);
+  }
+
+  #auth-forgot-btn {
+    width: 100%;
+    margin-top: 8px;
+    font-size: 13px;
+  }
+
+  #auth-secondary-btn {
+    width: 100%;
     margin-top: 8px;
   }
-  
-  .actions {  
-    display: flex;  
-    justify-content: space-between;  
-    margin-top: 15px;  
-  }  
-  
-  #result-wrapper {  
-    background: #061830;  
-    border: 1px solid #133a66;  
-    padding: 15px;  
-    border-radius: 16px;  
-    margin-top: 15px;  
-  }  
-  
-  #result {  
-    margin-top: 10px;  
-    font-size: 20px;  
-    color: var(--success);  
-    font-weight: 600;  
-    min-height: 55px;   
-    display: flex;  
-    flex-direction: column;  
-    align-items: flex-start;  
-  }  
-  
-  #result-text {  
-      font-size: 20px;  
-      color: inherit;  
-      font-weight: 600;  
-      min-height: 32px;  
-  }  
-  
-  .card-footer {  
-    padding: 10px;  
-    color: transparent;  
-  }  
-  </style>  
-</head>  
-  
-<body>  
 
-<div class="app">  
-  <div class="card">  
-  
-    <div class="card-header">  
-      <div class="logo-circle"></div>  
-      <h1 id="header-title">الجائزة المقدّمة من تطبيق شفلي 🎉</h1>  
-      <div class="lang-toggle">
-        <button type="button" class="lang-btn active" data-lang="ar">عربي</button>
-        <button type="button" class="lang-btn" data-lang="en">English</button>
+  #auth-main-btn {
+    width: 100%;
+    margin-top: 4px;
+  }
+
+  /* إعدادات شاشة السحب */
+  .settings-wrapper {
+    margin-right: auto;
+    position: relative;
+  }
+
+  .settings-btn {
+    background: transparent;
+    border: 1px solid #ffb36b;
+    border-radius: 999px;
+    padding: 4px 10px;
+    font-size: 16px;
+    cursor: pointer;
+    color: #ffb36b;
+  }
+
+  .settings-menu {
+    position: absolute;
+    top: 110%;
+    left: 0;
+    min-width: 180px;
+    background: #020617;
+    border-radius: 14px;
+    border: 1px solid #334;
+    padding: 8px;
+    box-shadow: 0 12px 25px #000a;
+    display: none;
+    z-index: 20;
+  }
+
+  .settings-group-title {
+    font-size: 12px;
+    opacity: 0.7;
+    margin: 4px 4px 2px;
+  }
+
+  .settings-menu button {
+    width: 100%;
+    margin: 3px 0;
+    padding: 6px 10px;
+    border-radius: 999px;
+    border: 1px solid transparent;
+    background: #0b1e3b;
+    color: #f9fafb;
+    font-size: 13px;
+    cursor: pointer;
+    text-align: center;
+  }
+
+  .settings-menu button:hover {
+    background: #1d4ed8;
+  }
+
+  .settings-menu .lang-btn {
+    background: #0a1024;
+    border: 1px solid #334;
+    opacity: 0.9;
+  }
+
+  .settings-menu .lang-btn.active {
+    background: #f9fafb;
+    color: #0a1024;
+    border-color: #f9fafb;
+    opacity: 1;
+  }
+
+  .settings-separator {
+    height: 1px;
+    background: #1e293b;
+    margin: 6px 0;
+  }
+
+  /* حوار التأكيد */
+  .confirm-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.65);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 40;
+  }
+
+  .confirm-dialog {
+    background: #020617;
+    border-radius: 18px;
+    border: 1px solid #334;
+    padding: 18px 20px;
+    max-width: 320px;
+    width: 90%;
+    box-shadow: 0 18px 40px #000c;
+    text-align: center;
+  }
+
+  .confirm-dialog p {
+    margin: 0 0 14px;
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  .confirm-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+  }
+
+  .confirm-actions .btn {
+    width: 100%;
+  }
+
+  @media (prefers-color-scheme: light) {
+    body {
+      background: radial-gradient(circle at top, #dbeafe 0, #e5e7eb 55%, #ffffff);
+      color: #020617;
+    }
+    .card {
+      background: #ffffff;
+      border-color: #d1d5db;
+      box-shadow: 0 10px 25px #0002;
+    }
+    .card-header {
+      background: #e0ebff;
+    }
+    textarea, input {
+      background: #f9fafb;
+      border-color: #d1d5db;
+      color: #020617;
+    }
+    .ghost {
+      background: #e5e7eb;
+      color: #111827;
+    }
+    .primary {
+      background: linear-gradient(135deg, #2563eb, #3b82f6);
+    }
+    #result-wrapper {
+      background: #f3f4ff;
+      border-color: #c7d2fe;
+    }
+    .settings-menu {
+      background: #ffffff;
+      border-color: #cbd5f5;
+    }
+    .settings-menu button {
+      background: #eef2ff;
+      color: #111827;
+    }
+    .settings-menu button:hover {
+      background: #dbeafe;
+    }
+    .confirm-dialog {
+      background: #ffffff;
+      border-color: #d1d5db;
+      color: #111827;
+    }
+  }
+
+  </style>
+</head>
+
+<body>
+
+<!-- شاشة الدخول -->
+<div id="auth-screen" class="app">
+  <div class="card">
+    <div class="card-header">
+      <div class="logo-circle"></div>
+      <!-- العنوان المعدّل -->
+      <h1 id="auth-title">تسجيل الدخول إلى تطبيق شفلي للمسابقات المشتركين</h1>
+      <!-- لا يوجد مسنّن إعدادات هنا -->
+    </div>
+
+    <div class="card-body">
+      <div class="auth-hero">
+        <div class="auth-hero-text">قرعة احترافية لاختيار الفائز</div>
       </div>
-    </div>  
-  
-    <div class="card-body">  
 
-      <!-- الليبل القديم مخفي -->
-      <label id="names-label">كل أسماء المشتركين:</label>  
+      <div class="auth-form-group">
+        <label id="auth-email-label" for="auth-email">البريد الإلكتروني</label>
+        <input id="auth-email" type="email" placeholder="example@email.com" autocomplete="email">
+      </div>
 
-      <!-- سطر عدد الأسماء + أزرار التعديل/المسح -->
+      <div class="auth-form-group">
+        <label id="auth-password-label" for="auth-password">كلمة المرور</label>
+        <input id="auth-password" type="password" placeholder="••••••••" autocomplete="current-password">
+      </div>
+
+      <div class="auth-form-group" id="auth-password-confirm-wrapper" style="display:none;">
+        <label id="auth-password-confirm-label" for="auth-password-confirm">تأكيد كلمة المرور</label>
+        <input id="auth-password-confirm" type="password" placeholder="أعد كتابة كلمة المرور" autocomplete="new-password">
+      </div>
+
+      <label class="remember-row">
+        <input type="checkbox" id="remember-credentials">
+        <span id="remember-label">حفظ كلمة المرور</span>
+      </label>
+
+      <button class="btn primary" id="auth-main-btn" type="button">تسجيل الدخول</button>
+      <button class="btn ghost" id="auth-secondary-btn" type="button">إنشاء حساب جديد</button>
+      <button class="btn tiny secondary" id="auth-forgot-btn" type="button">نسيت كلمة المرور؟</button>
+
+      <div id="auth-message"></div>
+    </div>
+    <div class="card-footer"></div>
+  </div>
+</div>
+
+<!-- شاشة السحب -->
+<div id="app-screen" class="app" style="display:none;">
+  <div class="card">
+    <div class="card-header">
+      <div class="logo-circle"></div>
+      <h1 id="header-title">الجائزة المقدّمة من تطبيق شفلي 🎉</h1>
+
+      <!-- مسنّن الإعدادات لشاشة السحب فقط -->
+      <div class="settings-wrapper">
+        <button type="button" class="settings-btn" data-menu="settings-menu-app">⚙️</button>
+        <div class="settings-menu" id="settings-menu-app">
+          <div class="settings-group-title" id="settings-lang-title-app">اللغة</div>
+          <button type="button" class="lang-btn active" data-lang="ar">عربي</button>
+          <button type="button" class="lang-btn" data-lang="en">English</button>
+
+          <div class="settings-separator"></div>
+
+          <button type="button" class="settings-share settings-item-app">مشاركة التطبيق</button>
+          <button type="button" class="settings-logout settings-item-app">تسجيل الخروج</button>
+          <button type="button" class="settings-delete settings-item-app">حذف الحساب</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-body">
+      <label id="names-label">كل أسماء المشتركين:</label>
+
       <div class="participants-row">
         <div class="participants-left">
           <span id="participants-count-label">عدد أسماء</span>
@@ -269,558 +531,957 @@
           <input id="participants-count-input" class="edit-count-input" type="number" min="0" style="display:none;">
         </div>
         <div class="participants-actions">
-          <button type="button" class="edit-toggle-btn" id="editToggleBtn" onclick="toggleEditMode()">تعديل</button>
-          <!-- زر مسح يظهر فقط في وضع التعديل (حفظ) -->
-          <button type="button" class="edit-toggle-btn" id="clearNamesBtn" onclick="clearNames()" style="display:none;">مسح</button>
+          <button type="button" class="edit-toggle-btn" id="editToggleBtn">تعديل</button>
+          <button type="button" class="edit-toggle-btn" id="clearNamesBtn" style="display:none;">مسح</button>
         </div>
       </div>
 
-      <!-- المربع: الأسماء -->
-      <textarea id="names"></textarea>  
-  
-      <div id="winnerRow" style="display:flex; gap:10px; align-items:flex-start; margin-top:10px;">  
-        <div style="flex:1; display:flex; flex-direction:column; gap:8px;">  
-          <input class="winner-input" type="text" placeholder="اسم الفائز 1">  
-          <input class="winner-input" type="text" placeholder="اسم الفائز 2">  
-          <input class="winner-input" type="text" placeholder="اسم الفائز 3">  
-          <input class="winner-input" type="text" placeholder="اسم الفائز 4">  
-          <input class="winner-input" type="text" placeholder="اسم الفائز 5">  
-        </div>  
-        <div style="display:flex; flex-direction:column; gap:8px;">
-          <button class="btn tiny" id="hideNamesBtn" onclick="hideNames()">إخفاء الأسماء</button>
-          <button class="btn tiny secondary" id="autoModeBtn" onclick="enableAutoMode()">اختيار تلقائي</button>
+      <textarea id="names"></textarea>
+
+      <div id="winnerRow" style="display:flex; gap:10px; align-items:flex-start; margin-top:10px;">
+        <div style="flex:1; display:flex; flex-direction:column; gap:8px;">
+          <input class="winner-input" type="text" placeholder="اسم الفائز 1">
+          <input class="winner-input" type="text" placeholder="اسم الفائز 2">
+          <input class="winner-input" type="text" placeholder="اسم الفائز 3">
+          <input class="winner-input" type="text" placeholder="اسم الفائز 4">
+          <input class="winner-input" type="text" placeholder="اسم الفائز 5">
         </div>
-      </div>  
-  
-      <div class="actions">  
-        <button class="btn primary" id="startDrawBtn" onclick="startDraw()">ابدأ السحب</button>  
-        <button class="btn ghost" id="resetBtn" onclick="resetWinners()">بحث</button>  
-      </div>  
-  
-      <div id="result-wrapper">  
-        <div id="result-label">النتيجة:</div>  
-        <div id="result">  
-            <span id="result-text">لم يبدأ السحب بعد.</span>  
-        </div>  
-      </div>  
-  
-    </div>  
-  
-    <div class="card-footer"></div>  
-  
-  </div>  
-</div>  
+        <div style="display:flex; flex-direction:column; gap:8px;">
+          <button class="btn tiny" id="hideNamesBtn" type="button">إخفاء الأسماء</button>
+          <button class="btn tiny secondary" id="autoModeBtn" type="button">اختيار تلقائي</button>
+        </div>
+      </div>
 
-<script>  
-// الترجمات
-const translations = {
-  ar: {
-    pageTitle: "سحب شفلي",
-    headerTitle: "الجائزة المقدّمة من تطبيق شفلي 🎉",
-    namesLabelBase: "كل أسماء المشتركين:",
-    hideNamesBtn: "إخفاء الأسماء",
-    autoModeBtn: "اختيار تلقائي",
-    startDrawBtn: "ابدأ السحب",
-    resetBtn: "بحث",
-    resultLabel: "النتيجة:",
-    defaultResult: "لم يبدأ السحب بعد.",
-    warnNoWinnerNames: "⚠️ الرجاء كتابة اسم واحد على الأقل قبل إخفاء الأسماء",
-    warnNoParticipants: "⚠️ الرجاء إدخال أسماء المشتركين في المربع العلوي قبل السحب",
-    warnNoSavedWinners: "⚠️ اكتب أسماء الفائزين ثم اضغط إخفاء الأسماء أو استخدم الاختيار التلقائي",
-    doneAllWinners: "✅ تم الوصول لنهاية قوائم الفائزين.",
-    doneAllWinnersAuto: "✅ تم اختيار كل الفائزين عشوائياً من قائمة المشتركين.",
-    searchWillStart: "سوف يبدا البحث على الفائز",
-    autoModeActivated: "سيتم اختيار الفائزين عشوائياً من قائمة المشتركين.",
-    drawingInProgress: "جاري السحب...",
-    winnerPlaceholderPrefix: "اسم الفائز ",
-    participantsCountLabel: "عدد أسماء",
-    participantsCountAfter: "المشتركين:",
-    editButton: "تعديل",
-    saveButton: "حفظ",
-    warnNeedSave: "⚠️ بعد تعديل الأسماء اضغط زر حفظ قبل البدء بالسحب أو الإخفاء."
-  },
-  en: {
-    pageTitle: "Shfli Draw",
-    headerTitle: "Prize from Shfli App 🎉",
-    namesLabelBase: "All participants:",
-    hideNamesBtn: "Hide winners",
-    autoModeBtn: "Auto pick",
-    startDrawBtn: "Start draw",
-    resetBtn: "Reset",
-    resultLabel: "Result:",
-    defaultResult: "Draw has not started yet.",
-    warnNoWinnerNames: "⚠️ Please type at least one winner name before hiding the fields",
-    warnNoParticipants: "⚠️ Please enter the participants' names in the box above before drawing",
-    warnNoSavedWinners: "⚠️ Type the winners' names then click Hide winners or use auto pick",
-    doneAllWinners: "✅ All configured winners have been drawn.",
-    doneAllWinnersAuto: "✅ All winners have been randomly selected from the participants list.",
-    searchWillStart: "Search for the winner will start",
-    autoModeActivated: "Winners will be randomly selected from the participants list.",
-    drawingInProgress: "Drawing...",
-    winnerPlaceholderPrefix: "Winner ",
-    participantsCountLabel: "Number of names",
-    participantsCountAfter: "participants:",
-    editButton: "Edit",
-    saveButton: "Save",
-    warnNeedSave: "⚠️ After editing names, please click Save before drawing or hiding."
-  }
-};
+      <div class="actions">
+        <button class="btn primary" id="startDrawBtn" type="button">ابدأ السحب</button>
+        <button class="btn ghost" id="resetBtn" type="button">بحث</button>
+      </div>
 
-let currentLang = 'ar';
-let generatedNames = [];  
-let savedWinners = [];  
-let drawIndex = 0;     
+      <div id="result-wrapper">
+        <div id="result-label">النتيجة:</div>
+        <div id="result">
+          <span id="result-text">لم يبدأ السحب بعد.</span>
+        </div>
+      </div>
+    </div>
 
-let drawMode = 'manual'; // 'manual' أو 'auto'
-let autoWinners = [];
-const AUTO_WINNERS_COUNT = 5;
+    <div class="card-footer"></div>
+  </div>
+</div>
 
-// حالة زر التعديل/الحفظ
-let isEditMode = false;
+<!-- حوار التأكيد المشترك لتسجيل الخروج وحذف الحساب -->
+<div id="confirm-overlay" class="confirm-overlay">
+  <div class="confirm-dialog">
+    <p id="confirm-message">هل أنت متأكد؟</p>
+    <div class="confirm-actions">
+      <button id="confirm-yes" class="btn primary">نعم</button>
+      <button id="confirm-no" class="btn ghost">لا</button>
+    </div>
+  </div>
+</div>
 
-// ========= أصوات النطق (تحضير صوت شاب) =========
-let allVoices = [];
-let maleArabicVoice = null;
-let maleEnglishVoice = null;
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-analytics.js";
+  import {
+    getAuth,
+    createUserWithEmailAndPassword,
+    signInWithEmailAndPassword,
+    sendPasswordResetEmail,
+    signOut,
+    onAuthStateChanged,
+    deleteUser
+  } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-function loadVoices() {
-  allVoices = window.speechSynthesis.getVoices() || [];
-  if (!allVoices.length) return;
+  const firebaseConfig = {
+    apiKey: "AIzaSyD5Evcf4rCO-m3SmsNKZ3RGqeju0UCAmls",
+    authDomain: "competitions-and-prizes.firebaseapp.com",
+    projectId: "competitions-and-prizes",
+    storageBucket: "competitions-and-prizes.firebasestorage.app",
+    messagingSenderId: "15858009554",
+    appId: "1:15858009554:web:50ea4181ec6e758f99f40b",
+    measurementId: "G-VYHHVRP7T1"
+  };
 
-  const maleNamePattern = /male|man|boy|ahmed|ahmad|hamad|hammad|hazem|fadi|hassan|hassan|mohammad|mohamed|omar|khaled|saud|salim|majed|abdullah|yousef|yusuf|ali|faisal/i;
+  const firebaseApp = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(firebaseApp);
+  const auth = getAuth(firebaseApp);
 
-  const arVoices = allVoices.filter(v => v.lang && v.lang.toLowerCase().startsWith('ar'));
-  const enVoices = allVoices.filter(v => v.lang && v.lang.toLowerCase().startsWith('en'));
-
-  maleArabicVoice = arVoices.find(v => maleNamePattern.test(v.name)) || arVoices[0] || null;
-  maleEnglishVoice = enVoices.find(v => maleNamePattern.test(v.name)) || enVoices[0] || null;
-}
-
-window.speechSynthesis.onvoiceschanged = loadVoices;
-loadVoices();
-// =========================================
-
-function setLanguage(lang) {
-  currentLang = lang;
-  applyLanguage();
-}
-
-function applyLanguage() {
-  const t = translations[currentLang];
-
-  document.title = t.pageTitle;
-  document.documentElement.lang = currentLang === 'ar' ? 'ar' : 'en';
-
-  const headerTitle = document.getElementById('header-title');
-  if (headerTitle) headerTitle.textContent = t.headerTitle;
-
-  const hideBtn = document.getElementById('hideNamesBtn');
-  if (hideBtn) hideBtn.textContent = t.hideNamesBtn;
-
-  const autoBtn = document.getElementById('autoModeBtn');
-  if (autoBtn) autoBtn.textContent = t.autoModeBtn;
-
-  const startBtn = document.getElementById('startDrawBtn');
-  if (startBtn) startBtn.textContent = t.startDrawBtn;
-
-  const resetBtn = document.getElementById('resetBtn');
-  if (resetBtn) resetBtn.textContent = t.resetBtn;
-
-  const resultLabel = document.getElementById('result-label');
-  if (resultLabel) resultLabel.textContent = t.resultLabel;
-
-  const resultText = document.getElementById('result-text');
-  if (resultText) {
-    if (resultText.textContent.includes("لم يبدأ السحب بعد.") ||
-        resultText.textContent.includes("Draw has not started yet.")) {
-      resultText.textContent = t.defaultResult;
+  const translations = {
+    ar: {
+      pageTitle: "سحب شفلي",
+      headerTitle: "الجائزة المقدّمة من تطبيق شفلي 🎉",
+      authLoginTitle: "تسجيل الدخول إلى تطبيق شفلي للمسابقات المشتركين",
+      authRegisterTitle: "إنشاء حساب جديد",
+      authEmailLabel: "البريد الإلكتروني",
+      authPasswordLabel: "كلمة المرور",
+      authPasswordConfirmLabel: "تأكيد كلمة المرور",
+      authEmailPlaceholder: "example@email.com",
+      authPasswordPlaceholder: "••••••••",
+      authPasswordConfirmPlaceholder: "أعد كتابة كلمة المرور",
+      authLoginBtn: "تسجيل الدخول",
+      authRegisterBtn: "إنشاء حساب",
+      authGoToRegister: "ليس لديك حساب؟ إنشاء حساب جديد",
+      authGoToLogin: "لديك حساب؟ تسجيل الدخول",
+      authRemember: "حفظ كلمة المرور",
+      authForgot: "نسيت كلمة المرور؟",
+      authErrorEmpty: "⚠️ الرجاء إدخال الإيميل وكلمة المرور.",
+      authErrorMismatch: "⚠️ كلمة المرور وتأكيدها غير متطابقين.",
+      authErrorGeneric: "⚠️ حدث خطأ أثناء العملية، حاول مرة أخرى.",
+      authResetSent: "✅ تم إرسال رابط استعادة كلمة المرور إلى بريدك.",
+      namesLabelBase: "كل أسماء المشتركين:",
+      hideNamesBtn: "إخفاء الأسماء",
+      autoModeBtn: "اختيار تلقائي",
+      startDrawBtn: "ابدأ السحب",
+      resetBtn: "بحث",
+      resultLabel: "النتيجة:",
+      defaultResult: "لم يبدأ السحب بعد.",
+      warnNoWinnerNames: "⚠️ الرجاء كتابة اسم واحد على الأقل قبل إخفاء الأسماء",
+      warnNoParticipants: "⚠️ الرجاء إدخال أسماء المشتركين في المربع العلوي قبل السحب",
+      warnNoSavedWinners: "⚠️ اكتب أسماء الفائزين ثم اضغط إخفاء الأسماء أو استخدم الاختيار التلقائي",
+      doneAllWinners: "✅ تم الوصول لنهاية قوائم الفائزين.",
+      doneAllWinnersAuto: "✅ تم اختيار كل الفائزين عشوائياً من قائمة المشتركين.",
+      searchWillStart: "سوف يبدا البحث على الفائز",
+      autoModeActivated: "سيتم اختيار الفائزين عشوائياً من قائمة المشتركين.",
+      drawingInProgress: "جاري السحب...",
+      winnerPlaceholderPrefix: "اسم الفائز ",
+      participantsCountLabel: "عدد أسماء",
+      participantsCountAfter: "المشتركين:",
+      editButton: "تعديل",
+      saveButton: "حفظ",
+      settingsLangTitle: "اللغة",
+      logoutLabel: "تسجيل الخروج",
+      deleteAccountLabel: "حذف الحساب",
+      shareAppLabel: "مشاركة التطبيق",
+      mustSaveNames: "⚠️ الرجاء الضغط على زر حفظ بعد تعديل الأسماء قبل البدء بالسحب",
+      confirmLogout: "هل تريد تسجيل الخروج بالفعل؟",
+      confirmDelete: "هل أنت متأكد أنك تريد حذف الحساب نهائياً؟",
+      confirmYes: "نعم",
+      confirmNo: "لا"
+    },
+    en: {
+      pageTitle: "Shfli Draw",
+      headerTitle: "Prize from Shfli App 🎉",
+      authLoginTitle: "Sign in to Shfli",
+      authRegisterTitle: "Create a new account",
+      authEmailLabel: "Email address",
+      authPasswordLabel: "Password",
+      authPasswordConfirmLabel: "Confirm password",
+      authEmailPlaceholder: "example@email.com",
+      authPasswordPlaceholder: "••••••••",
+      authPasswordConfirmPlaceholder: "Re-type password",
+      authLoginBtn: "Sign in",
+      authRegisterBtn: "Create account",
+      authGoToRegister: "Don't have an account? Create one",
+      authGoToLogin: "Already have an account? Sign in",
+      authRemember: "Remember password",
+      authForgot: "Forgot password?",
+      authErrorEmpty: "⚠️ Please enter email and password.",
+      authErrorMismatch: "⚠️ Password and confirmation do not match.",
+      authErrorGeneric: "⚠️ Something went wrong. Please try again.",
+      authResetSent: "✅ Password reset link was sent to your email.",
+      namesLabelBase: "All participants:",
+      hideNamesBtn: "Hide winners",
+      autoModeBtn: "Auto pick",
+      startDrawBtn: "Start draw",
+      resetBtn: "Reset",
+      resultLabel: "Result:",
+      defaultResult: "Draw has not started yet.",
+      warnNoWinnerNames: "⚠️ Please type at least one winner name before hiding the fields",
+      warnNoParticipants: "⚠️ Please enter the participants' names in the box above before drawing",
+      warnNoSavedWinners: "⚠️ Type the winners' names then click Hide winners or use auto pick",
+      doneAllWinners: "✅ All configured winners have been drawn.",
+      doneAllWinnersAuto: "✅ All winners have been randomly selected from the participants list.",
+      searchWillStart: "Search for the winner will start",
+      autoModeActivated: "Winners will be randomly selected from the participants list.",
+      drawingInProgress: "Drawing...",
+      winnerPlaceholderPrefix: "Winner ",
+      participantsCountLabel: "Number of names",
+      participantsCountAfter: "participants:",
+      editButton: "Edit",
+      saveButton: "Save",
+      settingsLangTitle: "Language",
+      logoutLabel: "Log out",
+      deleteAccountLabel: "Delete account",
+      shareAppLabel: "Share app",
+      mustSaveNames: "⚠️ Please click Save after editing names before starting the draw",
+      confirmLogout: "Do you really want to log out?",
+      confirmDelete: "Are you sure you want to delete your account permanently?",
+      confirmYes: "Yes",
+      confirmNo: "No"
     }
+  };
+
+  let currentLang = "ar";
+  let generatedNames = [];
+  let savedWinners = [];
+  let drawIndex = 0;
+  let drawMode = "manual";
+  let autoWinners = [];
+  const AUTO_WINNERS_COUNT = 5;
+  let isEditMode = false;
+  let isNamesSaved = false;
+  let savedNamesText = "";
+
+  let allVoices = [];
+  let maleArabicVoice = null;
+  let maleEnglishVoice = null;
+
+  // نوع التأكيد الحالي: "logout" أو "delete"
+  let pendingConfirmAction = null;
+
+  function loadVoices() {
+    allVoices = window.speechSynthesis.getVoices() || [];
+    if (!allVoices.length) return;
+
+    const maleNamePattern = /male|man|boy|ahmed|ahmad|hamad|hammad|hazem|fadi|hassan|mohammad|mohamed|omar|khaled|saud|salim|majed|abdullah|yousef|yusuf|ali|faisal/i;
+
+    const arVoices = allVoices.filter(v => v.lang && v.lang.toLowerCase().startsWith('ar'));
+    const enVoices = allVoices.filter(v => v.lang && v.lang.toLowerCase().startsWith('en'));
+
+    maleArabicVoice = arVoices.find(v => maleNamePattern.test(v.name)) || arVoices[0] || null;
+    maleEnglishVoice = enVoices.find(v => maleNamePattern.test(v.name)) || enVoices[0] || null;
   }
 
-  const winnerInputs = document.querySelectorAll('.winner-input');
-  winnerInputs.forEach((inp, idx) => {
-    if (currentLang === 'ar') {
-      inp.placeholder = `${t.winnerPlaceholderPrefix}${idx + 1}`;
+  window.speechSynthesis.onvoiceschanged = loadVoices;
+  loadVoices();
+
+  function setLanguage(lang) {
+    currentLang = lang;
+    applyLanguage();
+  }
+
+  function applyLanguage() {
+    const t = translations[currentLang];
+
+    document.title = t.pageTitle;
+
+    const headerTitle = document.getElementById("header-title");
+    if (headerTitle) headerTitle.textContent = t.headerTitle;
+
+    const authTitle = document.getElementById("auth-title");
+    if (authTitle) authTitle.textContent = (authMode === "login") ? t.authLoginTitle : t.authRegisterTitle;
+
+    const hideBtn = document.getElementById("hideNamesBtn");
+    if (hideBtn) hideBtn.textContent = t.hideNamesBtn;
+
+    const autoBtn = document.getElementById("autoModeBtn");
+    if (autoBtn) autoBtn.textContent = t.autoModeBtn;
+
+    const startBtn = document.getElementById("startDrawBtn");
+    if (startBtn) startBtn.textContent = t.startDrawBtn;
+
+    const resetBtn = document.getElementById("resetBtn");
+    if (resetBtn) resetBtn.textContent = t.resetBtn;
+
+    const resultLabel = document.getElementById("result-label");
+    if (resultLabel) resultLabel.textContent = t.resultLabel;
+
+    const resultText = document.getElementById("result-text");
+    if (resultText) {
+      if (resultText.textContent.includes("لم يبدأ السحب بعد.") ||
+          resultText.textContent.includes("Draw has not started yet.")) {
+        resultText.textContent = t.defaultResult;
+      }
+    }
+
+    const winnerInputs = document.querySelectorAll(".winner-input");
+    winnerInputs.forEach((inp, idx) => {
+      if (currentLang === "ar") {
+        inp.placeholder = `${t.winnerPlaceholderPrefix}${idx + 1}`;
+      } else {
+        inp.placeholder = `${t.winnerPlaceholderPrefix}${idx + 1} name`;
+      }
+    });
+
+    const countLabel = document.getElementById("participants-count-label");
+    if (countLabel) countLabel.textContent = t.participantsCountLabel;
+
+    const countAfter = document.getElementById("participants-count-after");
+    if (countAfter) countAfter.textContent = t.participantsCountAfter;
+
+    const editToggleBtn = document.getElementById("editToggleBtn");
+    if (editToggleBtn) {
+      editToggleBtn.textContent = isEditMode ? t.saveButton : t.editButton;
+    }
+
+    const authEmailLabel = document.getElementById("auth-email-label");
+    const authPasswordLabel = document.getElementById("auth-password-label");
+    const authPasswordConfirmLabel = document.getElementById("auth-password-confirm-label");
+    const authEmailInput = document.getElementById("auth-email");
+    const authPasswordInput = document.getElementById("auth-password");
+    const authPasswordConfirmInput = document.getElementById("auth-password-confirm");
+    const authMainBtn = document.getElementById("auth-main-btn");
+    const authSecondaryBtn = document.getElementById("auth-secondary-btn");
+    const rememberLabel = document.getElementById("remember-label");
+    const forgotBtn = document.getElementById("auth-forgot-btn");
+
+    if (authEmailLabel) authEmailLabel.textContent = t.authEmailLabel;
+    if (authPasswordLabel) authPasswordLabel.textContent = t.authPasswordLabel;
+    if (authPasswordConfirmLabel) authPasswordConfirmLabel.textContent = t.authPasswordConfirmLabel;
+
+    if (authEmailInput) authEmailInput.placeholder = t.authEmailPlaceholder;
+    if (authPasswordInput) authPasswordInput.placeholder = t.authPasswordPlaceholder;
+    if (authPasswordConfirmInput) authPasswordConfirmInput.placeholder = t.authPasswordConfirmPlaceholder;
+
+    if (authMainBtn) authMainBtn.textContent = (authMode === "login") ? t.authLoginBtn : t.authRegisterBtn;
+    if (authSecondaryBtn) authSecondaryBtn.textContent = (authMode === "login") ? t.authGoToRegister : t.authGoToLogin;
+    if (rememberLabel) rememberLabel.textContent = t.authRemember;
+    if (forgotBtn) forgotBtn.textContent = t.authForgot;
+
+    const settingsLangTitles = document.querySelectorAll("#settings-lang-title-auth, #settings-lang-title-app");
+    settingsLangTitles.forEach(el => el.textContent = t.settingsLangTitle);
+
+    const logoutBtns = document.querySelectorAll(".settings-logout");
+    logoutBtns.forEach(btn => btn.textContent = t.logoutLabel);
+
+    const deleteBtns = document.querySelectorAll(".settings-delete");
+    deleteBtns.forEach(btn => btn.textContent = t.deleteAccountLabel);
+
+    const shareBtns = document.querySelectorAll(".settings-share");
+    shareBtns.forEach(btn => btn.textContent = t.shareAppLabel);
+
+    const langButtons = document.querySelectorAll(".lang-btn");
+    langButtons.forEach(btn => {
+      const langAttr = btn.getAttribute("data-lang");
+      btn.classList.toggle("active", langAttr === currentLang);
+    });
+
+    // نصوص حوار التأكيد
+    const confirmYes = document.getElementById("confirm-yes");
+    const confirmNo = document.getElementById("confirm-no");
+    if (confirmYes) confirmYes.textContent = t.confirmYes;
+    if (confirmNo) confirmNo.textContent = t.confirmNo;
+  }
+
+  function loadNamesFromTextarea() {
+    const textarea = document.getElementById("names");
+    if (!textarea) return;
+
+    savedNamesText = textarea.value;
+    generatedNames = savedNamesText
+      .split(/\r?\n/)
+      .map(n => n.trim())
+      .filter(n => n !== "");
+
+    isNamesSaved = true;
+  }
+
+  function showRandomNamesBlock() {
+    const textarea = document.getElementById("names");
+    if (!textarea) return;
+    textarea.value = savedNamesText;
+  }
+
+  function getWinnerAnnouncement(num, name) {
+    if (currentLang === "ar") {
+      return `🏆 الفائز رقم ${num}: ${name} 🎉 مبروك!`;
     } else {
-      inp.placeholder = `${t.winnerPlaceholderPrefix}${idx + 1} name`;
+      return `🏆 Winner #${num}: ${name} 🎉 Congratulations!`;
     }
-  });
-
-  const countLabel = document.getElementById("participants-count-label");
-  if (countLabel) countLabel.textContent = t.participantsCountLabel;
-
-  const countAfter = document.getElementById("participants-count-after");
-  if (countAfter) countAfter.textContent = t.participantsCountAfter;
-
-  const editToggleBtn = document.getElementById("editToggleBtn");
-  if (editToggleBtn) {
-    editToggleBtn.textContent = isEditMode ? t.saveButton : t.editButton;
   }
-}
 
-function loadNamesFromTextarea() {  
-  const textarea = document.getElementById("names");  
-  if (!textarea) return;  
+  function getSpeakCongrats(name) {
+    if (currentLang === "ar") {
+      return `مبروك للفائز ${name}`;
+    } else {
+      return `Congratulations to the winner ${name}`;
+    }
+  }
 
-  generatedNames = textarea.value
-    .split(/\r?\n/)
-    .map(n => n.trim())
-    .filter(n => n !== "");
+  function speak(text) {
+    const msg = new SpeechSynthesisUtterance(text);
+    msg.lang = currentLang === "ar" ? "ar-SA" : "en-US";
 
-  const countInput = document.getElementById("participants-count-input");
-  const countValueSpan = document.getElementById("participants-count-value");
-  if (countInput && isEditMode) {
-    if (!countInput.value && generatedNames.length > 0) {
-      countInput.value = generatedNames.length;
-      if (countValueSpan && countValueSpan.textContent === "0") {
-        countValueSpan.textContent = generatedNames.length;
+    if (!allVoices || !allVoices.length) {
+      loadVoices();
+    }
+
+    let chosenVoice = null;
+    if (currentLang === "ar") {
+      chosenVoice = maleArabicVoice || maleEnglishVoice || (allVoices[0] || null);
+    } else {
+      chosenVoice = maleEnglishVoice || maleArabicVoice || (allVoices[0] || null);
+    }
+
+    if (chosenVoice) {
+      msg.voice = chosenVoice;
+    }
+
+    msg.rate = 1;
+    speechSynthesis.cancel();
+    speechSynthesis.speak(msg);
+  }
+
+  function ensureNamesSaved() {
+    const resultDiv = document.getElementById("result");
+    let resultText = document.getElementById("result-text");
+    if (!resultText) {
+      resultDiv.innerHTML = '<span id="result-text"></span>';
+      resultText = document.getElementById("result-text");
+    }
+    if (!isNamesSaved) {
+      resultText.textContent = translations[currentLang].mustSaveNames;
+      resultText.style.color = "var(--warning)";
+      return false;
+    }
+    return true;
+  }
+
+  function hideNames() {
+    if (!ensureNamesSaved()) return;
+
+    const inputs = document.querySelectorAll(".winner-input");
+    const temp = [];
+    const resultDiv = document.getElementById("result");
+
+    resultDiv.innerHTML = '<span id="result-text"></span>';
+    const resultText = document.getElementById("result-text");
+
+    inputs.forEach(inp => {
+      const v = inp.value.trim();
+      if (v) temp.push(v);
+      inp.value = "";
+    });
+
+    if (temp.length === 0) {
+      resultText.textContent = translations[currentLang].warnNoWinnerNames;
+      resultText.style.color = "var(--warning)";
+      return;
+    }
+
+    if (generatedNames.length === 0) {
+      resultText.textContent = translations[currentLang].warnNoParticipants;
+      resultText.style.color = "var(--warning)";
+      return;
+    }
+
+    drawMode = "manual";
+    savedWinners = temp;
+    autoWinners = [];
+    drawIndex = 0;
+    document.getElementById("winnerRow").style.display = "none";
+    resultText.textContent = translations[currentLang].searchWillStart;
+    resultText.style.color = "#eee";
+  }
+
+  function enableAutoMode() {
+    if (!ensureNamesSaved()) return;
+
+    const resultDiv = document.getElementById("result");
+    resultDiv.innerHTML = '<span id="result-text"></span>';
+    const resultText = document.getElementById("result-text");
+
+    if (generatedNames.length === 0) {
+      resultText.textContent = translations[currentLang].warnNoParticipants;
+      resultText.style.color = "var(--warning)";
+      return;
+    }
+
+    drawMode = "auto";
+    savedWinners = [];
+    autoWinners = [];
+    drawIndex = 0;
+
+    document.getElementById("winnerRow").style.display = "none";
+    resultText.textContent = translations[currentLang].autoModeActivated;
+    resultText.style.color = "#eee";
+  }
+
+  function resetWinners() {
+    savedWinners = [];
+    autoWinners = [];
+    drawMode = "manual";
+    drawIndex = 0;
+    document.getElementById("winnerRow").style.display = "flex";
+
+    const resultDiv = document.getElementById("result");
+    resultDiv.innerHTML = `<span id="result-text">${translations[currentLang].defaultResult}</span>`;
+
+    const inputs = document.querySelectorAll(".winner-input");
+    inputs.forEach(inp => inp.value = "");
+  }
+
+  function startDraw() {
+    if (!ensureNamesSaved()) return;
+
+    const startDrawBtn = document.getElementById("startDrawBtn");
+    const resetBtn = document.getElementById("resetBtn");
+    const resultDiv = document.getElementById("result");
+    let resultText = document.getElementById("result-text");
+
+    if (!resultText) {
+      resultDiv.innerHTML = '<span id="result-text"></span>';
+      resultText = document.getElementById("result-text");
+    }
+
+    if (generatedNames.length === 0) {
+      resultText.textContent = translations[currentLang].warnNoParticipants;
+      resultText.style.color = "var(--warning)";
+      return;
+    }
+
+    if (drawMode === "manual" && savedWinners.length === 0) {
+      resultText.textContent = translations[currentLang].warnNoSavedWinners;
+      resultText.style.color = "var(--warning)";
+      return;
+    }
+
+    if (drawMode === "manual" && drawIndex >= savedWinners.length) {
+      resultText.textContent = translations[currentLang].doneAllWinners;
+      resultText.style.color = "var(--success)";
+      return;
+    }
+
+    if (drawMode === "auto" && autoWinners.length >= AUTO_WINNERS_COUNT) {
+      resultText.textContent = translations[currentLang].doneAllWinnersAuto;
+      resultText.style.color = "var(--success)";
+      return;
+    }
+
+    startDrawBtn.disabled = true;
+    resetBtn.disabled = true;
+
+    const intervalTime = 40;
+    const totalDuration = 10000;
+    const startTime = Date.now();
+
+    let lastNamesUpdate = 0;
+    const namesUpdateInterval = 300;
+
+    resultText.textContent = translations[currentLang].drawingInProgress;
+    resultText.style.color = "#eee";
+
+    const currentDrawNumber = (drawMode === "manual")
+      ? (drawIndex + 1)
+      : (autoWinners.length + 1);
+
+    const interval = setInterval(() => {
+      const now = Date.now();
+      const elapsed = now - startTime;
+
+      if (generatedNames.length > 0) {
+        const randomName = generatedNames[Math.floor(Math.random() * generatedNames.length)];
+        resultText.textContent = randomName;
       }
-    }
-  }
-}  
 
-function showRandomNamesBlock() {  
-  const textarea = document.getElementById("names");  
-  if (!textarea) return;  
-  textarea.value = generatedNames.join("\n");  
-}  
+      if (now - lastNamesUpdate >= namesUpdateInterval && generatedNames.length > 0) {
+        const textarea = document.getElementById("names");
+        const linesPerView = 40;
+        const out = [];
 
-function hideNames() {  
-  const inputs = document.querySelectorAll(".winner-input");  
-  const temp = [];  
-  const resultDiv = document.getElementById("result");  
-    
-  resultDiv.innerHTML = '<span id="result-text"></span>';  
-  const resultText = document.getElementById('result-text');  
-
-  // منع الاستخدام قبل الحفظ
-  if (isEditMode) {
-    resultText.textContent = translations[currentLang].warnNeedSave;
-    resultText.style.color = "var(--warning)";
-    return;
-  }
-  
-  inputs.forEach(inp => {  
-    const v = inp.value.trim();  
-    if (v) temp.push(v);  
-    inp.value = "";  
-  });  
-  
-  if (temp.length === 0) {  
-    resultText.textContent = translations[currentLang].warnNoWinnerNames;  
-    resultText.style.color = "var(--warning)";  
-    return;  
-  }  
-
-  loadNamesFromTextarea();
-  if (generatedNames.length === 0) {
-    resultText.textContent = translations[currentLang].warnNoParticipants;
-    resultText.style.color = "var(--warning)";
-    return;
-  }
-  
-  drawMode = 'manual';
-  savedWinners = temp;  
-  autoWinners = [];
-  drawIndex = 0;  
-  document.getElementById("winnerRow").style.display = "none";  
-  resultText.textContent = translations[currentLang].searchWillStart;  
-  resultText.style.color = "#eee";  
-}  
-
-function enableAutoMode() {
-  const resultDiv = document.getElementById("result");  
-  resultDiv.innerHTML = '<span id="result-text"></span>';  
-  const resultText = document.getElementById('result-text');
-
-  // منع الاستخدام قبل الحفظ
-  if (isEditMode) {
-    resultText.textContent = translations[currentLang].warnNeedSave;
-    resultText.style.color = "var(--warning)";
-    return;
-  }
-
-  loadNamesFromTextarea();
-  if (generatedNames.length === 0) {
-    resultText.textContent = translations[currentLang].warnNoParticipants;
-    resultText.style.color = "var(--warning)";
-    return;
-  }
-
-  drawMode = 'auto';
-  savedWinners = [];
-  autoWinners = [];
-  drawIndex = 0;
-
-  document.getElementById("winnerRow").style.display = "none";
-  resultText.textContent = translations[currentLang].autoModeActivated;
-  resultText.style.color = "#eee";
-}
-  
-function resetWinners() {  
-  savedWinners = [];  
-  autoWinners = [];
-  drawMode = 'manual';
-  drawIndex = 0;  
-  document.getElementById("winnerRow").style.display = "flex";  
-    
-  const resultDiv = document.getElementById("result");  
-  resultDiv.innerHTML = `<span id="result-text">${translations[currentLang].defaultResult}</span>`;  
-  
-  const inputs = document.querySelectorAll(".winner-input");  
-  inputs.forEach(inp => inp.value = "");  
-    
-  // فقط إذا لم نكن في وضع التعديل
-  if (!isEditMode) {
-    loadNamesFromTextarea();  
-  }
-}  
-
-function getWinnerAnnouncement(num, name) {
-  if (currentLang === 'ar') {
-    return `🏆 الفائز رقم ${num}: ${name} 🎉 مبروك!`;
-  } else {
-    return `🏆 Winner #${num}: ${name} 🎉 Congratulations!`;
-  }
-}
-
-function getSpeakCongrats(name) {
-  if (currentLang === 'ar') {
-    return `مبروك للفائز ${name}`;
-  } else {
-    return `Congratulations to the winner ${name}`;
-  }
-}
-  
-function speak(text) {  
-  const msg = new SpeechSynthesisUtterance(text);  
-  msg.lang = currentLang === 'ar' ? "ar-SA" : "en-US";  
-
-  if (!allVoices || !allVoices.length) {
-    loadVoices();
-  }
-
-  let chosenVoice = null;
-  if (currentLang === 'ar') {
-    chosenVoice = maleArabicVoice || maleEnglishVoice || (allVoices[0] || null);
-  } else {
-    chosenVoice = maleEnglishVoice || maleArabicVoice || (allVoices[0] || null);
-  }
-
-  if (chosenVoice) {
-    msg.voice = chosenVoice;
-  }
-
-  msg.rate = 1;  
-  speechSynthesis.cancel();  
-  speechSynthesis.speak(msg);  
-}  
-  
-function startDraw() {  
-  const startDrawBtn = document.getElementById("startDrawBtn");  
-  const resetBtn = document.getElementById("resetBtn");  
-  const resultDiv = document.getElementById("result");  
-  let resultText = document.getElementById("result-text");  
-  
-  if (!resultText) {  
-      resultDiv.innerHTML = '<span id="result-text"></span>';  
-      resultText = document.getElementById("result-text");  
-  }  
-
-  // منع السحب قبل حفظ الأسماء
-  if (isEditMode) {
-    resultText.textContent = translations[currentLang].warnNeedSave;
-    resultText.style.color = "var(--warning)";
-    return;
-  }
-
-  loadNamesFromTextarea();
-  if (generatedNames.length === 0) {
-    resultText.textContent = translations[currentLang].warnNoParticipants;
-    resultText.style.color = "var(--warning)";
-    return;
-  }
-
-  if (drawMode === 'manual' && savedWinners.length === 0) {  
-    resultText.textContent = translations[currentLang].warnNoSavedWinners;  
-    resultText.style.color = "var(--warning)";  
-    return;  
-  }  
-
-  if (drawMode === 'manual' && drawIndex >= savedWinners.length) {  
-    resultText.textContent = translations[currentLang].doneAllWinners;  
-    resultText.style.color = "var(--success)";  
-    return;  
-  }
-
-  if (drawMode === 'auto' && autoWinners.length >= AUTO_WINNERS_COUNT) {
-    resultText.textContent = translations[currentLang].doneAllWinnersAuto;  
-    resultText.style.color = "var(--success)";  
-    return;
-  }
-  
-  startDrawBtn.disabled = true;  
-  resetBtn.disabled = true;  
-  
-  const intervalTime = 40;       
-  const totalDuration = 10000;   
-  const startTime = Date.now();  
-  
-  let lastNamesUpdate = 0;  
-  const namesUpdateInterval = 300;   
-  
-  resultText.textContent = translations[currentLang].drawingInProgress;  
-  resultText.style.color = "#eee";  
-  
-  const currentDrawNumber = (drawMode === 'manual')
-    ? (drawIndex + 1)
-    : (autoWinners.length + 1);
-  
-  const interval = setInterval(() => {  
-    const now = Date.now();  
-    const elapsed = now - startTime;  
-
-    if (generatedNames.length > 0) {
-      const randomName = generatedNames[Math.floor(Math.random() * generatedNames.length)];  
-      resultText.textContent = randomName;  
-    }
-  
-    if (now - lastNamesUpdate >= namesUpdateInterval && generatedNames.length > 0) {  
-      const textarea = document.getElementById("names");  
-      const linesPerView = 40;   
-      const out = [];  
-  
-      for (let i = 0; i < linesPerView; i++) {  
-        const name = generatedNames[Math.floor(Math.random() * generatedNames.length)];  
-        out.push(name);  
-      }  
-      textarea.value = out.join("\n");  
-      lastNamesUpdate = now;  
-    }  
-  
-    if (elapsed >= totalDuration) {  
-      clearInterval(interval);  
-
-      let winnerName;
-      if (drawMode === 'manual') {
-        winnerName = savedWinners[drawIndex];
-        drawIndex++;
-      } else {
-        const available = generatedNames.filter(n => !autoWinners.includes(n));
-        if (available.length === 0) {
-          winnerName = null;
-        } else {
-          winnerName = available[Math.floor(Math.random() * available.length)];
-          autoWinners.push(winnerName);
+        for (let i = 0; i < linesPerView; i++) {
+          const name = generatedNames[Math.floor(Math.random() * generatedNames.length)];
+          out.push(name);
         }
+        textarea.value = out.join("\n");
+        lastNamesUpdate = now;
       }
 
-      if (winnerName) {
-        resultText.style.color = "var(--success)";  
-        resultText.textContent = getWinnerAnnouncement(currentDrawNumber, winnerName);  
-        speak(getSpeakCongrats(winnerName));  
+      if (elapsed >= totalDuration) {
+        clearInterval(interval);
+
+        let winnerName;
+        if (drawMode === "manual") {
+          winnerName = savedWinners[drawIndex];
+          drawIndex++;
+        } else {
+          const available = generatedNames.filter(n => !autoWinners.includes(n));
+          if (available.length === 0) {
+            winnerName = null;
+          } else {
+            winnerName = available[Math.floor(Math.random() * available.length)];
+            autoWinners.push(winnerName);
+          }
+        }
+
+        if (winnerName) {
+          resultText.style.color = "var(--success)";
+          resultText.textContent = getWinnerAnnouncement(currentDrawNumber, winnerName);
+          speak(getSpeakCongrats(winnerName));
+        } else {
+          resultText.style.color = "var(--warning)";
+          resultText.textContent = translations[currentLang].warnNoParticipants;
+        }
+
+        startDrawBtn.disabled = false;
+        resetBtn.disabled = false;
+        showRandomNamesBlock();
+      }
+    }, intervalTime);
+  }
+
+  function toggleEditMode() {
+    const namesTextarea = document.getElementById("names");
+    const countInput = document.getElementById("participants-count-input");
+    const countValue = document.getElementById("participants-count-value");
+    const editToggleBtn = document.getElementById("editToggleBtn");
+    const clearBtn = document.getElementById("clearNamesBtn");
+
+    if (!namesTextarea || !countInput || !countValue || !editToggleBtn) return;
+
+    if (isEditMode) {
+      namesTextarea.readOnly = true;
+      isEditMode = false;
+
+      let val = countInput.value.trim();
+      if (val === "") val = "0";
+      countValue.textContent = val;
+      countInput.style.display = "none";
+      countValue.style.display = "inline";
+
+      loadNamesFromTextarea();
+
+      editToggleBtn.textContent = translations[currentLang].editButton;
+
+      if (clearBtn) clearBtn.style.display = "none";
+    } else {
+      namesTextarea.readOnly = false;
+      isEditMode = true;
+      isNamesSaved = false;
+
+      const currentText = countValue.textContent.replace(/[^\d]/g, "");
+      countInput.value = currentText || "";
+      countInput.style.display = "inline-block";
+      countValue.style.display = "none";
+
+      editToggleBtn.textContent = translations[currentLang].saveButton;
+
+      if (clearBtn) clearBtn.style.display = "inline-block";
+    }
+  }
+
+  function clearNames() {
+    const namesTextarea = document.getElementById("names");
+    const countInput = document.getElementById("participants-count-input");
+    const countValue = document.getElementById("participants-count-value");
+
+    if (namesTextarea) namesTextarea.value = "";
+    if (countInput) countInput.value = "";
+    if (countValue) countValue.textContent = "0";
+
+    generatedNames = [];
+    savedNamesText = "";
+    savedWinners = [];
+    autoWinners = [];
+    drawIndex = 0;
+    isNamesSaved = false;
+  }
+
+  let authMode = "login";
+
+  function setAuthMode(mode) {
+    authMode = mode;
+    const t = translations[currentLang];
+
+    const wrapperConfirm = document.getElementById("auth-password-confirm-wrapper");
+    const authTitle = document.getElementById("auth-title");
+    const mainBtn = document.getElementById("auth-main-btn");
+    const secondaryBtn = document.getElementById("auth-secondary-btn");
+
+    if (wrapperConfirm) {
+      wrapperConfirm.style.display = (mode === "register") ? "block" : "none";
+    }
+    if (authTitle) {
+      authTitle.textContent = (mode === "login") ? t.authLoginTitle : t.authRegisterTitle;
+    }
+    if (mainBtn) {
+      mainBtn.textContent = (mode === "login") ? t.authLoginBtn : t.authRegisterBtn;
+    }
+    if (secondaryBtn) {
+      secondaryBtn.textContent = (mode === "login") ? t.authGoToRegister : t.authGoToLogin;
+    }
+  }
+
+  function showAuthMessage(text, type = "error") {
+    const box = document.getElementById("auth-message");
+    if (!box) return;
+    box.textContent = text;
+    box.className = "";
+    box.classList.add(type === "success" ? "success" : "error");
+  }
+
+  function handleAuthMain() {
+    const t = translations[currentLang];
+
+    const emailInput = document.getElementById("auth-email");
+    const passInput = document.getElementById("auth-password");
+    const passConfirmInput = document.getElementById("auth-password-confirm");
+    const rememberBox = document.getElementById("remember-credentials");
+
+    const email = emailInput.value.trim();
+    const password = passInput.value;
+
+    if (!email || !password) {
+      showAuthMessage(t.authErrorEmpty, "error");
+      return;
+    }
+
+    if (authMode === "register") {
+      const confirm = passConfirmInput.value;
+      if (password !== confirm) {
+        showAuthMessage(t.authErrorMismatch, "error");
+        return;
+      }
+
+      createUserWithEmailAndPassword(auth, email, password)
+        .then(() => {
+          if (rememberBox.checked) {
+            localStorage.setItem("shfliEmail", email);
+            localStorage.setItem("shfliPassword", password);
+          } else {
+            localStorage.removeItem("shfliEmail");
+            localStorage.removeItem("shfliPassword");
+          }
+          showAuthMessage("", "success");
+        })
+        .catch(() => {
+          showAuthMessage(t.authErrorGeneric, "error");
+        });
+    } else {
+      signInWithEmailAndPassword(auth, email, password)
+        .then(() => {
+          if (rememberBox.checked) {
+            localStorage.setItem("shfliEmail", email);
+            localStorage.setItem("shfliPassword", password);
+          } else {
+            localStorage.removeItem("shfliEmail");
+            localStorage.removeItem("shfliPassword");
+          }
+          showAuthMessage("", "success");
+        })
+        .catch(() => {
+          showAuthMessage(t.authErrorGeneric, "error");
+        });
+    }
+  }
+
+  function handleForgotPassword() {
+    const t = translations[currentLang];
+    const emailInput = document.getElementById("auth-email");
+    const email = emailInput.value.trim();
+    if (!email) {
+      showAuthMessage(t.authErrorEmpty, "error");
+      return;
+    }
+    sendPasswordResetEmail(auth, email)
+      .then(() => {
+        showAuthMessage(t.authResetSent, "success");
+      })
+      .catch(() => {
+        showAuthMessage(t.authErrorGeneric, "error");
+      });
+  }
+
+  function handleLogout() {
+    signOut(auth)
+      .then(() => {
+        showAuthMessage("", "success");
+      })
+      .catch(() => {
+        const t = translations[currentLang];
+        showAuthMessage(t.authErrorGeneric, "error");
+      });
+  }
+
+  function handleDeleteAccount() {
+    const user = auth.currentUser;
+    if (!user) {
+      return;
+    }
+    deleteUser(user).catch(() => {
+      const t = translations[currentLang];
+      showAuthMessage(t.authErrorGeneric, "error");
+    });
+  }
+
+  // فتح حوار التأكيد
+  function openConfirmDialog(actionType) {
+    pendingConfirmAction = actionType;
+    const overlay = document.getElementById("confirm-overlay");
+    const msg = document.getElementById("confirm-message");
+    const t = translations[currentLang];
+
+    if (actionType === "logout") {
+      msg.textContent = t.confirmLogout;
+    } else if (actionType === "delete") {
+      msg.textContent = t.confirmDelete;
+    }
+
+    overlay.style.display = "flex";
+  }
+
+  // إغلاق حوار التأكيد
+  function closeConfirmDialog() {
+    const overlay = document.getElementById("confirm-overlay");
+    overlay.style.display = "none";
+    pendingConfirmAction = null;
+  }
+
+  function handleShareApp() {
+    const t = translations[currentLang];
+    const shareData = {
+      title: t.pageTitle,
+      text: t.shareAppLabel + " من تطبيق شفلي",
+      url: window.location.href
+    };
+    if (navigator.share) {
+      navigator.share(shareData).catch(() => {});
+    } else {
+      alert(window.location.href);
+    }
+  }
+
+  function initAuthUI() {
+    const savedEmail = localStorage.getItem("shfliEmail") || "";
+    const savedPassword = localStorage.getItem("shfliPassword") || "";
+    const emailInput = document.getElementById("auth-email");
+    const passInput = document.getElementById("auth-password");
+    const rememberBox = document.getElementById("remember-credentials");
+
+    if (emailInput) emailInput.value = savedEmail;
+    if (passInput) passInput.value = savedPassword;
+    if (rememberBox) rememberBox.checked = !!savedEmail && !!savedPassword;
+
+    const mainBtn = document.getElementById("auth-main-btn");
+    const secondaryBtn = document.getElementById("auth-secondary-btn");
+    const forgotBtn = document.getElementById("auth-forgot-btn");
+
+    if (mainBtn) mainBtn.addEventListener("click", handleAuthMain);
+    if (secondaryBtn) secondaryBtn.addEventListener("click", () => {
+      setAuthMode(authMode === "login" ? "register" : "login");
+      applyLanguage();
+    });
+    if (forgotBtn) forgotBtn.addEventListener("click", handleForgotPassword);
+  }
+
+  function initSettingsMenus() {
+    const settingsButtons = document.querySelectorAll(".settings-btn");
+    settingsButtons.forEach(btn => {
+      const menuId = btn.getAttribute("data-menu");
+      const menu = document.getElementById(menuId);
+      if (!menu) return;
+
+      btn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        const isVisible = menu.style.display === "block";
+        document.querySelectorAll(".settings-menu").forEach(m => m.style.display = "none");
+        menu.style.display = isVisible ? "none" : "block";
+      });
+    });
+
+    document.addEventListener("click", () => {
+      document.querySelectorAll(".settings-menu").forEach(m => m.style.display = "none");
+    });
+
+    const langButtons = document.querySelectorAll(".lang-btn");
+    langButtons.forEach(btn => {
+      btn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        const lang = btn.getAttribute("data-lang");
+        setLanguage(lang);
+      });
+    });
+
+    const logoutButtons = document.querySelectorAll(".settings-logout");
+    logoutButtons.forEach(btn => {
+      btn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        openConfirmDialog("logout");
+      });
+    });
+
+    const deleteButtons = document.querySelectorAll(".settings-delete");
+    deleteButtons.forEach(btn => {
+      btn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        openConfirmDialog("delete");
+      });
+    });
+
+    const shareButtons = document.querySelectorAll(".settings-share");
+    shareButtons.forEach(btn => {
+      btn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        handleShareApp();
+      });
+    });
+
+    // أزرار حوار التأكيد
+    const confirmYes = document.getElementById("confirm-yes");
+    const confirmNo = document.getElementById("confirm-no");
+
+    if (confirmYes) {
+      confirmYes.addEventListener("click", () => {
+        if (pendingConfirmAction === "logout") {
+          handleLogout();
+        } else if (pendingConfirmAction === "delete") {
+          handleDeleteAccount();
+        }
+        closeConfirmDialog();
+      });
+    }
+
+    if (confirmNo) {
+      confirmNo.addEventListener("click", () => {
+        closeConfirmDialog();
+      });
+    }
+
+    const overlay = document.getElementById("confirm-overlay");
+    if (overlay) {
+      overlay.addEventListener("click", (e) => {
+        if (e.target === overlay) {
+          closeConfirmDialog();
+        }
+      });
+    }
+  }
+
+  function initApp() {
+    const namesTextarea = document.getElementById("names");
+    if (namesTextarea) {
+      namesTextarea.readOnly = true;
+    }
+
+    const hideBtn = document.getElementById("hideNamesBtn");
+    const autoBtn = document.getElementById("autoModeBtn");
+    const startBtn = document.getElementById("startDrawBtn");
+    const resetBtn = document.getElementById("resetBtn");
+    const editBtn = document.getElementById("editToggleBtn");
+    const clearBtn = document.getElementById("clearNamesBtn");
+
+    if (hideBtn) hideBtn.addEventListener("click", hideNames);
+    if (autoBtn) autoBtn.addEventListener("click", enableAutoMode);
+    if (startBtn) startBtn.addEventListener("click", startDraw);
+    if (resetBtn) resetBtn.addEventListener("click", resetWinners);
+    if (editBtn) editBtn.addEventListener("click", toggleEditMode);
+    if (clearBtn) clearBtn.addEventListener("click", clearNames);
+
+    setLanguage("ar");
+    setAuthMode("login");
+    initAuthUI();
+    initSettingsMenus();
+
+    const authScreen = document.getElementById("auth-screen");
+    const appScreen = document.getElementById("app-screen");
+
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        if (authScreen) authScreen.style.display = "none";
+        if (appScreen) appScreen.style.display = "flex";
       } else {
-        resultText.style.color = "var(--warning)";
-        resultText.textContent = translations[currentLang].warnNoParticipants;
+        if (authScreen) authScreen.style.display = "flex";
+        if (appScreen) appScreen.style.display = "none";
       }
-
-      startDrawBtn.disabled = false;  
-      resetBtn.disabled = false;  
-      showRandomNamesBlock();  
-    }  
-  }, intervalTime);  
-}  
-
-// زر تعديل/حفظ + إظهار/إخفاء زر مسح
-function toggleEditMode() {
-  const namesTextarea = document.getElementById("names");
-  const countInput = document.getElementById("participants-count-input");
-  const countValue = document.getElementById("participants-count-value");
-  const editToggleBtn = document.getElementById("editToggleBtn");
-  const clearBtn = document.getElementById("clearNamesBtn");
-
-  if (!namesTextarea || !countInput || !countValue || !editToggleBtn) return;
-
-  if (isEditMode) {
-    // حفظ + قفل + إخفاء زر مسح
-    namesTextarea.readOnly = true;
-    isEditMode = false;
-
-    // هنا فقط بعد الحفظ يتم تحميل الأسماء لاستخدامها في السحب
-    loadNamesFromTextarea();
-
-    let val = countInput.value.trim();
-    if (val === "") val = "0";
-    countValue.textContent = val;
-    countInput.style.display = "none";
-    countValue.style.display = "inline";
-
-    editToggleBtn.textContent = translations[currentLang].editButton;
-
-    if (clearBtn) clearBtn.style.display = "none";
-  } else {
-    // فتح التعديل + إظهار زر مسح بجانب حفظ
-    namesTextarea.readOnly = false;
-    isEditMode = true;
-
-    const currentText = countValue.textContent.replace(/[^\d]/g, "");
-    countInput.value = currentText || "";
-    countInput.style.display = "inline-block";
-    countValue.style.display = "none";
-
-    editToggleBtn.textContent = translations[currentLang].saveButton;
-
-    if (clearBtn) clearBtn.style.display = "inline-block";
-  }
-}
-
-// زر مسح الأسماء
-function clearNames() {
-  const namesTextarea = document.getElementById("names");
-  const countInput = document.getElementById("participants-count-input");
-  const countValue = document.getElementById("participants-count-value");
-
-  if (namesTextarea) namesTextarea.value = "";
-  if (countInput) countInput.value = "";
-  if (countValue) countValue.textContent = "0";
-
-  generatedNames = [];
-  savedWinners = [];
-  autoWinners = [];
-  drawIndex = 0;
-}
-
-function initApp() {
-  const namesTextarea = document.getElementById("names");
-  if (namesTextarea) {
-    namesTextarea.readOnly = true;
-  }
-
-  const langButtons = document.querySelectorAll(".lang-btn");
-  langButtons.forEach(btn => {
-    btn.addEventListener("click", () => {
-      const lang = btn.getAttribute("data-lang");
-      langButtons.forEach(b => b.classList.toggle("active", b === btn));
-      setLanguage(lang);
     });
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    initApp();
   });
-
-  loadNamesFromTextarea();
-  setLanguage('ar');
-}
-
-document.addEventListener("DOMContentLoaded", function () {
-  initApp();
-});
-</script>  
-
-<script>
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', function () {
-      navigator.serviceWorker.register('service-worker.js');
-    });
-  }
 </script>
-  
-</body>  
+
+</body>
 </html>
+```0
