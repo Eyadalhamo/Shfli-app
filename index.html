@@ -399,6 +399,7 @@
     width: 100%;
   }
 
+  /* وضع فاتح افتراضي حسب النظام */
   @media (prefers-color-scheme: light) {
     body {
       background: radial-gradient(circle at top, #dbeafe 0, #e5e7eb 55%, #ffffff);
@@ -446,6 +447,102 @@
     }
   }
 
+  /* ====== أنماط المود الداكن/الفاتح اليدوي (تغطي على أي إعداد للنظام) ====== */
+
+  body.theme-dark {
+    background: radial-gradient(circle at top, #1d4ed8 0, #020617 55%, #000);
+    color: var(--text);
+  }
+  body.theme-dark .card {
+    background: #0b1e3b;
+    border-color: #345;
+    box-shadow: 0 15px 35px #0008;
+  }
+  body.theme-dark .card-header {
+    background: #133b63bb;
+  }
+  body.theme-dark textarea,
+  body.theme-dark input {
+    background: #0a1024;
+    border-color: #334;
+    color: #f9fafb;
+  }
+  body.theme-dark .ghost {
+    background: #122b47;
+    color: #fff;
+  }
+  body.theme-dark .primary {
+    background: linear-gradient(135deg, #4b6fff, #5a8bff);
+    color: #fff;
+  }
+  body.theme-dark #result-wrapper {
+    background: #061830;
+    border-color: #133a66;
+  }
+  body.theme-dark .settings-menu {
+    background: #020617;
+    border-color: #334;
+  }
+  body.theme-dark .settings-menu button {
+    background: #0b1e3b;
+    color: #f9fafb;
+  }
+  body.theme-dark .settings-menu button:hover {
+    background: #1d4ed8;
+  }
+  body.theme-dark .confirm-dialog {
+    background: #020617;
+    border-color: #334;
+    color: #f9fafb;
+  }
+
+  body.theme-light {
+    background: radial-gradient(circle at top, #dbeafe 0, #e5e7eb 55%, #ffffff);
+    color: #020617;
+  }
+  body.theme-light .card {
+    background: #ffffff;
+    border-color: #d1d5db;
+    box-shadow: 0 10px 25px #0002;
+  }
+  body.theme-light .card-header {
+    background: #e0ebff;
+  }
+  body.theme-light textarea,
+  body.theme-light input {
+    background: #f9fafb;
+    border-color: #d1d5db;
+    color: #020617;
+  }
+  body.theme-light .ghost {
+    background: #e5e7eb;
+    color: #111827;
+  }
+  body.theme-light .primary {
+    background: linear-gradient(135deg, #2563eb, #3b82f6);
+    color: #fff;
+  }
+  body.theme-light #result-wrapper {
+    background: #f3f4ff;
+    border-color: #c7d2fe;
+  }
+  body.theme-light .settings-menu {
+    background: #ffffff;
+    border-color: #cbd5f5;
+  }
+  body.theme-light .settings-menu button {
+    background: #eef2ff;
+    color: #111827;
+  }
+  body.theme-light .settings-menu button:hover {
+    background: #dbeafe;
+  }
+  body.theme-light .confirm-dialog {
+    background: #ffffff;
+    border-color: #d1d5db;
+    color: #111827;
+  }
+
   </style>
 </head>
 
@@ -456,9 +553,7 @@
   <div class="card">
     <div class="card-header">
       <div class="logo-circle"></div>
-      <!-- العنوان المعدّل -->
       <h1 id="auth-title">تسجيل الدخول إلى تطبيق شفلي للمسابقات المشتركين</h1>
-      <!-- لا يوجد مسنّن إعدادات هنا -->
     </div>
 
     <div class="card-body">
@@ -510,6 +605,12 @@
           <div class="settings-group-title" id="settings-lang-title-app">اللغة</div>
           <button type="button" class="lang-btn active" data-lang="ar">عربي</button>
           <button type="button" class="lang-btn" data-lang="en">English</button>
+
+          <div class="settings-separator"></div>
+
+          <!-- قسم المظهر -->
+          <div class="settings-group-title" id="settings-theme-title-app">المظهر</div>
+          <button type="button" class="settings-theme-toggle">الوضع الداكن</button>
 
           <div class="settings-separator"></div>
 
@@ -657,7 +758,10 @@
       confirmLogout: "هل تريد تسجيل الخروج بالفعل؟",
       confirmDelete: "هل أنت متأكد أنك تريد حذف الحساب نهائياً؟",
       confirmYes: "نعم",
-      confirmNo: "لا"
+      confirmNo: "لا",
+      themeTitle: "المظهر",
+      themeToDark: "الوضع الداكن",
+      themeToLight: "الوضع الفاتح"
     },
     en: {
       pageTitle: "Shfli Draw",
@@ -708,7 +812,10 @@
       confirmLogout: "Do you really want to log out?",
       confirmDelete: "Are you sure you want to delete your account permanently?",
       confirmYes: "Yes",
-      confirmNo: "No"
+      confirmNo: "No",
+      themeTitle: "Appearance",
+      themeToDark: "Dark mode",
+      themeToLight: "Light mode"
     }
   };
 
@@ -730,6 +837,9 @@
   // نوع التأكيد الحالي: "logout" أو "delete"
   let pendingConfirmAction = null;
 
+  // ثيم الواجهة: "dark" أو "light"
+  let currentTheme = "dark";
+
   function loadVoices() {
     allVoices = window.speechSynthesis.getVoices() || [];
     if (!allVoices.length) return;
@@ -745,6 +855,30 @@
 
   window.speechSynthesis.onvoiceschanged = loadVoices;
   loadVoices();
+
+  function setTheme(theme) {
+    currentTheme = theme;
+    document.body.classList.remove("theme-dark", "theme-light");
+    if (theme === "dark") {
+      document.body.classList.add("theme-dark");
+    } else if (theme === "light") {
+      document.body.classList.add("theme-light");
+    }
+    localStorage.setItem("shfliTheme", theme);
+    updateThemeButtonText();
+  }
+
+  function initTheme() {
+    const saved = localStorage.getItem("shfliTheme") || "dark";
+    setTheme(saved);
+  }
+
+  function updateThemeButtonText() {
+    const btn = document.querySelector(".settings-theme-toggle");
+    if (!btn) return;
+    const t = translations[currentLang];
+    btn.textContent = currentTheme === "dark" ? t.themeToLight : t.themeToDark;
+  }
 
   function setLanguage(lang) {
     currentLang = lang;
@@ -841,6 +975,9 @@
     const shareBtns = document.querySelectorAll(".settings-share");
     shareBtns.forEach(btn => btn.textContent = t.shareAppLabel);
 
+    const themeTitle = document.getElementById("settings-theme-title-app");
+    if (themeTitle) themeTitle.textContent = t.themeTitle;
+
     const langButtons = document.querySelectorAll(".lang-btn");
     langButtons.forEach(btn => {
       const langAttr = btn.getAttribute("data-lang");
@@ -852,6 +989,8 @@
     const confirmNo = document.getElementById("confirm-no");
     if (confirmYes) confirmYes.textContent = t.confirmYes;
     if (confirmNo) confirmNo.textContent = t.confirmNo;
+
+    updateThemeButtonText();
   }
 
   function loadNamesFromTextarea() {
@@ -1042,12 +1181,12 @@
     startDrawBtn.disabled = true;
     resetBtn.disabled = true;
 
-    const intervalTime = 40;
+    const intervalTime = 20;          // كان 40 – الآن أسرع
     const totalDuration = 10000;
     const startTime = Date.now();
 
     let lastNamesUpdate = 0;
-    const namesUpdateInterval = 300;
+    const namesUpdateInterval = 150;  // كان 300 – الآن أسرع
 
     resultText.textContent = translations[currentLang].drawingInProgress;
     resultText.style.color = "#eee";
@@ -1407,6 +1546,16 @@
       });
     });
 
+    // زر تبديل المظهر
+    const themeToggle = document.querySelector(".settings-theme-toggle");
+    if (themeToggle) {
+      themeToggle.addEventListener("click", (e) => {
+        e.stopPropagation();
+        const next = currentTheme === "dark" ? "light" : "dark";
+        setTheme(next);
+      });
+    }
+
     // أزرار حوار التأكيد
     const confirmYes = document.getElementById("confirm-yes");
     const confirmNo = document.getElementById("confirm-no");
@@ -1458,6 +1607,7 @@
     if (editBtn) editBtn.addEventListener("click", toggleEditMode);
     if (clearBtn) clearBtn.addEventListener("click", clearNames);
 
+    initTheme();          // تطبيق الثيم المحفوظ أولاً
     setLanguage("ar");
     setAuthMode("login");
     initAuthUI();
