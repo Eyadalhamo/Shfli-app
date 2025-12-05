@@ -74,40 +74,6 @@
     padding: 18px 20px 20px;
   }
 
-  /* شاشة الدخول – هيدر نصي بدل الصورة */
-  .auth-hero {
-    width: 100%;
-    height: 120px;
-    border-radius: 18px;
-    margin-bottom: 16px;
-    background: linear-gradient(135deg, #1d4ed8, #4f46e5);
-    box-shadow: 0 8px 20px #0007;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    padding: 0 12px;
-    box-sizing: border-box;
-  }
-
-  .auth-hero-text {
-    font-size: 18px;
-    font-weight: 600;
-    color: #f9fafb;
-    line-height: 1.5;
-  }
-
-  .auth-form-group {
-    margin-bottom: 12px;
-  }
-
-  .auth-form-group label {
-    font-size: 13px;
-    display: block;
-    margin-bottom: 4px;
-    opacity: 0.9;
-  }
-
   textarea, input {
     width: 100%;
     background: #0a1024;
@@ -245,50 +211,6 @@
     gap: 8px;
   }
 
-  .remember-row {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 13px;
-    margin-bottom: 8px;
-    cursor: pointer;
-  }
-
-  .remember-row input[type="checkbox"] {
-    width: auto;
-    margin: 0;
-  }
-
-  #auth-message {
-    font-size: 13px;
-    margin-top: 6px;
-    min-height: 18px;
-  }
-
-  #auth-message.error {
-    color: var(--warning);
-  }
-
-  #auth-message.success {
-    color: var(--success);
-  }
-
-  #auth-forgot-btn {
-    width: 100%;
-    margin-top: 8px;
-    font-size: 13px;
-  }
-
-  #auth-secondary-btn {
-    width: 100%;
-    margin-top: 8px;
-  }
-
-  #auth-main-btn {
-    width: 100%;
-    margin-top: 4px;
-  }
-
   /* إعدادات شاشة السحب */
   .settings-wrapper {
     margin-right: auto;
@@ -309,7 +231,7 @@
     position: absolute;
     top: 110%;
     left: 0;
-    min-width: 180px;
+    min-width: 200px;
     background: #020617;
     border-radius: 14px;
     border: 1px solid #334;
@@ -361,7 +283,7 @@
     margin: 6px 0;
   }
 
-  /* حوار التأكيد */
+  /* حوار التأكيد (باقي لكن غير مستخدم حالياً) */
   .confirm-overlay {
     position: fixed;
     inset: 0;
@@ -399,145 +321,58 @@
     width: 100%;
   }
 
-  /* وضع فاتح افتراضي حسب النظام */
-  @media (prefers-color-scheme: light) {
-    body {
-      background: radial-gradient(circle at top, #dbeafe 0, #e5e7eb 55%, #ffffff);
-      color: #020617;
-    }
-    .card {
-      background: #ffffff;
-      border-color: #d1d5db;
-      box-shadow: 0 10px 25px #0002;
-    }
-    .card-header {
-      background: #e0ebff;
-    }
-    textarea, input {
-      background: #f9fafb;
-      border-color: #d1d5db;
-      color: #020617;
-    }
-    .ghost {
-      background: #e5e7eb;
-      color: #111827;
-    }
-    .primary {
-      background: linear-gradient(135deg, #2563eb, #3b82f6);
-    }
-    #result-wrapper {
-      background: #f3f4ff;
-      border-color: #c7d2fe;
-    }
-    .settings-menu {
-      background: #ffffff;
-      border-color: #cbd5f5;
-    }
-    .settings-menu button {
-      background: #eef2ff;
-      color: #111827;
-    }
-    .settings-menu button:hover {
-      background: #dbeafe;
-    }
-    .confirm-dialog {
-      background: #ffffff;
-      border-color: #d1d5db;
-      color: #111827;
-    }
-  }
-
-  /* ====== أنماط المود الداكن/الفاتح اليدوي (تغطي على أي إعداد للنظام) ====== */
-
-  body.theme-dark {
-    background: radial-gradient(circle at top, #1d4ed8 0, #020617 55%, #000);
-    color: var(--text);
-  }
-  body.theme-dark .card {
-    background: #0b1e3b;
-    border-color: #345;
-    box-shadow: 0 15px 35px #0008;
-  }
-  body.theme-dark .card-header {
-    background: #133b63bb;
-  }
-  body.theme-dark textarea,
-  body.theme-dark input {
-    background: #0a1024;
-    border-color: #334;
-    color: #f9fafb;
-  }
-  body.theme-dark .ghost {
-    background: #122b47;
-    color: #fff;
-  }
-  body.theme-dark .primary {
-    background: linear-gradient(135deg, #4b6fff, #5a8bff);
-    color: #fff;
-  }
-  body.theme-dark #result-wrapper {
-    background: #061830;
-    border-color: #133a66;
-  }
-  body.theme-dark .settings-menu {
-    background: #020617;
-    border-color: #334;
-  }
-  body.theme-dark .settings-menu button {
-    background: #0b1e3b;
-    color: #f9fafb;
-  }
-  body.theme-dark .settings-menu button:hover {
-    background: #1d4ed8;
-  }
-  body.theme-dark .confirm-dialog {
-    background: #020617;
-    border-color: #334;
-    color: #f9fafb;
-  }
-
-  body.theme-light {
+  /* ثيم فاتح عند التبديل */
+  body.light-mode {
     background: radial-gradient(circle at top, #dbeafe 0, #e5e7eb 55%, #ffffff);
     color: #020617;
   }
-  body.theme-light .card {
+
+  body.light-mode .card {
     background: #ffffff;
     border-color: #d1d5db;
     box-shadow: 0 10px 25px #0002;
   }
-  body.theme-light .card-header {
+
+  body.light-mode .card-header {
     background: #e0ebff;
   }
-  body.theme-light textarea,
-  body.theme-light input {
+
+  body.light-mode textarea,
+  body.light-mode input {
     background: #f9fafb;
     border-color: #d1d5db;
     color: #020617;
   }
-  body.theme-light .ghost {
+
+  body.light-mode .ghost {
     background: #e5e7eb;
     color: #111827;
   }
-  body.theme-light .primary {
+
+  body.light-mode .primary {
     background: linear-gradient(135deg, #2563eb, #3b82f6);
-    color: #fff;
   }
-  body.theme-light #result-wrapper {
+
+  body.light-mode #result-wrapper {
     background: #f3f4ff;
     border-color: #c7d2fe;
   }
-  body.theme-light .settings-menu {
+
+  body.light-mode .settings-menu {
     background: #ffffff;
     border-color: #cbd5f5;
   }
-  body.theme-light .settings-menu button {
+
+  body.light-mode .settings-menu button {
     background: #eef2ff;
     color: #111827;
   }
-  body.theme-light .settings-menu button:hover {
+
+  body.light-mode .settings-menu button:hover {
     background: #dbeafe;
   }
-  body.theme-light .confirm-dialog {
+
+  body.light-mode .confirm-dialog {
     background: #ffffff;
     border-color: #d1d5db;
     color: #111827;
@@ -548,51 +383,8 @@
 
 <body>
 
-<!-- شاشة الدخول -->
-<div id="auth-screen" class="app">
-  <div class="card">
-    <div class="card-header">
-      <div class="logo-circle"></div>
-      <h1 id="auth-title">تسجيل الدخول إلى تطبيق شفلي للمسابقات المشتركين</h1>
-    </div>
-
-    <div class="card-body">
-      <div class="auth-hero">
-        <div class="auth-hero-text">قرعة احترافية لاختيار الفائز</div>
-      </div>
-
-      <div class="auth-form-group">
-        <label id="auth-email-label" for="auth-email">البريد الإلكتروني</label>
-        <input id="auth-email" type="email" placeholder="example@email.com" autocomplete="email">
-      </div>
-
-      <div class="auth-form-group">
-        <label id="auth-password-label" for="auth-password">كلمة المرور</label>
-        <input id="auth-password" type="password" placeholder="••••••••" autocomplete="current-password">
-      </div>
-
-      <div class="auth-form-group" id="auth-password-confirm-wrapper" style="display:none;">
-        <label id="auth-password-confirm-label" for="auth-password-confirm">تأكيد كلمة المرور</label>
-        <input id="auth-password-confirm" type="password" placeholder="أعد كتابة كلمة المرور" autocomplete="new-password">
-      </div>
-
-      <label class="remember-row">
-        <input type="checkbox" id="remember-credentials">
-        <span id="remember-label">حفظ كلمة المرور</span>
-      </label>
-
-      <button class="btn primary" id="auth-main-btn" type="button">تسجيل الدخول</button>
-      <button class="btn ghost" id="auth-secondary-btn" type="button">إنشاء حساب جديد</button>
-      <button class="btn tiny secondary" id="auth-forgot-btn" type="button">نسيت كلمة المرور؟</button>
-
-      <div id="auth-message"></div>
-    </div>
-    <div class="card-footer"></div>
-  </div>
-</div>
-
-<!-- شاشة السحب -->
-<div id="app-screen" class="app" style="display:none;">
+<!-- شاشة السحب (مباشرة، بدون شاشة تسجيل دخول) -->
+<div id="app-screen" class="app">
   <div class="card">
     <div class="card-header">
       <div class="logo-circle"></div>
@@ -608,15 +400,11 @@
 
           <div class="settings-separator"></div>
 
-          <!-- قسم المظهر -->
-          <div class="settings-group-title" id="settings-theme-title-app">المظهر</div>
-          <button type="button" class="settings-theme-toggle">الوضع الداكن</button>
+          <button type="button" id="theme-toggle-btn">الوضع الفاتح</button>
 
           <div class="settings-separator"></div>
 
           <button type="button" class="settings-share settings-item-app">مشاركة التطبيق</button>
-          <button type="button" class="settings-logout settings-item-app">تسجيل الخروج</button>
-          <button type="button" class="settings-delete settings-item-app">حذف الحساب</button>
         </div>
       </div>
     </div>
@@ -670,7 +458,7 @@
   </div>
 </div>
 
-<!-- حوار التأكيد المشترك لتسجيل الخروج وحذف الحساب -->
+<!-- حوار التأكيد (باقي لكن غير مستخدم حالياً) -->
 <div id="confirm-overlay" class="confirm-overlay">
   <div class="confirm-dialog">
     <p id="confirm-message">هل أنت متأكد؟</p>
@@ -681,18 +469,22 @@
   </div>
 </div>
 
+<!-- رسالة ترحيب أول مرة يفتح المستخدم التطبيق -->
+<div id="welcome-overlay" class="confirm-overlay">
+  <div class="confirm-dialog">
+    <p>أهلاً في تطبيق سحب شفلي 👋<br><br>
+      هذا التطبيق يساعدك في اختيار الفائزين من بين المشتركين بشكل عشوائي واحترافي.<br>
+      بياناتك تنحفظ على هذا الجهاز فقط ولا يتم ربطها بحساب أو إيميل.
+    </p>
+    <div class="confirm-actions">
+      <button id="welcome-ok-btn" class="btn primary">بدء الاستخدام</button>
+    </div>
+  </div>
+</div>
+
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
   import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-analytics.js";
-  import {
-    getAuth,
-    createUserWithEmailAndPassword,
-    signInWithEmailAndPassword,
-    sendPasswordResetEmail,
-    signOut,
-    onAuthStateChanged,
-    deleteUser
-  } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyD5Evcf4rCO-m3SmsNKZ3RGqeju0UCAmls",
@@ -706,30 +498,12 @@
 
   const firebaseApp = initializeApp(firebaseConfig);
   const analytics = getAnalytics(firebaseApp);
-  const auth = getAuth(firebaseApp);
 
   const translations = {
     ar: {
       pageTitle: "سحب شفلي",
       headerTitle: "الجائزة المقدّمة من تطبيق شفلي 🎉",
-      authLoginTitle: "تسجيل الدخول إلى تطبيق شفلي للمسابقات المشتركين",
-      authRegisterTitle: "إنشاء حساب جديد",
-      authEmailLabel: "البريد الإلكتروني",
-      authPasswordLabel: "كلمة المرور",
-      authPasswordConfirmLabel: "تأكيد كلمة المرور",
-      authEmailPlaceholder: "example@email.com",
-      authPasswordPlaceholder: "••••••••",
-      authPasswordConfirmPlaceholder: "أعد كتابة كلمة المرور",
-      authLoginBtn: "تسجيل الدخول",
-      authRegisterBtn: "إنشاء حساب",
-      authGoToRegister: "ليس لديك حساب؟ إنشاء حساب جديد",
-      authGoToLogin: "لديك حساب؟ تسجيل الدخول",
-      authRemember: "حفظ كلمة المرور",
-      authForgot: "نسيت كلمة المرور؟",
-      authErrorEmpty: "⚠️ الرجاء إدخال الإيميل وكلمة المرور.",
-      authErrorMismatch: "⚠️ كلمة المرور وتأكيدها غير متطابقين.",
-      authErrorGeneric: "⚠️ حدث خطأ أثناء العملية، حاول مرة أخرى.",
-      authResetSent: "✅ تم إرسال رابط استعادة كلمة المرور إلى بريدك.",
+
       namesLabelBase: "كل أسماء المشتركين:",
       hideNamesBtn: "إخفاء الأسماء",
       autoModeBtn: "اختيار تلقائي",
@@ -751,39 +525,14 @@
       editButton: "تعديل",
       saveButton: "حفظ",
       settingsLangTitle: "اللغة",
-      logoutLabel: "تسجيل الخروج",
-      deleteAccountLabel: "حذف الحساب",
       shareAppLabel: "مشاركة التطبيق",
-      mustSaveNames: "⚠️ الرجاء الضغط على زر حفظ بعد تعديل الأسماء قبل البدء بالسحب",
-      confirmLogout: "هل تريد تسجيل الخروج بالفعل؟",
-      confirmDelete: "هل أنت متأكد أنك تريد حذف الحساب نهائياً؟",
       confirmYes: "نعم",
-      confirmNo: "لا",
-      themeTitle: "المظهر",
-      themeToDark: "الوضع الداكن",
-      themeToLight: "الوضع الفاتح"
+      confirmNo: "لا"
     },
     en: {
       pageTitle: "Shfli Draw",
       headerTitle: "Prize from Shfli App 🎉",
-      authLoginTitle: "Sign in to Shfli",
-      authRegisterTitle: "Create a new account",
-      authEmailLabel: "Email address",
-      authPasswordLabel: "Password",
-      authPasswordConfirmLabel: "Confirm password",
-      authEmailPlaceholder: "example@email.com",
-      authPasswordPlaceholder: "••••••••",
-      authPasswordConfirmPlaceholder: "Re-type password",
-      authLoginBtn: "Sign in",
-      authRegisterBtn: "Create account",
-      authGoToRegister: "Don't have an account? Create one",
-      authGoToLogin: "Already have an account? Sign in",
-      authRemember: "Remember password",
-      authForgot: "Forgot password?",
-      authErrorEmpty: "⚠️ Please enter email and password.",
-      authErrorMismatch: "⚠️ Password and confirmation do not match.",
-      authErrorGeneric: "⚠️ Something went wrong. Please try again.",
-      authResetSent: "✅ Password reset link was sent to your email.",
+
       namesLabelBase: "All participants:",
       hideNamesBtn: "Hide winners",
       autoModeBtn: "Auto pick",
@@ -805,17 +554,9 @@
       editButton: "Edit",
       saveButton: "Save",
       settingsLangTitle: "Language",
-      logoutLabel: "Log out",
-      deleteAccountLabel: "Delete account",
       shareAppLabel: "Share app",
-      mustSaveNames: "⚠️ Please click Save after editing names before starting the draw",
-      confirmLogout: "Do you really want to log out?",
-      confirmDelete: "Are you sure you want to delete your account permanently?",
       confirmYes: "Yes",
-      confirmNo: "No",
-      themeTitle: "Appearance",
-      themeToDark: "Dark mode",
-      themeToLight: "Light mode"
+      confirmNo: "No"
     }
   };
 
@@ -827,18 +568,18 @@
   let autoWinners = [];
   const AUTO_WINNERS_COUNT = 5;
   let isEditMode = false;
-  let isNamesSaved = false;
   let savedNamesText = "";
 
   let allVoices = [];
   let maleArabicVoice = null;
   let maleEnglishVoice = null;
 
-  // نوع التأكيد الحالي: "logout" أو "delete"
-  let pendingConfirmAction = null;
+  const STORAGE_KEYS = {
+    NAMES: "shfli_saved_names"
+  };
 
-  // ثيم الواجهة: "dark" أو "light"
-  let currentTheme = "dark";
+  const WELCOME_KEY = "shfli_welcome_shown";
+  const THEME_KEY = "shfli_theme";
 
   function loadVoices() {
     allVoices = window.speechSynthesis.getVoices() || [];
@@ -856,33 +597,10 @@
   window.speechSynthesis.onvoiceschanged = loadVoices;
   loadVoices();
 
-  function setTheme(theme) {
-    currentTheme = theme;
-    document.body.classList.remove("theme-dark", "theme-light");
-    if (theme === "dark") {
-      document.body.classList.add("theme-dark");
-    } else if (theme === "light") {
-      document.body.classList.add("theme-light");
-    }
-    localStorage.setItem("shfliTheme", theme);
-    updateThemeButtonText();
-  }
-
-  function initTheme() {
-    const saved = localStorage.getItem("shfliTheme") || "dark";
-    setTheme(saved);
-  }
-
-  function updateThemeButtonText() {
-    const btn = document.querySelector(".settings-theme-toggle");
-    if (!btn) return;
-    const t = translations[currentLang];
-    btn.textContent = currentTheme === "dark" ? t.themeToLight : t.themeToDark;
-  }
-
   function setLanguage(lang) {
     currentLang = lang;
     applyLanguage();
+    updateThemeButtonText();
   }
 
   function applyLanguage() {
@@ -892,9 +610,6 @@
 
     const headerTitle = document.getElementById("header-title");
     if (headerTitle) headerTitle.textContent = t.headerTitle;
-
-    const authTitle = document.getElementById("auth-title");
-    if (authTitle) authTitle.textContent = (authMode === "login") ? t.authLoginTitle : t.authRegisterTitle;
 
     const hideBtn = document.getElementById("hideNamesBtn");
     if (hideBtn) hideBtn.textContent = t.hideNamesBtn;
@@ -939,44 +654,11 @@
       editToggleBtn.textContent = isEditMode ? t.saveButton : t.editButton;
     }
 
-    const authEmailLabel = document.getElementById("auth-email-label");
-    const authPasswordLabel = document.getElementById("auth-password-label");
-    const authPasswordConfirmLabel = document.getElementById("auth-password-confirm-label");
-    const authEmailInput = document.getElementById("auth-email");
-    const authPasswordInput = document.getElementById("auth-password");
-    const authPasswordConfirmInput = document.getElementById("auth-password-confirm");
-    const authMainBtn = document.getElementById("auth-main-btn");
-    const authSecondaryBtn = document.getElementById("auth-secondary-btn");
-    const rememberLabel = document.getElementById("remember-label");
-    const forgotBtn = document.getElementById("auth-forgot-btn");
-
-    if (authEmailLabel) authEmailLabel.textContent = t.authEmailLabel;
-    if (authPasswordLabel) authPasswordLabel.textContent = t.authPasswordLabel;
-    if (authPasswordConfirmLabel) authPasswordConfirmLabel.textContent = t.authPasswordConfirmLabel;
-
-    if (authEmailInput) authEmailInput.placeholder = t.authEmailPlaceholder;
-    if (authPasswordInput) authPasswordInput.placeholder = t.authPasswordPlaceholder;
-    if (authPasswordConfirmInput) authPasswordConfirmInput.placeholder = t.authPasswordConfirmPlaceholder;
-
-    if (authMainBtn) authMainBtn.textContent = (authMode === "login") ? t.authLoginBtn : t.authRegisterBtn;
-    if (authSecondaryBtn) authSecondaryBtn.textContent = (authMode === "login") ? t.authGoToRegister : t.authGoToLogin;
-    if (rememberLabel) rememberLabel.textContent = t.authRemember;
-    if (forgotBtn) forgotBtn.textContent = t.authForgot;
-
-    const settingsLangTitles = document.querySelectorAll("#settings-lang-title-auth, #settings-lang-title-app");
+    const settingsLangTitles = document.querySelectorAll("#settings-lang-title-app");
     settingsLangTitles.forEach(el => el.textContent = t.settingsLangTitle);
-
-    const logoutBtns = document.querySelectorAll(".settings-logout");
-    logoutBtns.forEach(btn => btn.textContent = t.logoutLabel);
-
-    const deleteBtns = document.querySelectorAll(".settings-delete");
-    deleteBtns.forEach(btn => btn.textContent = t.deleteAccountLabel);
 
     const shareBtns = document.querySelectorAll(".settings-share");
     shareBtns.forEach(btn => btn.textContent = t.shareAppLabel);
-
-    const themeTitle = document.getElementById("settings-theme-title-app");
-    if (themeTitle) themeTitle.textContent = t.themeTitle;
 
     const langButtons = document.querySelectorAll(".lang-btn");
     langButtons.forEach(btn => {
@@ -984,12 +666,36 @@
       btn.classList.toggle("active", langAttr === currentLang);
     });
 
-    // نصوص حوار التأكيد
     const confirmYes = document.getElementById("confirm-yes");
     const confirmNo = document.getElementById("confirm-no");
     if (confirmYes) confirmYes.textContent = t.confirmYes;
     if (confirmNo) confirmNo.textContent = t.confirmNo;
+  }
 
+  function updateThemeButtonText() {
+    const btn = document.getElementById("theme-toggle-btn");
+    if (!btn) return;
+    const isLight = document.body.classList.contains("light-mode");
+    if (currentLang === "ar") {
+      btn.textContent = isLight ? "الوضع الداكن" : "الوضع الفاتح";
+    } else {
+      btn.textContent = isLight ? "Dark mode" : "Light mode";
+    }
+  }
+
+  function applyThemeFromStorage() {
+    const saved = localStorage.getItem(THEME_KEY) || "dark";
+    if (saved === "light") {
+      document.body.classList.add("light-mode");
+    } else {
+      document.body.classList.remove("light-mode");
+    }
+    updateThemeButtonText();
+  }
+
+  function toggleTheme() {
+    const isLight = document.body.classList.toggle("light-mode");
+    localStorage.setItem(THEME_KEY, isLight ? "light" : "dark");
     updateThemeButtonText();
   }
 
@@ -1003,7 +709,27 @@
       .map(n => n.trim())
       .filter(n => n !== "");
 
-    isNamesSaved = true;
+    // حفظ تلقائي في التخزين المحلي
+    localStorage.setItem(STORAGE_KEYS.NAMES, savedNamesText);
+  }
+
+  function loadSavedLocalData() {
+    const namesTextarea = document.getElementById("names");
+    if (!namesTextarea) return;
+
+    const saved = localStorage.getItem(STORAGE_KEYS.NAMES);
+    if (saved && saved.trim() !== "") {
+      namesTextarea.value = saved;
+      savedNamesText = saved;
+      generatedNames = saved
+        .split(/\r?\n/)
+        .map(n => n.trim())
+        .filter(n => n !== "");
+      const countValue = document.getElementById("participants-count-value");
+      if (countValue) {
+        countValue.textContent = String(generatedNames.length);
+      }
+    }
   }
 
   function showRandomNamesBlock() {
@@ -1052,15 +778,19 @@
     speechSynthesis.speak(msg);
   }
 
-  function ensureNamesSaved() {
+  // صار هنا بدل ما يطلب زر "حفظ": يقرأ الأسماء ويخزنها فوراً
+  function ensureNamesAvailable() {
     const resultDiv = document.getElementById("result");
     let resultText = document.getElementById("result-text");
     if (!resultText) {
       resultDiv.innerHTML = '<span id="result-text"></span>';
       resultText = document.getElementById("result-text");
     }
-    if (!isNamesSaved) {
-      resultText.textContent = translations[currentLang].mustSaveNames;
+
+    loadNamesFromTextarea();
+
+    if (generatedNames.length === 0) {
+      resultText.textContent = translations[currentLang].warnNoParticipants;
       resultText.style.color = "var(--warning)";
       return false;
     }
@@ -1068,7 +798,7 @@
   }
 
   function hideNames() {
-    if (!ensureNamesSaved()) return;
+    if (!ensureNamesAvailable()) return;
 
     const inputs = document.querySelectorAll(".winner-input");
     const temp = [];
@@ -1089,12 +819,6 @@
       return;
     }
 
-    if (generatedNames.length === 0) {
-      resultText.textContent = translations[currentLang].warnNoParticipants;
-      resultText.style.color = "var(--warning)";
-      return;
-    }
-
     drawMode = "manual";
     savedWinners = temp;
     autoWinners = [];
@@ -1105,17 +829,11 @@
   }
 
   function enableAutoMode() {
-    if (!ensureNamesSaved()) return;
+    if (!ensureNamesAvailable()) return;
 
     const resultDiv = document.getElementById("result");
     resultDiv.innerHTML = '<span id="result-text"></span>';
     const resultText = document.getElementById("result-text");
-
-    if (generatedNames.length === 0) {
-      resultText.textContent = translations[currentLang].warnNoParticipants;
-      resultText.style.color = "var(--warning)";
-      return;
-    }
 
     drawMode = "auto";
     savedWinners = [];
@@ -1142,7 +860,7 @@
   }
 
   function startDraw() {
-    if (!ensureNamesSaved()) return;
+    if (!ensureNamesAvailable()) return;
 
     const startDrawBtn = document.getElementById("startDrawBtn");
     const resetBtn = document.getElementById("resetBtn");
@@ -1152,12 +870,6 @@
     if (!resultText) {
       resultDiv.innerHTML = '<span id="result-text"></span>';
       resultText = document.getElementById("result-text");
-    }
-
-    if (generatedNames.length === 0) {
-      resultText.textContent = translations[currentLang].warnNoParticipants;
-      resultText.style.color = "var(--warning)";
-      return;
     }
 
     if (drawMode === "manual" && savedWinners.length === 0) {
@@ -1181,12 +893,12 @@
     startDrawBtn.disabled = true;
     resetBtn.disabled = true;
 
-    const intervalTime = 20;          // كان 40 – الآن أسرع
+    const intervalTime = 40;
     const totalDuration = 10000;
     const startTime = Date.now();
 
     let lastNamesUpdate = 0;
-    const namesUpdateInterval = 150;  // كان 300 – الآن أسرع
+    const namesUpdateInterval = 300;
 
     resultText.textContent = translations[currentLang].drawingInProgress;
     resultText.style.color = "#eee";
@@ -1259,6 +971,8 @@
 
     if (!namesTextarea || !countInput || !countValue || !editToggleBtn) return;
 
+    const t = translations[currentLang];
+
     if (isEditMode) {
       namesTextarea.readOnly = true;
       isEditMode = false;
@@ -1271,20 +985,19 @@
 
       loadNamesFromTextarea();
 
-      editToggleBtn.textContent = translations[currentLang].editButton;
+      editToggleBtn.textContent = t.editButton;
 
       if (clearBtn) clearBtn.style.display = "none";
     } else {
       namesTextarea.readOnly = false;
       isEditMode = true;
-      isNamesSaved = false;
 
       const currentText = countValue.textContent.replace(/[^\d]/g, "");
       countInput.value = currentText || "";
       countInput.style.display = "inline-block";
       countValue.style.display = "none";
 
-      editToggleBtn.textContent = translations[currentLang].saveButton;
+      editToggleBtn.textContent = t.saveButton;
 
       if (clearBtn) clearBtn.style.display = "inline-block";
     }
@@ -1304,157 +1017,8 @@
     savedWinners = [];
     autoWinners = [];
     drawIndex = 0;
-    isNamesSaved = false;
-  }
 
-  let authMode = "login";
-
-  function setAuthMode(mode) {
-    authMode = mode;
-    const t = translations[currentLang];
-
-    const wrapperConfirm = document.getElementById("auth-password-confirm-wrapper");
-    const authTitle = document.getElementById("auth-title");
-    const mainBtn = document.getElementById("auth-main-btn");
-    const secondaryBtn = document.getElementById("auth-secondary-btn");
-
-    if (wrapperConfirm) {
-      wrapperConfirm.style.display = (mode === "register") ? "block" : "none";
-    }
-    if (authTitle) {
-      authTitle.textContent = (mode === "login") ? t.authLoginTitle : t.authRegisterTitle;
-    }
-    if (mainBtn) {
-      mainBtn.textContent = (mode === "login") ? t.authLoginBtn : t.authRegisterBtn;
-    }
-    if (secondaryBtn) {
-      secondaryBtn.textContent = (mode === "login") ? t.authGoToRegister : t.authGoToLogin;
-    }
-  }
-
-  function showAuthMessage(text, type = "error") {
-    const box = document.getElementById("auth-message");
-    if (!box) return;
-    box.textContent = text;
-    box.className = "";
-    box.classList.add(type === "success" ? "success" : "error");
-  }
-
-  function handleAuthMain() {
-    const t = translations[currentLang];
-
-    const emailInput = document.getElementById("auth-email");
-    const passInput = document.getElementById("auth-password");
-    const passConfirmInput = document.getElementById("auth-password-confirm");
-    const rememberBox = document.getElementById("remember-credentials");
-
-    const email = emailInput.value.trim();
-    const password = passInput.value;
-
-    if (!email || !password) {
-      showAuthMessage(t.authErrorEmpty, "error");
-      return;
-    }
-
-    if (authMode === "register") {
-      const confirm = passConfirmInput.value;
-      if (password !== confirm) {
-        showAuthMessage(t.authErrorMismatch, "error");
-        return;
-      }
-
-      createUserWithEmailAndPassword(auth, email, password)
-        .then(() => {
-          if (rememberBox.checked) {
-            localStorage.setItem("shfliEmail", email);
-            localStorage.setItem("shfliPassword", password);
-          } else {
-            localStorage.removeItem("shfliEmail");
-            localStorage.removeItem("shfliPassword");
-          }
-          showAuthMessage("", "success");
-        })
-        .catch(() => {
-          showAuthMessage(t.authErrorGeneric, "error");
-        });
-    } else {
-      signInWithEmailAndPassword(auth, email, password)
-        .then(() => {
-          if (rememberBox.checked) {
-            localStorage.setItem("shfliEmail", email);
-            localStorage.setItem("shfliPassword", password);
-          } else {
-            localStorage.removeItem("shfliEmail");
-            localStorage.removeItem("shfliPassword");
-          }
-          showAuthMessage("", "success");
-        })
-        .catch(() => {
-          showAuthMessage(t.authErrorGeneric, "error");
-        });
-    }
-  }
-
-  function handleForgotPassword() {
-    const t = translations[currentLang];
-    const emailInput = document.getElementById("auth-email");
-    const email = emailInput.value.trim();
-    if (!email) {
-      showAuthMessage(t.authErrorEmpty, "error");
-      return;
-    }
-    sendPasswordResetEmail(auth, email)
-      .then(() => {
-        showAuthMessage(t.authResetSent, "success");
-      })
-      .catch(() => {
-        showAuthMessage(t.authErrorGeneric, "error");
-      });
-  }
-
-  function handleLogout() {
-    signOut(auth)
-      .then(() => {
-        showAuthMessage("", "success");
-      })
-      .catch(() => {
-        const t = translations[currentLang];
-        showAuthMessage(t.authErrorGeneric, "error");
-      });
-  }
-
-  function handleDeleteAccount() {
-    const user = auth.currentUser;
-    if (!user) {
-      return;
-    }
-    deleteUser(user).catch(() => {
-      const t = translations[currentLang];
-      showAuthMessage(t.authErrorGeneric, "error");
-    });
-  }
-
-  // فتح حوار التأكيد
-  function openConfirmDialog(actionType) {
-    pendingConfirmAction = actionType;
-    const overlay = document.getElementById("confirm-overlay");
-    const msg = document.getElementById("confirm-message");
-    const t = translations[currentLang];
-
-    if (actionType === "logout") {
-      msg.textContent = t.confirmLogout;
-    } else if (actionType === "delete") {
-      msg.textContent = t.confirmDelete;
-    }
-
-    overlay.style.display = "flex";
-  }
-
-  // إغلاق حوار التأكيد
-  function closeConfirmDialog() {
-    const overlay = document.getElementById("confirm-overlay");
-    overlay.style.display = "none";
-    pendingConfirmAction = null;
+    localStorage.removeItem(STORAGE_KEYS.NAMES);
   }
 
   function handleShareApp() {
@@ -1469,29 +1033,6 @@
     } else {
       alert(window.location.href);
     }
-  }
-
-  function initAuthUI() {
-    const savedEmail = localStorage.getItem("shfliEmail") || "";
-    const savedPassword = localStorage.getItem("shfliPassword") || "";
-    const emailInput = document.getElementById("auth-email");
-    const passInput = document.getElementById("auth-password");
-    const rememberBox = document.getElementById("remember-credentials");
-
-    if (emailInput) emailInput.value = savedEmail;
-    if (passInput) passInput.value = savedPassword;
-    if (rememberBox) rememberBox.checked = !!savedEmail && !!savedPassword;
-
-    const mainBtn = document.getElementById("auth-main-btn");
-    const secondaryBtn = document.getElementById("auth-secondary-btn");
-    const forgotBtn = document.getElementById("auth-forgot-btn");
-
-    if (mainBtn) mainBtn.addEventListener("click", handleAuthMain);
-    if (secondaryBtn) secondaryBtn.addEventListener("click", () => {
-      setAuthMode(authMode === "login" ? "register" : "login");
-      applyLanguage();
-    });
-    if (forgotBtn) forgotBtn.addEventListener("click", handleForgotPassword);
   }
 
   function initSettingsMenus() {
@@ -1522,22 +1063,6 @@
       });
     });
 
-    const logoutButtons = document.querySelectorAll(".settings-logout");
-    logoutButtons.forEach(btn => {
-      btn.addEventListener("click", (e) => {
-        e.stopPropagation();
-        openConfirmDialog("logout");
-      });
-    });
-
-    const deleteButtons = document.querySelectorAll(".settings-delete");
-    deleteButtons.forEach(btn => {
-      btn.addEventListener("click", (e) => {
-        e.stopPropagation();
-        openConfirmDialog("delete");
-      });
-    });
-
     const shareButtons = document.querySelectorAll(".settings-share");
     shareButtons.forEach(btn => {
       btn.addEventListener("click", (e) => {
@@ -1546,45 +1071,29 @@
       });
     });
 
-    // زر تبديل المظهر
-    const themeToggle = document.querySelector(".settings-theme-toggle");
-    if (themeToggle) {
-      themeToggle.addEventListener("click", (e) => {
+    const themeBtn = document.getElementById("theme-toggle-btn");
+    if (themeBtn) {
+      themeBtn.addEventListener("click", (e) => {
         e.stopPropagation();
-        const next = currentTheme === "dark" ? "light" : "dark";
-        setTheme(next);
+        toggleTheme();
       });
     }
+  }
 
-    // أزرار حوار التأكيد
-    const confirmYes = document.getElementById("confirm-yes");
-    const confirmNo = document.getElementById("confirm-no");
+  function initWelcomeOverlay() {
+    const overlay = document.getElementById("welcome-overlay");
+    const okBtn = document.getElementById("welcome-ok-btn");
+    if (!overlay || !okBtn) return;
 
-    if (confirmYes) {
-      confirmYes.addEventListener("click", () => {
-        if (pendingConfirmAction === "logout") {
-          handleLogout();
-        } else if (pendingConfirmAction === "delete") {
-          handleDeleteAccount();
-        }
-        closeConfirmDialog();
-      });
+    const alreadyShown = localStorage.getItem(WELCOME_KEY);
+    if (!alreadyShown) {
+      overlay.style.display = "flex";
     }
 
-    if (confirmNo) {
-      confirmNo.addEventListener("click", () => {
-        closeConfirmDialog();
-      });
-    }
-
-    const overlay = document.getElementById("confirm-overlay");
-    if (overlay) {
-      overlay.addEventListener("click", (e) => {
-        if (e.target === overlay) {
-          closeConfirmDialog();
-        }
-      });
-    }
+    okBtn.addEventListener("click", () => {
+      localStorage.setItem(WELCOME_KEY, "1");
+      overlay.style.display = "none";
+    });
   }
 
   function initApp() {
@@ -1607,31 +1116,22 @@
     if (editBtn) editBtn.addEventListener("click", toggleEditMode);
     if (clearBtn) clearBtn.addEventListener("click", clearNames);
 
-    initTheme();          // تطبيق الثيم المحفوظ أولاً
     setLanguage("ar");
-    setAuthMode("login");
-    initAuthUI();
+    applyThemeFromStorage();
     initSettingsMenus();
 
-    const authScreen = document.getElementById("auth-screen");
-    const appScreen = document.getElementById("app-screen");
+    // تحميل الأسماء المحفوظة (إن وجدت)
+    loadSavedLocalData();
 
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        if (authScreen) authScreen.style.display = "none";
-        if (appScreen) appScreen.style.display = "flex";
-      } else {
-        if (authScreen) authScreen.style.display = "flex";
-        if (appScreen) appScreen.style.display = "none";
-      }
-    });
+    const appScreen = document.getElementById("app-screen");
+    if (appScreen) appScreen.style.display = "flex";
   }
 
   document.addEventListener("DOMContentLoaded", () => {
     initApp();
+    initWelcomeOverlay();
   });
 </script>
 
 </body>
 </html>
-```0
