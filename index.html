@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>سحب شفلي</title>
 
-  <!-- PWA -->
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#020617">
 
@@ -383,14 +382,12 @@
 
 <body>
 
-<!-- شاشة السحب (مباشرة، بدون شاشة تسجيل دخول) -->
 <div id="app-screen" class="app">
   <div class="card">
     <div class="card-header">
       <div class="logo-circle"></div>
       <h1 id="header-title">الجائزة المقدّمة من تطبيق شفلي 🎉</h1>
 
-      <!-- مسنّن الإعدادات لشاشة السحب فقط -->
       <div class="settings-wrapper">
         <button type="button" class="settings-btn" data-menu="settings-menu-app">⚙️</button>
         <div class="settings-menu" id="settings-menu-app">
@@ -458,7 +455,6 @@
   </div>
 </div>
 
-<!-- حوار التأكيد (باقي لكن غير مستخدم حالياً) -->
 <div id="confirm-overlay" class="confirm-overlay">
   <div class="confirm-dialog">
     <p id="confirm-message">هل أنت متأكد؟</p>
@@ -469,7 +465,6 @@
   </div>
 </div>
 
-<!-- رسالة ترحيب أول مرة يفتح المستخدم التطبيق -->
 <div id="welcome-overlay" class="confirm-overlay">
   <div class="confirm-dialog">
     <p>أهلاً في تطبيق سحب شفلي 👋<br><br>
@@ -736,6 +731,7 @@
   function showRandomNamesBlock() {
     const textarea = document.getElementById("names");
     if (!textarea) return;
+    // التأكد من عرض القائمة كاملة عند انتهاء السحب
     textarea.value = savedNamesText;
   }
 
@@ -858,6 +854,12 @@
 
     const inputs = document.querySelectorAll(".winner-input");
     inputs.forEach(inp => inp.value = "");
+
+    // إعادة عرض القائمة كاملة عند الضغط على زر بحث (Reset)
+    const textarea = document.getElementById("names");
+    if (textarea && savedNamesText) {
+        textarea.value = savedNamesText;
+    }
   }
 
   function startDraw() {
@@ -895,7 +897,7 @@
     resetBtn.disabled = true;
 
     const intervalTime = 40;
-    const totalDuration = 20000; // 20 ثانية بدل 10
+    const totalDuration = 20000; // 20 ثانية
 
     const startTime = Date.now();
 
@@ -921,17 +923,25 @@
       if (now - lastNamesUpdate >= namesUpdateInterval &&
           generatedNames.length > 0) {
         const textarea = document.getElementById("names");
-        const linesPerView = 40;
-
-        // اختيار أسماء مختلفة بدون تكرار داخل القائمة المعروضة
+        
+        // حفظ مكان التمرير (Scroll)
+        const scrollPos = textarea.scrollTop;
+        
+        // خلط القائمة لعرض الحركة
         const pool = [...generatedNames];
         for (let i = pool.length - 1; i > 0; i--) {
           const j = Math.floor(Math.random() * (i + 1));
           [pool[i], pool[j]] = [pool[j], pool[i]];
         }
 
-        const out = pool.slice(0, Math.min(linesPerView, pool.length));
+        // التعديل: عرض القائمة كاملة بدون قص (أو حتى 10 آلاف اسم)
+        // هذا يضمن أن المستخدم يرى كل الأسماء حتى أثناء الحركة
+        const out = pool.length > 10000 ? pool.slice(0, 10000) : pool; 
+        
         textarea.value = out.join("\n");
+        
+        // إعادة الشريط لمكانه حتى لا يقفز
+        textarea.scrollTop = scrollPos;
 
         lastNamesUpdate = now;
       }
@@ -967,6 +977,8 @@
 
         startDrawBtn.disabled = false;
         resetBtn.disabled = false;
+        
+        // إعادة عرض القائمة الأصلية كاملة عند انتهاء السحب
         showRandomNamesBlock();
       }
     }, intervalTime);
@@ -984,6 +996,7 @@
     const t = translations[currentLang];
 
     if (isEditMode) {
+      // ***** حالة الضغط على حفظ *****
       namesTextarea.readOnly = true;
       isEditMode = false;
 
@@ -993,12 +1006,18 @@
       countInput.style.display = "none";
       countValue.style.display = "inline";
 
+      // حفظ الأسماء في الذاكرة
       loadNamesFromTextarea();
+
+      // ** إصلاح المشكلة: إجبار المربع على عرض النص الكامل المحفوظ فوراً **
+      // هذا يضمن عدم اختفاء الأسماء بعد الضغط على حفظ
+      namesTextarea.value = savedNamesText;
 
       editToggleBtn.textContent = t.editButton;
 
       if (clearBtn) clearBtn.style.display = "none";
     } else {
+      // ***** حالة الضغط على تعديل *****
       namesTextarea.readOnly = false;
       isEditMode = true;
 
