@@ -654,7 +654,8 @@
       editToggleBtn.textContent = isEditMode ? t.saveButton : t.editButton;
     }
 
-    const settingsLangTitles = document.querySelectorAll("#settings-lang-title-app");
+    const settingsLangTitles =
+      document.querySelectorAll("#settings-lang-title-app");
     settingsLangTitles.forEach(el => el.textContent = t.settingsLangTitle);
 
     const shareBtns = document.querySelectorAll(".settings-share");
@@ -778,7 +779,7 @@
     speechSynthesis.speak(msg);
   }
 
-  // صار هنا بدل ما يطلب زر "حفظ": يقرأ الأسماء ويخزنها فوراً
+  // يقرأ الأسماء ويخزنها فوراً قبل السحب
   function ensureNamesAvailable() {
     const resultDiv = document.getElementById("result");
     let resultText = document.getElementById("result-text");
@@ -894,7 +895,8 @@
     resetBtn.disabled = true;
 
     const intervalTime = 40;
-    const totalDuration = 10000;
+    const totalDuration = 20000; // 20 ثانية بدل 10
+
     const startTime = Date.now();
 
     let lastNamesUpdate = 0;
@@ -903,29 +905,34 @@
     resultText.textContent = translations[currentLang].drawingInProgress;
     resultText.style.color = "#eee";
 
-    const currentDrawNumber = (drawMode === "manual")
-      ? (drawIndex + 1)
-      : (autoWinners.length + 1);
+    const currentDrawNumber =
+      (drawMode === "manual") ? (drawIndex + 1) : (autoWinners.length + 1);
 
     const interval = setInterval(() => {
       const now = Date.now();
       const elapsed = now - startTime;
 
       if (generatedNames.length > 0) {
-        const randomName = generatedNames[Math.floor(Math.random() * generatedNames.length)];
+        const randomName =
+          generatedNames[Math.floor(Math.random() * generatedNames.length)];
         resultText.textContent = randomName;
       }
 
-      if (now - lastNamesUpdate >= namesUpdateInterval && generatedNames.length > 0) {
+      if (now - lastNamesUpdate >= namesUpdateInterval &&
+          generatedNames.length > 0) {
         const textarea = document.getElementById("names");
         const linesPerView = 40;
-        const out = [];
 
-        for (let i = 0; i < linesPerView; i++) {
-          const name = generatedNames[Math.floor(Math.random() * generatedNames.length)];
-          out.push(name);
+        // اختيار أسماء مختلفة بدون تكرار داخل القائمة المعروضة
+        const pool = [...generatedNames];
+        for (let i = pool.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [pool[i], pool[j]] = [pool[j], pool[i]];
         }
+
+        const out = pool.slice(0, Math.min(linesPerView, pool.length));
         textarea.value = out.join("\n");
+
         lastNamesUpdate = now;
       }
 
@@ -937,18 +944,21 @@
           winnerName = savedWinners[drawIndex];
           drawIndex++;
         } else {
-          const available = generatedNames.filter(n => !autoWinners.includes(n));
+          const available =
+            generatedNames.filter(n => !autoWinners.includes(n));
           if (available.length === 0) {
             winnerName = null;
           } else {
-            winnerName = available[Math.floor(Math.random() * available.length)];
+            winnerName =
+              available[Math.floor(Math.random() * available.length)];
             autoWinners.push(winnerName);
           }
         }
 
         if (winnerName) {
           resultText.style.color = "var(--success)";
-          resultText.textContent = getWinnerAnnouncement(currentDrawNumber, winnerName);
+          resultText.textContent =
+            getWinnerAnnouncement(currentDrawNumber, winnerName);
           speak(getSpeakCongrats(winnerName));
         } else {
           resultText.style.color = "var(--warning)";
@@ -1045,13 +1055,15 @@
       btn.addEventListener("click", (e) => {
         e.stopPropagation();
         const isVisible = menu.style.display === "block";
-        document.querySelectorAll(".settings-menu").forEach(m => m.style.display = "none");
+        document.querySelectorAll(".settings-menu")
+          .forEach(m => m.style.display = "none");
         menu.style.display = isVisible ? "none" : "block";
       });
     });
 
     document.addEventListener("click", () => {
-      document.querySelectorAll(".settings-menu").forEach(m => m.style.display = "none");
+      document.querySelectorAll(".settings-menu")
+        .forEach(m => m.style.display = "none");
     });
 
     const langButtons = document.querySelectorAll(".lang-btn");
@@ -1120,7 +1132,6 @@
     applyThemeFromStorage();
     initSettingsMenus();
 
-    // تحميل الأسماء المحفوظة (إن وجدت)
     loadSavedLocalData();
 
     const appScreen = document.getElementById("app-screen");
