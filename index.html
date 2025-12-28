@@ -282,7 +282,6 @@
     margin: 6px 0;
   }
 
-  /* حوار التأكيد (باقي لكن غير مستخدم حالياً) */
   .confirm-overlay {
     position: fixed;
     inset: 0;
@@ -320,7 +319,6 @@
     width: 100%;
   }
 
-  /* ثيم فاتح عند التبديل */
   body.light-mode {
     background: radial-gradient(circle at top, #dbeafe 0, #e5e7eb 55%, #ffffff);
     color: #020617;
@@ -382,7 +380,8 @@
 
 <body>
 
-<div id="app-screen" class="app">
+<!-- شاشة التطبيق الأساسية (مخفيّة لحد ما ينكتب الكود) -->
+<div id="app-screen" class="app" style="display:none;">
   <div class="card">
     <div class="card-header">
       <div class="logo-circle"></div>
@@ -455,6 +454,18 @@
   </div>
 </div>
 
+<!-- شاشة إدخال الكود 225522 -->
+<div id="password-overlay" class="confirm-overlay">
+  <div class="confirm-dialog">
+    <p id="password-message">الرجاء إدخال كود الدخول (٦ أرقام)</p>
+    <input id="password-input" type="password" inputmode="numeric" maxlength="6"
+           class="edit-count-input" style="width:100%;margin:10px 0;">
+    <div class="confirm-actions">
+      <button id="password-submit" class="btn primary">دخول</button>
+    </div>
+  </div>
+</div>
+
 <div id="confirm-overlay" class="confirm-overlay">
   <div class="confirm-dialog">
     <p id="confirm-message">هل أنت متأكد؟</p>
@@ -480,7 +491,14 @@
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
   import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-analytics.js";
+  import {
+    getFirestore,
+    doc,
+    setDoc,
+    onSnapshot
+  } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
+  // ===== إعداد Firebase =====
   const firebaseConfig = {
     apiKey: "AIzaSyD5Evcf4rCO-m3SmsNKZ3RGqeju0UCAmls",
     authDomain: "competitions-and-prizes.firebaseapp.com",
@@ -493,6 +511,13 @@
 
   const firebaseApp = initializeApp(firebaseConfig);
   const analytics = getAnalytics(firebaseApp);
+  const db = getFirestore(firebaseApp);
+
+  // وثيقة Firestore اللي فيها أسماء المشاركين (مشتركة لكل الأجهزة)
+  const NAMES_DOC_REF = doc(db, "drawConfig", "globalNamesV1");
+
+  // كود الدخول
+  const ACCESS_CODE = "225522";
 
   const translations = {
     ar: {
@@ -522,7 +547,9 @@
       settingsLangTitle: "اللغة",
       shareAppLabel: "مشاركة التطبيق",
       confirmYes: "نعم",
-      confirmNo: "لا"
+      confirmNo: "لا",
+      passwordPrompt: "الرجاء إدخال كود الدخول (٦ أرقام)",
+      passwordError: "الكود غير صحيح، حاول مرة أخرى"
     },
     en: {
       pageTitle: "Shfli Draw",
@@ -551,7 +578,9 @@
       settingsLangTitle: "Language",
       shareAppLabel: "Share app",
       confirmYes: "Yes",
-      confirmNo: "No"
+      confirmNo: "No",
+      passwordPrompt: "Please enter the 6-digit access code",
+      passwordError: "Incorrect code, please try again"
     }
   };
 
@@ -666,6 +695,9 @@
     const confirmNo = document.getElementById("confirm-no");
     if (confirmYes) confirmYes.textContent = t.confirmYes;
     if (confirmNo) confirmNo.textContent = t.confirmNo;
+
+    const pwMsg = document.getElementById("password-message");
+    if (pwMsg) pwMsg.textContent = t.passwordPrompt;
   }
 
   function updateThemeButtonText() {
@@ -705,8 +737,36 @@
       .map(n => n.trim())
       .filter(n => n !== "");
 
-    // حفظ تلقائي في التخزين المحلي
     localStorage.setItem(STORAGE_KEYS.NAMES, savedNamesText);
+  }
+
+  // الاشتراك مع Firestore: أي تعديل من أي جهاز يظهر عند الجميع
+  function subscribeToRemoteNames() {
+    const namesTextarea = document.getElementById("names");
+    const countValue = document.getElementById("participants-count-value");
+    if (!namesTextarea) return;
+
+    onSnapshot(NAMES_DOC_REF, (snapshot) => {
+      if (!snapshot.exists()) return;
+      const data = snapshot.data();
+      const text = data.namesText || "";
+      savedNamesText = text;
+
+      // إذا المستخدم حالياً في وضع التعديل، لا نزعج كتابته
+      if (!isEditMode) {
+        namesTextarea.value = text;
+      }
+
+      generatedNames = text
+        .split(/\r?\n/)
+        .map(n => n.trim())
+        .filter(n => n !== "");
+
+      if (countValue) countValue.textContent = String(generatedNames.length);
+      localStorage.setItem(STORAGE_KEYS.NAMES, text);
+    }, (err) => {
+      console.error("Firestore listen error:", err);
+    });
   }
 
   function loadSavedLocalData() {
@@ -731,7 +791,6 @@
   function showRandomNamesBlock() {
     const textarea = document.getElementById("names");
     if (!textarea) return;
-    // التأكد من عرض القائمة كاملة عند انتهاء السحب
     textarea.value = savedNamesText;
   }
 
@@ -775,7 +834,6 @@
     speechSynthesis.speak(msg);
   }
 
-  // يقرأ الأسماء ويخزنها فوراً قبل السحب
   function ensureNamesAvailable() {
     const resultDiv = document.getElementById("result");
     let resultText = document.getElementById("result-text");
@@ -855,7 +913,6 @@
     const inputs = document.querySelectorAll(".winner-input");
     inputs.forEach(inp => inp.value = "");
 
-    // إعادة عرض القائمة كاملة عند الضغط على زر بحث (Reset)
     const textarea = document.getElementById("names");
     if (textarea && savedNamesText) {
         textarea.value = savedNamesText;
@@ -924,23 +981,17 @@
           generatedNames.length > 0) {
         const textarea = document.getElementById("names");
         
-        // حفظ مكان التمرير (Scroll)
         const scrollPos = textarea.scrollTop;
         
-        // خلط القائمة لعرض الحركة
         const pool = [...generatedNames];
         for (let i = pool.length - 1; i > 0; i--) {
           const j = Math.floor(Math.random() * (i + 1));
           [pool[i], pool[j]] = [pool[j], pool[i]];
         }
 
-        // التعديل: عرض القائمة كاملة بدون قص (أو حتى 10 آلاف اسم)
-        // هذا يضمن أن المستخدم يرى كل الأسماء حتى أثناء الحركة
         const out = pool.length > 10000 ? pool.slice(0, 10000) : pool; 
         
         textarea.value = out.join("\n");
-        
-        // إعادة الشريط لمكانه حتى لا يقفز
         textarea.scrollTop = scrollPos;
 
         lastNamesUpdate = now;
@@ -977,11 +1028,17 @@
 
         startDrawBtn.disabled = false;
         resetBtn.disabled = false;
-        
-        // إعادة عرض القائمة الأصلية كاملة عند انتهاء السحب
         showRandomNamesBlock();
       }
     }, intervalTime);
+  }
+
+  async function saveNamesToRemote() {
+    try {
+      await setDoc(NAMES_DOC_REF, { namesText: savedNamesText }, { merge: true });
+    } catch (err) {
+      console.error("Failed to save names to Firestore:", err);
+    }
   }
 
   function toggleEditMode() {
@@ -996,7 +1053,7 @@
     const t = translations[currentLang];
 
     if (isEditMode) {
-      // ***** حالة الضغط على حفظ *****
+      // حفظ
       namesTextarea.readOnly = true;
       isEditMode = false;
 
@@ -1006,18 +1063,17 @@
       countInput.style.display = "none";
       countValue.style.display = "inline";
 
-      // حفظ الأسماء في الذاكرة
       loadNamesFromTextarea();
-
-      // ** إصلاح المشكلة: إجبار المربع على عرض النص الكامل المحفوظ فوراً **
-      // هذا يضمن عدم اختفاء الأسماء بعد الضغط على حفظ
       namesTextarea.value = savedNamesText;
 
       editToggleBtn.textContent = t.editButton;
 
       if (clearBtn) clearBtn.style.display = "none";
+
+      // حفظ على Firestore ليظهر عند كل الناس
+      saveNamesToRemote();
     } else {
-      // ***** حالة الضغط على تعديل *****
+      // تعديل
       namesTextarea.readOnly = false;
       isEditMode = true;
 
@@ -1032,7 +1088,7 @@
     }
   }
 
-  function clearNames() {
+  async function clearNames() {
     const namesTextarea = document.getElementById("names");
     const countInput = document.getElementById("participants-count-input");
     const countValue = document.getElementById("participants-count-value");
@@ -1048,6 +1104,13 @@
     drawIndex = 0;
 
     localStorage.removeItem(STORAGE_KEYS.NAMES);
+
+    // مسح من Firestore أيضاً
+    try {
+      await setDoc(NAMES_DOC_REF, { namesText: "" }, { merge: true });
+    } catch (err) {
+      console.error("Failed to clear names remotely:", err);
+    }
   }
 
   function handleShareApp() {
@@ -1151,15 +1214,54 @@
     applyThemeFromStorage();
     initSettingsMenus();
 
+    // أولاً نحمل أي بيانات من الجهاز، ثم نسمع من Firestore
     loadSavedLocalData();
+    subscribeToRemoteNames();
 
     const appScreen = document.getElementById("app-screen");
     if (appScreen) appScreen.style.display = "flex";
   }
 
+  function initPasswordGate() {
+    const overlay = document.getElementById("password-overlay");
+    const input = document.getElementById("password-input");
+    const submit = document.getElementById("password-submit");
+    const msg = document.getElementById("password-message");
+
+    if (!overlay || !input || !submit || !msg) {
+      // لو في مشكلة بأي عنصر، نفتح التطبيق مباشرة
+      initApp();
+      initWelcomeOverlay();
+      return;
+    }
+
+    overlay.style.display = "flex";
+
+    const tryEnter = () => {
+      const val = input.value.trim();
+      if (val === ACCESS_CODE) {
+        overlay.style.display = "none";
+        initApp();
+        initWelcomeOverlay();
+      } else {
+        msg.textContent = translations[currentLang].passwordError;
+        msg.style.color = "var(--warning)";
+        input.value = "";
+        input.focus();
+      }
+    };
+
+    submit.addEventListener("click", tryEnter);
+    input.addEventListener("keyup", (e) => {
+      if (e.key === "Enter") tryEnter();
+    });
+  }
+
   document.addEventListener("DOMContentLoaded", () => {
-    initApp();
-    initWelcomeOverlay();
+    // أول شيء: لغة + ثيم + شاشة الكود
+    setLanguage("ar");
+    applyThemeFromStorage();
+    initPasswordGate();
   });
 </script>
 
