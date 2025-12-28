@@ -740,6 +740,29 @@
     localStorage.setItem(STORAGE_KEYS.NAMES, savedNamesText);
   }
 
+  // دالة جديدة: حفظ الأسماء على Firebase مباشرة عند الكتابة (وقت التعديل فقط)
+  function onNamesInput() {
+    if (!isEditMode) return;
+    const namesTextarea = document.getElementById("names");
+    if (!namesTextarea) return;
+
+    savedNamesText = namesTextarea.value;
+    generatedNames = savedNamesText
+      .split(/\r?\n/)
+      .map(n => n.trim())
+      .filter(n => n !== "");
+
+    localStorage.setItem(STORAGE_KEYS.NAMES, savedNamesText);
+
+    const countValue = document.getElementById("participants-count-value");
+    if (countValue) {
+      countValue.textContent = String(generatedNames.length);
+    }
+
+    // حفظ فوري على Firestore
+    saveNamesToRemote();
+  }
+
   // الاشتراك مع Firestore: أي تعديل من أي جهاز يظهر عند الجميع
   function subscribeToRemoteNames() {
     const namesTextarea = document.getElementById("names");
@@ -1194,6 +1217,8 @@
     const namesTextarea = document.getElementById("names");
     if (namesTextarea) {
       namesTextarea.readOnly = true;
+      // ربط الـ input event عشان كل كتابة تتزامن (وقت التعديل)
+      namesTextarea.addEventListener("input", onNamesInput);
     }
 
     const hideBtn = document.getElementById("hideNamesBtn");
