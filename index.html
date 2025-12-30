@@ -594,6 +594,10 @@
   let isEditMode = false;
   let savedNamesText = "";
 
+  // متغيرات تمييز الفائز داخل مربع الأسماء
+  let highlightIntervalId = null;
+  let highlightedIndex = -1;
+
   let allVoices = [];
   let maleArabicVoice = null;
   let maleEnglishVoice = null;
@@ -740,7 +744,7 @@
     localStorage.setItem(STORAGE_KEYS.NAMES, savedNamesText);
   }
 
-  // دالة جديدة: حفظ الأسماء على Firebase مباشرة عند الكتابة (وقت التعديل فقط)
+  // حفظ الأسماء على Firebase مباشرة عند الكتابة (وقت التعديل فقط)
   function onNamesInput() {
     if (!isEditMode) return;
     const namesTextarea = document.getElementById("names");
@@ -815,6 +819,62 @@
     const textarea = document.getElementById("names");
     if (!textarea) return;
     textarea.value = savedNamesText;
+  }
+
+  // تمييز الفائز داخل مربع الأسماء: 🔴 و ⚪ تومض قدّام الاسم
+  function highlightWinnerInNames(name) {
+    const textarea = document.getElementById("names");
+    if (!textarea) return;
+
+    // إلغاء أي تمييز قديم
+    if (highlightIntervalId) {
+      clearInterval(highlightIntervalId);
+      highlightIntervalId = null;
+      highlightedIndex = -1;
+    }
+
+    const lines = textarea.value.split(/\r?\n/);
+    const target = name.trim();
+    let idx = -1;
+
+    for (let i = 0; i < lines.length; i++) {
+      if (lines[i].trim() === target) {
+        idx = i;
+        break;
+      }
+    }
+
+    if (idx === -1) {
+      // لو الاسم مش موجود بالحرف، ما نعمل شيء
+      return;
+    }
+
+    highlightedIndex = idx;
+    let visible = true;
+
+    highlightIntervalId = setInterval(() => {
+      const ta = document.getElementById("names");
+      if (!ta) {
+        clearInterval(highlightIntervalId);
+        highlightIntervalId = null;
+        highlightedIndex = -1;
+        return;
+      }
+
+      const currentLines = ta.value.split(/\r?\n/);
+      if (highlightedIndex < 0 || highlightedIndex >= currentLines.length) {
+        clearInterval(highlightIntervalId);
+        highlightIntervalId = null;
+        highlightedIndex = -1;
+        return;
+      }
+
+      const rawLine = currentLines[highlightedIndex].replace(/^(?:🔴|⚪)\s*/, "");
+      currentLines[highlightedIndex] =
+        (visible ? "🔴 " : "⚪ ") + rawLine;
+      ta.value = currentLines.join("\n");
+      visible = !visible;
+    }, 500);
   }
 
   function getWinnerAnnouncement(num, name) {
@@ -940,10 +1000,24 @@
     if (textarea && savedNamesText) {
         textarea.value = savedNamesText;
     }
+
+    // إلغاء أي وميض قديم
+    if (highlightIntervalId) {
+      clearInterval(highlightIntervalId);
+      highlightIntervalId = null;
+      highlightedIndex = -1;
+    }
   }
 
   function startDraw() {
     if (!ensureNamesAvailable()) return;
+
+    // إلغاء وميض قديم قبل سحب جديد
+    if (highlightIntervalId) {
+      clearInterval(highlightIntervalId);
+      highlightIntervalId = null;
+      highlightedIndex = -1;
+    }
 
     const startDrawBtn = document.getElementById("startDrawBtn");
     const resetBtn = document.getElementById("resetBtn");
@@ -1051,7 +1125,12 @@
 
         startDrawBtn.disabled = false;
         resetBtn.disabled = false;
+
+        // نرجّع القائمة الأصلية ثم نميّز الفائز
         showRandomNamesBlock();
+        if (winnerName) {
+          highlightWinnerInNames(winnerName);
+        }
       }
     }, intervalTime);
   }
@@ -1127,6 +1206,13 @@
     drawIndex = 0;
 
     localStorage.removeItem(STORAGE_KEYS.NAMES);
+
+    // إلغاء أي وميض قديم
+    if (highlightIntervalId) {
+      clearInterval(highlightIntervalId);
+      highlightIntervalId = null;
+      highlightedIndex = -1;
+    }
 
     // مسح من Firestore أيضاً
     try {
